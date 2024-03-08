@@ -19,7 +19,6 @@ ply==3.11
 pyasn1-modules==0.2.8
 PyDispatcher==2.0.5
 PyQtWebEngine==5.15.6
-pywin32==305.1
 scipy==1.11.4
 smmap==5.0.1
 TBB==0.2
