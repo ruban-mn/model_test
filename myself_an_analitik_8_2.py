@@ -243,7 +243,7 @@ if button:
     writer.close()
     output.seek(0)
     st.download_button(
-        label="Download",
+        label="Скачать",
         data=output,
         file_name='результаты.xlsx',
         mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
