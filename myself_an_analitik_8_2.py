@@ -82,7 +82,7 @@ if uploaded_file is not None:
 # In[ ]:
 
 
-tm.sleep(120)
+tm.sleep(60)
 
 
 # In[9]:
