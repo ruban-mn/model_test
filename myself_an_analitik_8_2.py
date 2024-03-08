@@ -40,7 +40,7 @@ import openpyxl
 import docx
 import streamlit as st
 import io
-import time
+
 
 
 # In[7]:
