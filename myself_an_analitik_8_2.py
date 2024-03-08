@@ -1,34 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
-
-#!pip install openpyxl
-
-
-# In[9]:
-
-
-#!pip install xlsxwriter
-
-
-# In[3]:
-
-
-#!python -m pip install --upgrade pip
-
-
-# In[4]:
-
-
-#!pip install python-docx
-
-
-# In[5]:
-
-
-#!pip install streamlit
 
 
 # In[15]:
@@ -47,7 +16,7 @@ import time as tm
 # In[7]:
 
 
-st.title('Приложение для обработки данных из Excel и выдачи результата в файле Excel')
+st.title('Приложение для обработки чек листов и массывов анкет в отчет по НОК и рачет баллов')
 
 
 # In[6]:
@@ -82,7 +51,7 @@ if uploaded_file is not None:
 # In[ ]:
 
 
-tm.sleep(60)
+tm.sleep(30)
 
 
 # In[9]:
