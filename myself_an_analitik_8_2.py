@@ -40,6 +40,7 @@ import openpyxl
 import docx
 import streamlit as st
 import io
+import time as tm
 
 
 
@@ -81,7 +82,7 @@ if uploaded_file is not None:
 # In[ ]:
 
 
-time.sleep(120)
+tm.sleep(120)
 
 
 # In[9]:
