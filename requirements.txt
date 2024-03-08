@@ -4,6 +4,7 @@ atomicwrites==1.4.0
 blinker==1.7.0
 cachetools==5.3.3
 daal4py==2023.1.1
+docx==0.2.4
 et-xmlfile==1.1.0
 fonttools==4.25.0
 gitdb==4.0.11
