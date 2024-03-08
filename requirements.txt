@@ -4,7 +4,6 @@ atomicwrites==1.4.0
 blinker==1.7.0
 cachetools==5.3.3
 daal4py==2023.1.1
-docx==0.2.4
 et-xmlfile==1.1.0
 fonttools==4.25.0
 gitdb==4.0.11
@@ -20,6 +19,7 @@ ply==3.11
 pyasn1-modules==0.2.8
 PyDispatcher==2.0.5
 PyQtWebEngine==5.15.6
+python-docx==1.1.0
 scipy==1.11.4
 smmap==5.0.1
 tzlocal==5.2
