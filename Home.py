@@ -14,14 +14,21 @@ def main():
     menu = ["Главная", "Контакты"]
     choice = st.sidebar.selectbox("Меню", menu)
 
+    
     if choice == "Главная":
         st.subheader("Вас приветствует мастер отчетов независимой оценки качества услуг")
         st.subheader('перейдите на страницу с требуемым расчетом', divider='rainbow')
-       
+
+        state = st.session_state.get('state', {'redirect': False})
         if st.button('Расчеты для организаций культуры'):
             with open('./myself_an_analitik_8_2.py', 'r') as file:
                 code = file.read()
             exec(code)
+        # Устанавливаем флаг перенаправления на другую страницу
+            state['redirect'] = True
+        # Проверяем, нужно ли перенаправить пользователя
+        if state.get('redirect', False):
+        st.experimental_rerun()
         
         if st.button('Расчеты для социальных организаций'):
             with open('./myself_an_analitik_8_3.py', 'r') as file:
