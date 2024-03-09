@@ -26,7 +26,7 @@ if uploaded_file is not None:
 # In[7]:
 
 
-uploaded_file = st.file_uploader("Загрузите файл с массивом анкет", type=["xls", "xlsx"])
+uploaded_file = st.file_uploader("**Загрузите файл с массивом анкет**", type=["xls", "xlsx"])
 
 if uploaded_file is not None:
     # Чтение данных из загруженного файла Excel
