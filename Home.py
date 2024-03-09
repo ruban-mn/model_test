@@ -9,33 +9,33 @@
 import streamlit as st
 
 def main():
-    st.title("Independent Quality of Service Assessment Report Master")
+    st.title("Мастер отчетов независимой оценки качества услуг")
     
     session_state = st.session_state
     if 'button_pressed' not in session_state:
         session_state.button_pressed = False
 
-    menu = ["Home", "Contact"]
+    menu = ["Главная", "Контакты"]
     choice = st.sidebar.selectbox("Menu", menu)
 
-    if choice == "Home":
-        st.write("Welcome to the Independent Quality of Service Assessment Report Master")
-        st.subheader('Go to the page with the required calculation', divider='rainbow')
+    if choice == "Главная":
+        st.write("Вас приветствует мастер отчетов независимой оценки качества услуг")
+        st.subheader('перейдите на страницу с требуемым расчетом', divider='rainbow')
        
-        if st.button('Calculations for Cultural Organizations'):
+        if st.button('Расчеты для организаций культуры'):
             session_state.button_pressed = True
             session_state.selected_option = 'organization_culture'
         
-        if st.button('Calculations for Social Organizations'):
+        if st.button('Расчеты для социальных организаций'):
             session_state.button_pressed = True
             session_state.selected_option = 'social_organization'
 
-        if st.button('Calculations for Medical Organizations'):
+        if st.button('Расчеты для медицинских организаций'):
             session_state.button_pressed = True
             session_state.selected_option = 'medical_organization'
     
-    elif choice == "Contact":
-        st.write("Page with contact information.")
+    elif choice == "Контакты":
+        st.write("Разработчик Рубан Мария Николаевна, Ma77ruban@yandex.ru")
         # Add content for the 'Contact' page here
 
     if session_state.button_pressed:
