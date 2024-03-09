@@ -1,8 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
-
+import streampit as st
 st.title('здесь пока ничего нет(')
 
