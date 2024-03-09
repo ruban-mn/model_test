@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 # app.py - главный файл приложения
 
 import streamlit as st
