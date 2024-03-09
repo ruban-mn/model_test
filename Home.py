@@ -10,5 +10,5 @@ if st.button("Расчет для организаций культуры"):
 if st.button("Расчет для социальных организаций"):
     st.switch_page("pages/Для_социальных_организаций.py")
 if st.button("Расчет для медицинских организаций"):
-    st.switch_page("pages/myself_an_analitik_8_4.py")
+    st.switch_page("pages/Для_медицинских_организаций.py")
        
