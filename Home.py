@@ -12,5 +12,3 @@ if st.button("Расчет для социальных организаций"):
 if st.button("Расчет для медицинских организаций"):
     st.switch_page("pages/myself_an_analitik_8_4.py")
        
-st.sidebar.['Главная']
-st.sidebar.['страница1']
