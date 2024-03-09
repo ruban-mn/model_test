@@ -19,7 +19,9 @@ def main():
         st.subheader('перейдите на страницу с требуемым расчетом', divider='rainbow')
        
         if st.button('Расчеты для организаций культуры'):
-            st.switch_page('myself_an_analitik_8_2.py')
+            with open('./myself_an_analitik_8_2.py', 'r') as file:
+                code = file.read()
+            exec(code)
         
         if st.button('Расчеты для социальных организаций'):
             with open('./myself_an_analitik_8_3.py', 'r') as file:
