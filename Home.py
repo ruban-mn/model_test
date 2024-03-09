@@ -28,7 +28,7 @@ def main():
             state['redirect'] = True
         # Проверяем, нужно ли перенаправить пользователя
         if state.get('redirect', False):
-        st.experimental_rerun()
+            st.experimental_rerun()
         
         if st.button('Расчеты для социальных организаций'):
             with open('./myself_an_analitik_8_3.py', 'r') as file:
