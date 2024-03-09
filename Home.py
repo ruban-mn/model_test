@@ -2,6 +2,8 @@
 
 import streamlit as st
 
+st.markdown("<h1 style='text-align: center;'>Текст выровнен по центру</h1>", unsafe_allow_html=True)
+
 st.title("Вас приветствует")
 st.header(":orange[мастер отчетов независимой оценки качества услуг]")
 st.subheader(':blue[перейдите на страницу с требуемым расчетом]:', divider='rainbow')
