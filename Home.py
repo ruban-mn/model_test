@@ -19,17 +19,17 @@ def main():
         st.subheader('перейдите на страницу с требуемым расчетом', divider='rainbow')
        
         if st.button('Расчеты для организаций культуры'):
-            with open(r'https://github.com/ruban-mn/model1/blob/pages/myself_an_analitik_8_2.py') as file:
+            with open('./myself_an_analitik_8_2.py', 'r') as file:
                 code = file.read()
             exec(code)
         
         if st.button('Расчеты для социальных организаций'):
-            with open('./pages/myself_an_analitik_8_3.py', 'r') as file:
+            with open('./myself_an_analitik_8_3.py', 'r') as file:
                 code = file.read()
             exec(code)
 
         if st.button('Расчеты для медицинских организаций'):
-            with open('./pages/myself_an_analitik_8_4.py', 'r') as file:
+            with open('./myself_an_analitik_8_4.py', 'r') as file:
                 code = file.read()
             exec(code)
 
