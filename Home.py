@@ -7,7 +7,7 @@
 # app.py - главный файл приложения
 
 import streamlit as st
-url1 = 'https://github.com/ruban-mn/model1/blob/pages/myself_an_analitik_8_2.py'
+url1 = r'https://github.com/ruban-mn/model1/blob/pages/myself_an_analitik_8_2.py'
 def main():
     st.title("Мастер отчетов независимой оценки качества услуг")
 
