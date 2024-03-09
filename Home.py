@@ -20,7 +20,7 @@ def main():
        
         if st.button('Расчеты для организаций культуры'):
             with open('./pages/myself_an_analitik_8_2.py', 'r') as file:
-                code = file.read('myself_an_analitik_8_2.py')
+                code = file.read()
             exec(code)
         
         if st.button('Расчеты для социальных организаций'):
