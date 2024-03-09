@@ -6,7 +6,7 @@
 
 # app.py - главный файл приложения
 
-mport streamlit as st
+import streamlit as st
 
 def main():
     st.title("Мастер отчетов независимой оценки качества услуг")
