@@ -2,7 +2,7 @@
 
 import streamlit as st
 
-st.markdown('<style>' + open('styles.css').read() + '</style>', unsafe_allow_html=True)
+st.markdown("<style>' + open('styles.css').read() + '</style>", unsafe_allow_html=True)
 
 st.markdown("<h1 style='text-align: center;color:orange;'>Вас приветствует</h1>", unsafe_allow_html=True)
 
