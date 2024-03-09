@@ -8,37 +8,35 @@
 
 import streamlit as st
 
-class SessionState:
-    def __init__(self, **kwargs):
-        self._state = kwargs
-
 def main():
-    st.title("Мастер отчетов независимой оценки качества услуг")
+    st.title("Independent Quality of Service Assessment Report Master")
     
-    session_state = SessionState(button_pressed=False)
+    session_state = st.session_state
+    if 'button_pressed' not in session_state:
+        session_state.button_pressed = False
 
-    menu = ["Главная", "Контакты"]
-    choice = st.sidebar.selectbox("Меню", menu)
+    menu = ["Home", "Contact"]
+    choice = st.sidebar.selectbox("Menu", menu)
 
-    if choice == "Главная":
-        st.write("Вас приветствует мастер отчетов независимой оценки качества услуг")
-        st.subheader('перейдите на страницу с требуемым расчетом', divider='rainbow')
+    if choice == "Home":
+        st.write("Welcome to the Independent Quality of Service Assessment Report Master")
+        st.subheader('Go to the page with the required calculation', divider='rainbow')
        
-        if st.button('Расчеты для организаций культуры'):
+        if st.button('Calculations for Cultural Organizations'):
             session_state.button_pressed = True
             session_state.selected_option = 'organization_culture'
         
-        if st.button('Расчеты для социальных организаций'):
+        if st.button('Calculations for Social Organizations'):
             session_state.button_pressed = True
             session_state.selected_option = 'social_organization'
 
-        if st.button('Расчеты для медицинских организаций'):
+        if st.button('Calculations for Medical Organizations'):
             session_state.button_pressed = True
             session_state.selected_option = 'medical_organization'
     
-    elif choice == "Контакты":
-        st.write("Страница с контактной информацией.")
-        # Добавьте содержимое для страницы 'Контакты' здесь
+    elif choice == "Contact":
+        st.write("Page with contact information.")
+        # Add content for the 'Contact' page here
 
     if session_state.button_pressed:
         if session_state.selected_option == 'organization_culture':
@@ -58,5 +56,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-
 
