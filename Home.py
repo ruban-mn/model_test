@@ -7,7 +7,7 @@
 # app.py - главный файл приложения
 
 import streamlit as st
-url1 = r'https://github.com/ruban-mn/model1/blob/pages/myself_an_analitik_8_2.py'
+
 def main():
     st.title("Мастер отчетов независимой оценки качества услуг")
 
@@ -19,7 +19,7 @@ def main():
         st.subheader('перейдите на страницу с требуемым расчетом', divider='rainbow')
        
         if st.button('Расчеты для организаций культуры'):
-            with open(url1) as file:
+            with open(r'https://github.com/ruban-mn/model1/blob/pages/myself_an_analitik_8_2.py') as file:
                 code = file.read()
             exec(code)
         
