@@ -8,7 +8,7 @@ st.subheader(':blue[перейдите на страницу с требуемы
 if st.button("Расчет для организаций культуры"):
     st.switch_page("pages/Для организаций культуры.py")
 if st.button("Расчет для социальных организаций"):
-    st.switch_page("pages/myself_an_analitik_8_3.py")
+    st.switch_page("pages/Для_социальных_организаций.py")
 if st.button("Расчет для медицинских организаций"):
     st.switch_page("pages/myself_an_analitik_8_4.py")
        
