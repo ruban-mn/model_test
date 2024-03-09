@@ -9,7 +9,7 @@
 import streamlit as st
 
 def main():
-    st.title("Мастер отчетов независимой оценки качества услуг")
+    st.header("Мастер отчетов независимой оценки качества услуг")
     
     session_state = st.session_state
     if 'button_pressed' not in session_state:
@@ -19,7 +19,7 @@ def main():
     choice = st.sidebar.selectbox("Menu", menu)
 
     if choice == "Главная":
-        st.write("Вас приветствует мастер отчетов независимой оценки качества услуг")
+        st.header(violet["Вас приветствует мастер отчетов независимой оценки качества услуг"])
         st.subheader('перейдите на страницу с требуемым расчетом', divider='rainbow')
        
         if st.button('Расчеты для организаций культуры'):
