@@ -1,0 +1,1 @@
+myself_an_analitik_8_2.py
