@@ -1,38 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
-
-
-#!pip install openpyxl
-
-
-# In[9]:
-
-
-#!pip install xlsxwriter
-
-
-# In[3]:
-
-
-#!python -m pip install --upgrade pip
-
-
-# In[4]:
-
-
-#!pip install python-docx
-
-
-# In[5]:
-
-
-#!pip install streamlit
-
-
-# In[15]:
-
 
 import pandas as pd
 import numpy as np
@@ -40,13 +8,13 @@ import openpyxl
 import docx
 import streamlit as st
 import io
-import time
+import time as tm
 
 
 # In[7]:
 
 
-st.title('Приложение для обработки данных из Excel и выдачи результата в файле Excel')
+st.title('Приложение для чек-листов и массивов анкет для создания отчета независимой оценки качества услуг')
 
 
 # In[6]:
@@ -81,7 +49,7 @@ if uploaded_file is not None:
 # In[ ]:
 
 
-time.sleep(120)
+tm.sleep(30)
 
 
 # In[9]:
@@ -214,25 +182,6 @@ Raschet_ballov['Общий балл'] = round((Raschet_ballov['К1']+Raschet_bal
 # In[ ]:
 
 
-#Raschet_ballov.to_excel(r"C:\Users\user\Desktop\Raschet_ballov1.xlsx", index=False)
-
-
-# In[ ]:
-
-
-#excel_file = 'результаты.xlsx'
-#Raschet_ballov.to_excel(excel_file, index=False)
-
-
-# In[ ]:
-
-
-#st.markdown(f'### [Скачать результаты в формате Excel]({excel_file})')
-
-
-# In[ ]:
-
-
 button = st.button("получить готовый файл расчет баллов")
 
 if button:
@@ -242,7 +191,7 @@ if button:
     writer.close()
     output.seek(0)
     st.download_button(
-        label="Download",
+        label="Загрузить",
         data=output,
         file_name='результаты.xlsx',
         mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
