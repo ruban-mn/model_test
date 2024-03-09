@@ -14,9 +14,13 @@ st.subheader('Независимая оценка качества услуг о
 
 
 # In[6]:
+# Используйте HTML для установки жирного шрифта для надписи
+st.markdown("<h3 style='font-weight: bold;'>Загрузите файл сводную по чек-листам</h3>", unsafe_allow_html=True)
 
+# Добавьте file uploader
+st.file_uploader("Выберите файл для загрузки", type=["xls", "xlsx"])
 
-uploaded_file = st.file_uploader("Загрузите файл сводную по чек-листам", type=["xls", "xlsx"])
+#uploaded_file = st.file_uploader("Загрузите файл сводную по чек-листам", type=["xls", "xlsx"])
 
 if uploaded_file is not None:
     # Чтение данных из загруженного файла Excel
