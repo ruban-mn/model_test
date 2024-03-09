@@ -4,6 +4,8 @@ import streamlit as st
 
 st.markdown("<h1 style='text-align: center;'>Вас приветствует</h1>", unsafe_allow_html=True)
 
+st.markdown("<h2 style='text-align: center;'>:orange[мастер отчетов]</h2>", unsafe_allow_html=True)
+
 st.header(":orange[мастер отчетов]")
 st.header(":orange[независимой оценки качества услуг]")
 st.subheader(':blue[перейдите на страницу с требуемым расчетом]:', divider='rainbow')
