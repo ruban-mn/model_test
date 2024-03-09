@@ -15,7 +15,7 @@ st.subheader('Независимая оценка качества услуг о
 
 # In[6]:
 
-uploaded_file = st.file_uploader(bold:["Загрузите файл сводную по чек-листам"], type=["xls", "xlsx"])
+uploaded_file = st.file_uploader("**Загрузите файл сводную по чек-листам**", type=["xls", "xlsx"])
 
 
 if uploaded_file is not None:
