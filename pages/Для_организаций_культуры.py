@@ -567,6 +567,22 @@ run.bold = True
 font.size = Pt(16) 
 under_zag.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
 
+list_krit = {'Наименование критерия':['Критерий 1', 'Критерий 2', 'Критерий 3', 'Критерий 4', 'Критерий 5'],
+             'Значение':[table['К1'].mean(), table11['К2'].mean(), table12['К3'].mean(), table13['К4'].mean(), table14['К5'].mean()]}
+list_krit = pd.DataFrame(list_krit)
+sorted_list_krit = list_krit.sort_values(by='Значение')
+sorted_list_krit = sorted_list_krit.reset_index(drop=True)
+
+# Создаем словарь для массовой замены значений
+list_krit_dict = {'Критерий 1': '1. Открытость и доступность информации', 
+                  'Критерий 2': '2. Комфортность условий предоставления услуг', 
+                  'Критерий 3': '3. Доступность услуг для инвалидов', 
+                  'Критерий 4': '4. Доброжелательность, вежливость работников организации', 
+                  'Критерий 5': '5. Удовлетворенность условиями оказания услуг'
+                 }
+# Массово заменяем значения в столбце 'Имя'
+sorted_list_krit['Наименование критерия'] = sorted_list_krit['Наименование критерия'].replace(list_krit_dict)
+
 default_font = otchet.styles['Normal'].font
 default_font.name = 'Times New Roman'
 default_font.size = Pt(14)
