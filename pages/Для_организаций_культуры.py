@@ -41,7 +41,7 @@ if uploaded_file is not None:
 
 
 # In[8]:
-
+plase = st.text_input('Введите название территории в родительном падеже', 'н-р Московской области')
 
 ## подгружаем сводную по чек листам
 #chek_list=pd.read_excel(r"C:\Users\user\чек лист гулькевичи.xlsx")
