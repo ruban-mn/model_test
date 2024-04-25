@@ -5,8 +5,15 @@ import docx
 import streamlit as st
 import io
 import time as tm
-
-
+import re
+from docx import Document
+from docx import Document
+from docx.shared import Pt
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
+from docx.shared import Cm
+from docx import Document
+from docx.oxml import OxmlElement
+from docx.oxml.ns import qn
 # In[7]:
 
 
@@ -174,8 +181,425 @@ Raschet_ballov['Пуд'] = round(Raschet_ballov['Ууд']/Raschet_ballov['Чоб
 Raschet_ballov['К5'] = round(0.3*Raschet_ballov['Преком'] + 0.2*Raschet_ballov['Порг.услуд'] + 0.5*Raschet_ballov['Пуд'], 2)
 Raschet_ballov['Общий балл'] = round((Raschet_ballov['К1']+Raschet_ballov['К2']+Raschet_ballov['К3']+Raschet_ballov['К4']+Raschet_ballov['К5'])/5, 2)
 
+row_chek_list = chek_list.columns.tolist()
 
-# In[ ]:
+New_col_for_chek_list = []  # Создаем пустой список
+for i in range(chek_list.shape[1]+1):  # Цикл от 0 до 18
+    sim = i   # присваиваем номер
+    New_col_for_chek_list.append('us' + str(sim))  # добавляем новый номер вопрса в список
+
+dict_chek = dict(zip(row_chek_list, New_col_for_chek_list))
+chek_list = chek_list.rename(columns=dict_chek) # переименовываем столбцы в начальном датафрейме
+
+name_org1 = pd.DataFrame({'us0': chek_list['us0']}) 
+chek_list_stend = chek_list.iloc[:, 1:18]  # Датафрейм с 1-5 столбцами
+chek_list_sait = chek_list.iloc[:, 18:37]  # Датафрейм с 6-10 столбцами = df.iloc[:, 0:5]  # Датафрейм с 1-5 столбцами
+chek_list_dist = chek_list.iloc[:, 37:42]  # Датафрейм с 6-10 столбцами
+chek_list_komf = chek_list.iloc[:, 42:48]
+chek_list_obor_inv = chek_list.iloc[:, 48:53]
+chek_list_sreda_inv = chek_list.iloc[:, 53:58]
+
+chek_list_stend = pd.concat([name_org1, chek_list_stend], axis=1)
+chek_list_sait = pd.concat([name_org1, chek_list_sait], axis=1)
+chek_list_dist = pd.concat([name_org1, chek_list_dist], axis=1)
+chek_list_komf = pd.concat([name_org1, chek_list_komf], axis=1)
+chek_list_obor_inv = pd.concat([name_org1, chek_list_obor_inv], axis=1)
+chek_list_sreda_inv = pd.concat([name_org1, chek_list_sreda_inv], axis=1)
+
+def process_row(row):
+    first_column_value = row.iloc[0]
+    row_subset = row.iloc[1:]
+
+    zero_values = row_subset[row_subset == 0].index.tolist()  # Получаем список индексов столбцов с нулевыми значениями
+
+    return pd.Series([first_column_value, zero_values], index=['First_Column_Value', 'Zero_Values'])
+# Применяем функцию и конвертируем результаты в DataFrame
+nedostatki_stend = chek_list_stend.apply(process_row, axis=1)
+nedostatki_stend = nedostatki_stend[nedostatki_stend.apply(lambda x: len(x) > 0, axis=1)]
+nedostatki_stend = nedostatki_stend.apply(lambda x: x.apply(lambda y: 'нет недостатков' if len(y) == 0 else y))
+
+nedostatki = nedostatki_stend
+nedostatki = nedostatki.rename(columns={'First_Column_Value':'Name_org', 'Zero_Values':'bad_stend'})
+
+nedostatki_sait = chek_list_sait.apply(process_row, axis=1)
+nedostatki_sait = nedostatki_sait[nedostatki_sait.apply(lambda x: len(x) > 0, axis=1)]
+nedostatki_sait = nedostatki_sait.apply(lambda x: x.apply(lambda y: 'нет недостатков' if len(y) == 0 else y))
+nedostatki['bad_sait'] = nedostatki_sait['Zero_Values']
+
+nedostatki_dist = chek_list_dist.apply(process_row, axis=1)
+nedostatki_dist = nedostatki_dist[nedostatki_dist.apply(lambda x: len(x) > 0, axis=1)]
+nedostatki_dist = nedostatki_dist.apply(lambda x: x.apply(lambda y: 'нет недостатков' if len(y) == 0 else y))
+nedostatki['bad_dist'] = nedostatki_dist['Zero_Values']
+
+nedostatki_komf = chek_list_komf.apply(process_row, axis=1)
+nedostatki_komf = nedostatki_komf[nedostatki_dist.apply(lambda x: len(x) > 0, axis=1)]
+nedostatki_komf = nedostatki_komf.apply(lambda x: x.apply(lambda y: 'нет недостатков' if len(y) == 0 else y))
+nedostatki['bad_komf'] = nedostatki_komf['Zero_Values']
+
+nedostatki_obor_inv = chek_list_obor_inv.apply(process_row, axis=1)
+nedostatki_obor_inv = nedostatki_obor_inv[nedostatki_obor_inv.apply(lambda x: len(x) > 0, axis=1)]
+nedostatki_obor_inv = nedostatki_obor_inv.apply(lambda x: x.apply(lambda y: 'нет недостатков' if len(y) == 0 else y))
+nedostatki['obor_inv'] = nedostatki_obor_inv['Zero_Values']
+
+nedostatki_sreda_inv = chek_list_sreda_inv.apply(process_row, axis=1)
+nedostatki_sreda_inv = nedostatki_sreda_inv[nedostatki_sreda_inv.apply(lambda x: len(x) > 0, axis=1)]
+nedostatki_sreda_inv = nedostatki_sreda_inv.apply(lambda x: x.apply(lambda y: 'нет недостатков' if len(y) == 0 else y))
+nedostatki['sreda_inv'] = nedostatki_sreda_inv['Zero_Values']
+
+row_chek_list1 = row_chek_list.copy
+new_list = [re.search(r'\[([^\]]+)\]', item).group(1) for item in row_chek_list[1:] if re.search(r'\[([^\]]+)\]', item)]
+name_list = [row_chek_list[0]]
+row_chek_list = name_list + new_list
+dict_chek1 = dict(zip(New_col_for_chek_list, row_chek_list))
+
+output_data = []
+
+for index, row in nedostatki.iterrows():
+    output_row = [row['Name_org']]
+    for col in nedostatki.columns[1:]:
+        if row[col] == "нет недостатков":
+            output_row.append(row[col])
+        else:
+            values_to_find = row[col] 
+            result_keys = str([dict_chek1[value] for value in values_to_find ])
+            output_row.append(result_keys)
+    output_data.append(output_row)
+
+output_df = pd.DataFrame(output_data, columns=['Name_org', 'bad_stend', 'bad_sait', 'bad_dist', 'bad_komf', 'obor_inv', 'sreda_inv'])
+
+otchet = Document()
+section = otchet.sections[0]
+section.left_margin = Cm(3.0)  # Левое поле 2 дюйма
+section.right_margin = Cm(1.5)  # Правое поле 2 дюйма
+section.top_margin = Cm(2.0)  # Верхнее поле 2 дюйма
+section.bottom_margin = Cm(2.0)  # Нижнее поле 2 дюйма
+# Устанавливаем шрифт по умолчанию для дальнейшего добавляемого текста
+default_font = otchet.styles['Normal'].font
+default_font.name = 'Times New Roman'
+default_font.size = Pt(14)
+
+# Добавляем параграф с измененными параметрами шрифта
+zag = otchet.add_paragraph()
+run = zag.add_run("Основные результаты исследования")
+font = run.font
+run.bold = True
+font.size = Pt(18) 
+zag.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+
+# Добавляем параграф с измененными параметрами шрифта
+under_zag = otchet.add_paragraph()
+run = under_zag.add_run("Результаты независимой оценки качества условий оказания услуг учреждениями культуры")
+font = run.font
+run.bold = True
+font.size = Pt(16) 
+under_zag.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+name_otchet = otchet.add_paragraph()
+run = name_otchet.add_run("Критерий 1. Открытость и доступность информации об учреждении культуры")
+run.bold = True
+font = run.font
+font.size = Pt(16) 
+name_otchet.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+
+default_font = otchet.styles['Normal'].font
+default_font.name = 'Times New Roman'
+default_font.size = Pt(14)
+
+# Добавляем текст с установленным шрифтом
+abz =otchet.add_paragraph("Критерий представлен тремя показателями:")
+abz1 = otchet.add_paragraph("Показатель 1.1.	 Соответствие информации о деятельности учреждения культуры, размещенной на общедоступных информационных ресурсах, ее содержанию и порядку (форме), установленным нормативными правовыми актами (на информационных стендах в помещении учреждения социальной сферы; на официальном сайте учреждения культуры в сети «Интернет»).")
+abz2 = otchet.add_paragraph("Показатель 1.2. 	Наличие на официальном сайте учреждения культуры информации о дистанционных способах обратной связи и взаимодействия с получателями услуг и их функционирование (абонентского номера телефона; адреса электронной почты; электронных сервисов (для подачи электронного обращения (жалобы, предложения), получения консультации по оказываемым услугам и иных.); раздела официального сайта «Часто задаваемые вопросы»; технической возможности выражения получателем услуг мнения о качестве условий оказания услуг учреждением культуры (наличие анкеты для опроса граждан или гиперссылки на нее)).")
+abz3 = otchet.add_paragraph("Показатель 1.3.	 Доля получателей услуг, удовлетворенных открытостью, полнотой и доступностью информации о деятельности учреждения культуры, размещенной на информационных стендах в помещении учреждения культуры, на официальном сайте учреждения культуры в сети «Интернет» (в % от общего числа опрошенных получателей услуг).")
+abz4 = otchet.add_paragraph("Критерий представлен тремя показателями:")
+abz5 = otchet.add_paragraph("Максимальное количество баллов по данному критерию – 100,00.")
+
+table = Raschet_ballov.loc[:, ['Наименование организации или П/Н по списку', 'Пинф', 'Пдист', 'Поткруд', 'К1']]
+min_value = table['К1'].min()
+max_value = table['К1'].max()
+mean_value = table['К1'].mean()
+sorted_table = table.sort_values(by='К1', ascending=False)
+top_3_rows = sorted_table.head(3)
+bad_3_rows = sorted_table.tail(3)
+
+abz6 = otchet.add_paragraph(f"Итоговые баллы по критерию «Открытость и доступность информации об учреждении культуры» варьируются от {min_value} до {max_value} баллов. Средний итоговый балл по критерию {mean_value}.")
+abz7 = otchet.add_paragraph("Первые три лучших результата у организаций:")
+for index, row in top_3_rows.iterrows():
+    otchet.add_paragraph(f"{row['Наименование организации или П/Н по списку']}, {row['К1']}балла.")    
+abz8 = otchet.add_paragraph("Три последних результата у организаций:")
+for index, row in bad_3_rows.iterrows():
+   otchet.add_paragraph(f"{row['Наименование организации или П/Н по списку']}, {row['К1']}балла.")
+
+# Добавляем таблицу в документ
+table1 = otchet.add_table(sorted_table.shape[0]+1, sorted_table.shape[1])
+table1.style = 'Table Grid'  # Применяем стиль таблицы
+# Заголовки столбцов
+for j in range(sorted_table.shape[-1]):
+    table1.cell(0, j).text = sorted_table.columns[j]
+
+# Данные из DataFrame
+for i in range(sorted_table.shape[0]):
+    for j in range(sorted_table.shape[-1]):
+        table1.cell(i+1, j).text = str(sorted_table.values[i, j])
+
+name_otchet = otchet.add_paragraph()
+run = name_otchet.add_run("Критерий 2. Комфортность условий предоставления услуг")
+run.bold = True
+font = run.font
+font.size = Pt(16) 
+name_otchet.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+
+default_font = otchet.styles['Normal'].font
+default_font.name = 'Times New Roman'
+default_font.size = Pt(14)
+
+abz10 = otchet.add_paragraph("Критерий представлен двумя показателями:")
+abz11 = otchet.add_paragraph("Показатель 2.1. Обеспечение в учреждении культуры комфортных условий пребывания в учреждении культуры (транспортная/ пешая доступность учреждения культуры, санитарное состояние помещений и территории учреждения, наличие и доступность питьевой воды, санитарно-гигиенических помещений, достаточность гардеробов)")
+abz12 = otchet.add_paragraph("Показатель 2.3. Доля получателей услуг, удовлетворенных комфортностью предоставления услуг учреждением культуры (в % от общего числа опрошенных получателей услуг).")
+abz13 = otchet.add_paragraph("Максимальное количество баллов по данному критерию – 100,00.")
+
+table11 = Raschet_ballov.loc[:, ['Наименование организации или П/Н по списку', 'Пкомф.усл', 'Пкомфуд', 'К2']]
+min_value = table11['К2'].min()
+max_value = table11['К2'].max()
+mean_value = table11['К2'].mean()
+sorted_table = table11.sort_values(by='К2', ascending=False)
+top_3_rows = sorted_table.head(3)
+bad_3_rows = sorted_table.tail(3)
+
+# Добавляем таблицу в документ
+table2 =otchet.add_table(sorted_table.shape[0]+1, sorted_table.shape[1])
+table2.style = 'Table Grid'  # Применяем стиль таблицы
+# Заголовки столбцов
+for j in range(sorted_table.shape[-1]):
+    table2.cell(0, j).text = sorted_table.columns[j]
+
+# Данные из DataFrame
+for i in range(sorted_table.shape[0]):
+    for j in range(sorted_table.shape[-1]):
+        table2.cell(i+1, j).text = str(sorted_table.values[i, j])
+
+name_otchet = otchet.add_paragraph()
+run = name_otchet.add_run("Критерий 3. Доступность услуг для инвалидов")
+run.bold = True
+font = run.font
+font.size = Pt(16) 
+name_otchet.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+
+default_font = otchet.styles['Normal'].font
+default_font.name = 'Times New Roman'
+default_font.size = Pt(14)
+
+abz20 = otchet.add_paragraph("Критерий представлен тремя показателями:")
+abz21 = otchet.add_paragraph("Показатель 3.1. Оборудование помещений учреждения культуры и прилегающей к ней территории с учетом доступности для инвалидов (наличие оборудованных входных групп пандусами (подъемными платформами); наличие выделенных стоянок для автотранспортных средств инвалидов; наличие адаптированных лифтов, поручней, расширенных дверных проемов; наличие сменных кресел-колясок; наличие специально оборудованных санитарно-гигиенических помещений в учреждения социальной сферы).")
+abz22 = otchet.add_paragraph("Показатель 3.2. Обеспечение в учреждении сферы культуры условий доступности, позволяющих инвалидам получать услуги наравне с другими (дублирование для инвалидов по слуху и зрению звуковой и зрительной информации; дублирование надписей, знаков и иной текстовой и графической информации знаками, выполненными рельефно-точечным шрифтом Брайля; возможность предоставления инвалидам по слуху (слуху и зрению) услуг сурдопереводчика (тифлосурдопереводчика); наличие альтернативной версии официального сайта учреждения социальной сферы в сети «Интернет» для инвалидов по зрению; помощь, оказываемая работниками учреждения социальной сферы, прошедшими необходимое обучение (инструктирование) по сопровождению инвалидов в помещениях учреждения социальной сферы и на прилегающей территории; наличие возможности предоставления услуги в дистанционном режиме или на дому). ")
+abz23 = otchet.add_paragraph("Показатель 3.3. Доля получателей услуг, удовлетворенных доступностью услуг для инвалидов (в % от общего числа опрошенных получателей услуг – инвалидов)")
+abz24 =otchet.add_paragraph("Максимальное количество баллов по данному критерию – 100,00.")
+
+table12 = Raschet_ballov.loc[:, ['Наименование организации или П/Н по списку', 'Поргдост', 'Пуслугдост', 'Пдостуд', 'К3']]
+min_value = table12['К3'].min()
+max_value = table12['К3'].max()
+mean_value = table12['К3'].mean()
+sorted_table = table12.sort_values(by='К3', ascending=False)
+top_3_rows = sorted_table.head(3)
+bad_3_rows = sorted_table.tail(3)
+
+abz25 = otchet.add_paragraph(f"Итоговые баллы по критерию «Доступность услуг для инвалидов» варьируются от {min_value} до {max_value} баллов. Средний итоговый балл по критерию {mean_value}.")
+abz26 = otchet.add_paragraph("Первые три лучших результата у организаций:")
+for index, row in top_3_rows.iterrows():
+    otchet.add_paragraph(f"{row['Наименование организации или П/Н по списку']}, {row['К3']}балла.") 
+abz27 = otchet.add_paragraph("Три последних результата у организаций:")
+for index, row in bad_3_rows.iterrows():
+    otchet.add_paragraph(f"{row['Наименование организации или П/Н по списку']}, {row['К3']}балла.")
+
+table3 = otchet.add_table(sorted_table.shape[0]+1, sorted_table.shape[1])
+table3.style = 'Table Grid'  # Применяем стиль таблицы
+# Заголовки столбцов
+for j in range(sorted_table.shape[-1]):
+    table3.cell(0, j).text = sorted_table.columns[j]
+
+# Данные из DataFrame
+for i in range(sorted_table.shape[0]):
+    for j in range(sorted_table.shape[-1]):
+        table3.cell(i+1, j).text = str(sorted_table.values[i, j])
+
+name_otchet = otchet.add_paragraph()
+run = name_otchet.add_run("Критерий 4. Доброжелательность, вежливость работников учреждения")
+run.bold = True
+font = run.font
+font.size = Pt(16) 
+name_otchet.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+
+default_font = otchet.styles['Normal'].font
+default_font.name = 'Times New Roman'
+default_font.size = Pt(14)
+
+abz30 = otchet.add_paragraph("Критерий представлен тремя показателями:")
+abz31 = otchet.add_paragraph("Показатель 4.1. Доля получателей услуг, удовлетворенных доброжелательностью, вежливостью работников учреждения культуры, обеспечивающих первичный контакт и информирование получателя услуги при непосредственном обращении в организацию социальной сферы (в % от общего числа опрошенных получателей услуг)")
+abz32 = otchet.add_paragraph("Показатель 4.2. Доля получателей услуг, удовлетворенных доброжелательностью, вежливостью работников учреждения культуры, обеспечивающих непосредственное оказание услуги при обращении в организацию социальной сферы (в % от общего числа опрошенных получателей услуг)")
+abz33 = otchet.add_paragraph("Показатель 4.3. Доля получателей услуг, удовлетворенных доброжелательностью, вежливостью работников учреждения культуры при использовании дистанционных форм взаимодействия (в % от общего числа опрошенных получателей услуг).")
+abz34 =otchet.add_paragraph("Максимальное количество баллов по данному критерию – 100,00.")
+
+table13 = Raschet_ballov.loc[:, ['Наименование организации или П/Н по списку', 'Пперв.контуд', 'Показ.услугуд', 'Пвежл.дистуд', 'К4']]
+min_value = table13['К4'].min()
+max_value = table13['К4'].max()
+mean_value = table13['К4'].mean()
+sorted_table = table13.sort_values(by='К4', ascending=False)
+top_3_rows = sorted_table.head(3)
+bad_3_rows = sorted_table.tail(3)
+
+abz35 = otchet.add_paragraph(f"Итоговые баллы по критерию «Доброжелательность, вежливость работников учреждения» варьируются от {min_value} до {max_value} баллов. Средний итоговый балл по критерию {mean_value}.")
+abz36 = otchet.add_paragraph("Первые три лучших результата у организаций:")
+for index, row in top_3_rows.iterrows():
+    otchet.add_paragraph(f"{row['Наименование организации или П/Н по списку']}, {row['К4']}балла.") 
+abz37 = otchet.add_paragraph("Три последних результата у организаций:")
+for index, row in bad_3_rows.iterrows():
+    otchet.add_paragraph(f"{row['Наименование организации или П/Н по списку']}, {row['К4']}балла.")
+
+table4 = otchet.add_table(sorted_table.shape[0]+1, sorted_table.shape[1])
+table4.style = 'Table Grid'  # Применяем стиль таблицы
+# Заголовки столбцов
+for j in range(sorted_table.shape[-1]):
+    table4.cell(0, j).text = sorted_table.columns[j]
+
+# Данные из DataFrame
+for i in range(sorted_table.shape[0]):
+    for j in range(sorted_table.shape[-1]):
+        table4.cell(i+1, j).text = str(sorted_table.values[i, j])
+
+name_otchet = otchet.add_paragraph()
+run = name_otchet.add_run("Критерий 5. Удовлетворенность условиями оказания услуг")
+run.bold = True
+font = run.font
+font.size = Pt(16) 
+name_otchet.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+
+default_font = otchet.styles['Normal'].font
+default_font.name = 'Times New Roman'
+default_font.size = Pt(14)
+
+abz40 = otchet.add_paragraph("Критерий представлен тремя показателями:")
+abz41 = otchet.add_paragraph("Показатель 5.1. Доля получателей услуг, которые готовы рекомендовать учреждение культуры родственникам и знакомым")
+abz42 = otchet.add_paragraph("Показатель 5.2. Доля получателей услуг, удовлетворенных организационными условиями предоставления услуг (графиком и режимом работы учреждения культуры) (в % от общего числа опрошенных получателей услуг)")
+abz43 = otchet.add_paragraph("Показатель 5.3. Доля получателей услуг, удовлетворенных в целом условиями оказания услуг в учреждении культуры (в % от общего числа опрошенных получателей услуг).")
+abz44 =otchet.add_paragraph("Максимальное количество баллов по данному критерию – 100,00.")
+
+table14 = Raschet_ballov.loc[:, ['Наименование организации или П/Н по списку', 'Преком', 'Порг.услуд', 'Пуд', 'К5']]
+min_value = table14['К5'].min()
+max_value = table14['К5'].max()
+mean_value = table14['К5'].mean()
+sorted_table = table14.sort_values(by='К5', ascending=False)
+top_3_rows = sorted_table.head(3)
+bad_3_rows = sorted_table.tail(3)
+
+abz45 = otchet.add_paragraph(f"Итоговые баллы по критерию «Удовлетворенность условиями оказания услуг» варьируются от {min_value} до {max_value} баллов. Средний итоговый балл по критерию {mean_value}.")
+abz46 = otchet.add_paragraph("Первые три лучших результата у организаций:")
+for index, row in top_3_rows.iterrows():
+    otchet.add_paragraph(f"{row['Наименование организации или П/Н по списку']}, {row['К5']}балла.") 
+abz47 = otchet.add_paragraph("Три последних результата у организаций:")
+for index, row in bad_3_rows.iterrows():
+    otchet.add_paragraph(f"{row['Наименование организации или П/Н по списку']}, {row['К5']}балла.")
+
+table5 = otchet.add_table(sorted_table.shape[0]+1, sorted_table.shape[1])
+table5.style = 'Table Grid'  # Применяем стиль таблицы
+# Заголовки столбцов
+for j in range(sorted_table.shape[-1]):
+    table5.cell(0, j).text = sorted_table.columns[j]
+
+# Данные из DataFrame
+for i in range(sorted_table.shape[0]):
+    for j in range(sorted_table.shape[-1]):
+        table5.cell(i+1, j).text = str(sorted_table.values[i, j])
+
+under_zag = otchet.add_paragraph()
+run = under_zag.add_run("Итоговая оценка качества условий оказания услуг учреждениями культуры. Рейтинг учреждений")
+font = run.font
+run.bold = True
+font.size = Pt(16) 
+under_zag.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+name_otchet = otchet.add_paragraph()
+run = name_otchet.add_run("Общий рейтинг учреждений культуры.")
+run.bold = True
+font = run.font
+font.size = Pt(16) 
+name_otchet.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+
+default_font = otchet.styles['Normal'].font
+default_font.name = 'Times New Roman'
+default_font.size = Pt(14)
+
+table15 = Raschet_ballov.loc[:, ['Наименование организации или П/Н по списку', 'К5', 'К5', 'К5', 'К5', 'К5', 'Общий балл']]
+min_value = table15['Общий балл'].min()
+max_value = table15['Общий балл'].max()
+mean_value = table15['Общий балл'].mean()
+sorted_table = table15.sort_values(by='Общий балл', ascending=False)
+top_3_rows = sorted_table.head(3)
+bad_3_rows = sorted_table.tail(1)
+
+sorted_table['рейтинг'] = range(1, len(sorted_table) + 1)
+
+table6 = otchet.add_table(sorted_table.shape[0]+1, sorted_table.shape[1])
+table6.style = 'Table Grid'  # Применяем стиль таблицы
+# Заголовки столбцов
+for j in range(sorted_table.shape[-1]):
+    table6.cell(0, j).text = sorted_table.columns[j]
+
+# Данные из DataFrame
+for i in range(sorted_table.shape[0]):
+    for j in range(sorted_table.shape[-1]):
+        table6.cell(i+1, j).text = str(sorted_table.values[i, j])
+
+abz45 = otchet.add_paragraph(f"Итоговый анализ и оценка качества работы учреждений культуры позволяет определить лучшие учреждения по результатам мониторинга.  Общий балл организаций варьируются от {min_value} до {max_value} баллов. Средний итоговый балл по сумме критериев {mean_value}.")
+abz46 = otchet.add_paragraph("Среди учреждений культуры муниципального образования Гулькевичского района в первую тройку лидеров вошли следующие учреждения:")
+for index, row in top_3_rows.iterrows():
+    otchet.add_paragraph(f"{row['Наименование организации или П/Н по списку']}, {row['Общий балл']}балла.") 
+abz47 = otchet.add_paragraph("Последнюю строку рейтинга занимает")
+for index, row in bad_3_rows.iterrows():
+    otchet.add_paragraph(f"{row['Наименование организации или П/Н по списку']}, {row['Общий балл']}балла.")
+
+under_zag = otchet.add_paragraph()
+run = under_zag.add_run(f"Основные выводы и рекомендации по результатам независимой оценки качества условий оказания услуг учреждениями культуры {plase}.")
+font = run.font
+run.bold = True
+font.size = Pt(16) 
+under_zag.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+under_zag = otchet.add_paragraph()
+run = under_zag.add_run(f"Основные выводы по результатам независимой оценки.")
+font = run.font
+run.bold = True
+font.size = Pt(16) 
+under_zag.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+
+default_font = otchet.styles['Normal'].font
+default_font.name = 'Times New Roman'
+default_font.size = Pt(14)
+
+abz50 = otchet.add_paragraph(f"Согласно результатам проведённого исследования, основным недостатком у данных учреждений является {sorted_list_krit.at[0, 'Наименование критерия']}. ")
+abz51 = otchet.add_paragraph(f"Также есть проблемы с {sorted_list_krit.at[1, 'Наименование критерия']} и {sorted_list_krit.at[2, 'Наименование критерия']}. ")# Вставка графика в документ Word
+
+# Создаем таблицу с нужным количеством строк и столбцов
+table20 = otchet.add_table(rows=1, cols=4)
+table20.style = 'Table Grid'  # Применяем стиль таблицы
+
+# Заголовки столбцов
+hdr_cells = table20.rows[0].cells
+hdr_cells[0].text = 'Name_org'
+hdr_cells[1].text = 'Балл'
+hdr_cells[2].text = 'Рейтинг'
+hdr_cells[3].text = 'Недостатки'
+
+# Проходимся по каждой строке и добавляем данные в таблицу
+for index, row in output_df.iterrows():
+    row_cells = table20.add_row().cells
+    row_cells[0].text = str(row['Name_org'])
+    row_cells[1].text = str(Raschet_ballov.loc[Raschet_ballov['Наименование организации или П/Н по списку'] == row['Name_org'], 'Общий балл'].values[0])
+    row_cells[2].text = str(sorted_table.loc[sorted_table['Наименование организации или П/Н по списку'] == row['Name_org'], 'рейтинг'].values[0])
+    row_cells[3].text = f"Недостатки на стенде: {str(row['bad_stend'])}\n"\
+                        f"Недостатки на сайте: {str(row['bad_sait'])}\n"\
+                        f"Недостатки функционирование дистанционных способов связи: {str(row['bad_dist'])}\n"\
+                        f"Недостатки комфортности условий предоставления услуг: {str(row['bad_komf'])}\n"\
+                        f"Недостатки в разрезе оборудования для инвалидов: {str(row['obor_inv'])}\n"\
+                        f"Недостатки доступности среды для инвалидов: {str(row['sreda_inv'])}"
+
+
+
 
 
 button = st.button("получить готовый файл расчет баллов")
@@ -194,4 +618,13 @@ if button:
     )
 
 
-# In[ ]:
+button = st.button("Получить готовый отчет")
+if button:
+    bio = io.BytesIO()
+    otchet.save(bio)
+    st.download_button(
+        label="Скачать",
+        data=bio.getvalue(),
+        file_name="Отчет.docx",
+        mime="docx"
+    )
