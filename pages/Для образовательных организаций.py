@@ -33,20 +33,20 @@ if uploaded_file is not None:
 # In[7]:
 
 
-uploaded_file = st.file_uploader("**Загрузите файл с массивом анкет**", type=["xls", "xlsx"])
+uploaded_file1 = st.file_uploader("**Загрузите файл с массивом анкет**", type=["xls", "xlsx"])
 
-if uploaded_file is not None:
+if uploaded_file1 is not None:
     # Чтение данных из загруженного файла Excel
-    Answers_respond = pd.read_excel(uploaded_file)
+    Answers_respond = pd.read_excel(uploaded_file1)
 
 
 # In[8]:
 plase = st.text_input('Введите название территории в родительном падеже', 'н-р Московской области')
 
 ## подгружаем сводную по чек листам
-#chek_list=pd.read_excel(r"C:\Users\user\чек лист гулькевичи.xlsx")
+##chek_list=pd.read_excel(r"C:\Users\user\чек лист гулькевичи.xlsx")
 ##подгружаем массив с ответами респондентов
-#Answers_respond=pd.read_excel(r"C:\Users\user\Анкета Гулькевичи НОК культура (Ответы).xlsx")
+##Answers_respond=pd.read_excel(r"C:\Users\user\Анкета Гулькевичи НОК культура (Ответы).xlsx")
 
 
 # In[ ]:
