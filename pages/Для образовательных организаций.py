@@ -14,7 +14,7 @@ from docx.shared import Cm
 from docx import Document
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
-# In[7]:
+
 
 
 st.subheader('Независимая оценка качества услуг образовательных организаций')
