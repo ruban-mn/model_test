@@ -193,12 +193,12 @@ dict_chek = dict(zip(row_chek_list, New_col_for_chek_list))
 chek_list = chek_list.rename(columns=dict_chek) # переименовываем столбцы в начальном датафрейме
 
 name_org1 = pd.DataFrame({'us0': chek_list['us0']}) 
-chek_list_stend = chek_list.iloc[:, 1:18]  # Датафрейм с 1-5 столбцами
-chek_list_sait = chek_list.iloc[:, 18:37]  # Датафрейм с 6-10 столбцами = df.iloc[:, 0:5]  # Датафрейм с 1-5 столбцами
-chek_list_dist = chek_list.iloc[:, 37:42]  # Датафрейм с 6-10 столбцами
-chek_list_komf = chek_list.iloc[:, 42:48]
-chek_list_obor_inv = chek_list.iloc[:, 48:53]
-chek_list_sreda_inv = chek_list.iloc[:, 53:58]
+chek_list_stend = chek_list.iloc[:, 1:14]  # Датафрейм с 1-5 столбцами
+chek_list_sait = chek_list.iloc[:, 15:59]  # Датафрейм с 6-10 столбцами = df.iloc[:, 0:5]  # Датафрейм с 1-5 столбцами
+chek_list_dist = chek_list.iloc[:, 60:65]  # Датафрейм с 6-10 столбцами
+chek_list_komf = chek_list.iloc[:, 66:70]
+chek_list_obor_inv = chek_list.iloc[:, 71:76]
+chek_list_sreda_inv = chek_list.iloc[:, 77:82]
 
 chek_list_stend = pd.concat([name_org1, chek_list_stend], axis=1)
 chek_list_sait = pd.concat([name_org1, chek_list_sait], axis=1)
@@ -365,6 +365,14 @@ sorted_table = table11.sort_values(by='К2', ascending=False)
 top_3_rows = sorted_table.head(3)
 bad_3_rows = sorted_table.tail(3)
 
+abz13_1 = otchet.add_paragraph(f"Итоговые баллы по критерию «Комфортность условий предоставления услуг» варьируются от {min_value} до {max_value} баллов. Средний итоговый балл по критерию {mean_value}.")
+abz13_2 = otchet.add_paragraph("Первые три лучших результата у организаций:")
+for index, row in top_3_rows.iterrows():
+    otchet.add_paragraph(f"{row['Наименование организации или П/Н по списку']}, {row['К2']}балла.")    
+abz13_3 = otchet.add_paragraph("Три последних результата у организаций:")
+for index, row in bad_3_rows.iterrows():
+   otchet.add_paragraph(f"{row['Наименование организации или П/Н по списку']}, {row['К2']}балла.")
+    
 # Добавляем таблицу в документ
 table2 =otchet.add_table(sorted_table.shape[0]+1, sorted_table.shape[1])
 table2.style = 'Table Grid'  # Применяем стиль таблицы
@@ -526,7 +534,7 @@ default_font = otchet.styles['Normal'].font
 default_font.name = 'Times New Roman'
 default_font.size = Pt(14)
 
-table15 = Raschet_ballov.loc[:, ['Наименование организации или П/Н по списку', 'К5', 'К5', 'К5', 'К5', 'К5', 'Общий балл']]
+table15 = Raschet_ballov.loc[:, ['Наименование организации или П/Н по списку', 'К1', 'К2', 'К3', 'К4', 'К5', 'Общий балл']]
 min_value = table15['Общий балл'].min()
 max_value = table15['Общий балл'].max()
 mean_value = table15['Общий балл'].mean()
