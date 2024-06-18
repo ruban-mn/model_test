@@ -182,6 +182,18 @@ Raschet_ballov['Пуд'] = round(Raschet_ballov['Ууд']/Raschet_ballov['Чоб
 Raschet_ballov['К5'] = round(0.3*Raschet_ballov['Преком'] + 0.2*Raschet_ballov['Порг.услуд'] + 0.5*Raschet_ballov['Пуд'], 2)
 Raschet_ballov['Общий балл'] = round((Raschet_ballov['К1']+Raschet_ballov['К2']+Raschet_ballov['К3']+Raschet_ballov['К4']+Raschet_ballov['К5'])/5, 2)
 
+a = chek_list.filter(like='На СТЕНДЕ').count(axis=1) ## количество стенд
+b = chek_list.filter(like='На САЙТЕ').count(axis=1) ## количество сайт
+c = a+b
+d = chek_list.filter(like='Наличие и функционирование на официальном сайте').count(axis=1) ## количество дистант
+e = c + d
+f = chek_list.filter(like='Обеспечение в организации комфортных условий').count(axis=1) ## количество комфорт
+g = e + f
+h = chek_list.filter(like='Оборудование территории').count(axis=1) ## количество оборудовние
+k = h + g
+l = chek_list.filter(like='Обеспечение в организации условий доступности').count(axis=1)
+m = k + l
+
 row_chek_list = chek_list.columns.tolist()
 
 New_col_for_chek_list = []  # Создаем пустой список
@@ -192,13 +204,14 @@ for i in range(chek_list.shape[1]+1):  # Цикл от 0 до 18
 dict_chek = dict(zip(row_chek_list, New_col_for_chek_list))
 chek_list = chek_list.rename(columns=dict_chek) # переименовываем столбцы в начальном датафрейме
 
+
 name_org1 = pd.DataFrame({'us0': chek_list['us0']}) 
-chek_list_stend = chek_list.iloc[:, 1:14]  # Датафрейм с 1-5 столбцами
-chek_list_sait = chek_list.iloc[:, 15:59]  # Датафрейм с 6-10 столбцами = df.iloc[:, 0:5]  # Датафрейм с 1-5 столбцами
-chek_list_dist = chek_list.iloc[:, 60:65]  # Датафрейм с 6-10 столбцами
-chek_list_komf = chek_list.iloc[:, 66:70]
-chek_list_obor_inv = chek_list.iloc[:, 71:76]
-chek_list_sreda_inv = chek_list.iloc[:, 77:82]
+chek_list_stend = chek_list.iloc[:, 1:a]  # Датафрейм с 1-5 столбцами
+chek_list_sait = chek_list.iloc[:, a+1:c]  # Датафрейм с 6-10 столбцами = df.iloc[:, 0:5]  # Датафрейм с 1-5 столбцами
+chek_list_dist = chek_list.iloc[:, c + 1:e]  # Датафрейм с 6-10 столбцами
+chek_list_komf = chek_list.iloc[:, e+1:g]
+chek_list_obor_inv = chek_list.iloc[:, g+1:k]
+chek_list_sreda_inv = chek_list.iloc[:, k+1:m]
 
 chek_list_stend = pd.concat([name_org1, chek_list_stend], axis=1)
 chek_list_sait = pd.concat([name_org1, chek_list_sait], axis=1)
