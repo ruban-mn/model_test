@@ -46,7 +46,7 @@ tm.sleep(30)
 Answers_respond_list = Answers_respond.columns.tolist() ##извлекаем наименования столбцов в список
 
 New_col = []  # Создаем пустой список
-for i in range(15+1):  # Цикл от 0 до 18
+for i in range(15):  # Цикл от 0 до 18
     sim = i   # присваиваем номер
     New_col.append('v' + str(sim))  # добавляем новый номер вопрса в список
 
