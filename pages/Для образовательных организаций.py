@@ -135,17 +135,13 @@ Raschet_ballov['Пуд'] = round(Raschet_ballov['Ууд']/Raschet_ballov['Чоб
 Raschet_ballov['К5'] = round(0.3*Raschet_ballov['Преком'] + 0.2*Raschet_ballov['Порг.услуд'] + 0.5*Raschet_ballov['Пуд'], 2)
 Raschet_ballov['Общий балл'] = round((Raschet_ballov['К1']+Raschet_ballov['К2']+Raschet_ballov['К3']+Raschet_ballov['К4']+Raschet_ballov['К5'])/5, 2)
 
-a = chek_list.filter(like='На СТЕНДЕ').count(axis=1) ## количество стенд
-b = chek_list.filter(like='На САЙТЕ').count(axis=1) ## количество сайт
+a = int(Raschet_ballov.at[1, 'Инорм-стенд'])
+b = int(Raschet_ballov.at[1, 'Инорм-сайт']) ## количество сайт
 c = a+b
-d = chek_list.filter(like='Наличие и функционирование на официальном сайте').count(axis=1) ## количество дистант
-e = c + d
-f = chek_list.filter(like='Обеспечение в организации комфортных условий').count(axis=1) ## количество комфорт
-g = e + f
-h = chek_list.filter(like='Оборудование территории').count(axis=1) ## количество оборудовние
-k = h + g
-l = chek_list.filter(like='Обеспечение в организации условий доступности').count(axis=1)
-m = k + l
+e = c + 6
+g = e + 5
+k = h + 6
+m = k + 6
 
 row_chek_list = chek_list.columns.tolist()
 
