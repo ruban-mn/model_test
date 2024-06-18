@@ -140,7 +140,7 @@ b = int(Raschet_ballov.at[1, 'Инорм-сайт']) ## количество с�
 c = a+b
 e = c + 6
 g = e + 5
-k = h + 6
+k = g + 6
 m = k + 6
 
 row_chek_list = chek_list.columns.tolist()
