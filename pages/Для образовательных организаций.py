@@ -30,7 +30,7 @@ uploaded_file1 = st.file_uploader("**Загрузите файл с массив
 
 if uploaded_file1 is not None:
     # Чтение данных из загруженного файла Excel
-Answers_respond = pd.read_excel(uploaded_file1)
+    Answers_respond = pd.read_excel(uploaded_file1)
 
 
 # In[8]:
