@@ -24,12 +24,14 @@ uploaded_file = st.file_uploader("**Загрузите файл сводную �
 
 ##if uploaded_file is not None:
     # Чтение данных из загруженного файла Excel
+
 chek_list = pd.read_excel(uploaded_file)
 
 uploaded_file1 = st.file_uploader("**Загрузите файл с массивом анкет**", type=["xls", "xlsx"])
 
 ##if uploaded_file1 is not None:
     # Чтение данных из загруженного файла Excel
+
 Answers_respond = pd.read_excel(uploaded_file1)
 
 
