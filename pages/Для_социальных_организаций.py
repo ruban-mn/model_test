@@ -72,11 +72,18 @@ Answers_respond = Answers_respond.rename(columns=dictionary) # переимен�
 ans_res = pd.DataFrame({'v0': Answers_respond['v0'].unique()})
 
 # Используем цикл для подсчета значений и создания новых столбцов
+#for col in New_col:
+    #value = 'Да' # Значение, которое мы считаем
+    #count_col_name = f'_{col}_'
+    #counts = Answers_respond[Answers_respond[col].str.startswith(value)].groupby('v0').size().reset_index(name=count_col_name)
+    #ans_res = ans_res.merge(counts, on='v0', how='left')
+
 for col in New_col:
-    value = 'Да' # Значение, которое мы считаем
+    value = '^Да.*'  # Регулярное выражение для строки, начинающейся с 'Да', за которым идут любые символы
     count_col_name = f'_{col}_'
-    counts = Answers_respond[Answers_respond[col].str.startswith(value)].groupby('v0').size().reset_index(name=count_col_name)
+    counts = Answers_respond[Answers_respond[col].str.contains(value, na=False, case=False, regex=True)].groupby('v0').size().reset_index(name=count_col_name)
     ans_res = ans_res.merge(counts, on='v0', how='left')
+
 
 ans_res = ans_res.dropna(axis=1) # Удаляем столбцы со значением NaN
 ans_res['v0'] = ans_res['v0'].str.replace('.', '')# Удаляем точку из наименований организаций
