@@ -152,14 +152,6 @@ Raschet_ballov['Пуд'] = round(Raschet_ballov['Ууд']/Raschet_ballov['Чоб
 Raschet_ballov['К5'] = round(0.3*Raschet_ballov['Преком'] + 0.2*Raschet_ballov['Порг.услуд'] + 0.5*Raschet_ballov['Пуд'], 2)
 Raschet_ballov['Общий балл'] = round((Raschet_ballov['К1']+Raschet_ballov['К2']+Raschet_ballov['К3']+Raschet_ballov['К4']+Raschet_ballov['К5'])/5, 2)
 
-a = 19
-b = 19
-c = a+b
-e = c + 6
-g = e + 9
-k = g + 5
-m = k + 6
-
 row_chek_list = chek_list.columns.tolist()
 
 New_col_for_chek_list = []  # Создаем пустой список
@@ -172,12 +164,12 @@ chek_list = chek_list.rename(columns=dict_chek) # переименовываем
 
 
 name_org1 = pd.DataFrame({'us0': chek_list['us0']}) 
-chek_list_stend = chek_list.iloc[:, 1:a]  # Датафрейм с 1-5 столбцами
-chek_list_sait = chek_list.iloc[:, a+1:c]  # Датафрейм с 6-10 столбцами = df.iloc[:, 0:5]  # Датафрейм с 1-5 столбцами
-chek_list_dist = chek_list.iloc[:, c + 1:e]  # Датафрейм с 6-10 столбцами
-chek_list_komf = chek_list.iloc[:, e+1:g]
-chek_list_obor_inv = chek_list.iloc[:, g+1:k]
-chek_list_sreda_inv = chek_list.iloc[:, k+1:m]
+chek_list_stend = chek_list.iloc[:, 1:19]  # Датафрейм с 1-5 столбцами
+chek_list_sait = chek_list.iloc[:, 20:38]  # Датафрейм с 6-10 столбцами = df.iloc[:, 0:5]  # Датафрейм с 1-5 столбцами
+chek_list_dist = chek_list.iloc[:, 39:44]  # Датафрейм с 6-10 столбцами
+chek_list_komf = chek_list.iloc[:, 45:53]
+chek_list_obor_inv = chek_list.iloc[:, 54:58]
+chek_list_sreda_inv = chek_list.iloc[:, 59:64]
 
 chek_list_stend = pd.concat([name_org1, chek_list_stend], axis=1)
 chek_list_sait = pd.concat([name_org1, chek_list_sait], axis=1)
