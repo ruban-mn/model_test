@@ -152,8 +152,8 @@ Raschet_ballov['Пуд'] = round(Raschet_ballov['Ууд']/Raschet_ballov['Чоб
 Raschet_ballov['К5'] = round(0.3*Raschet_ballov['Преком'] + 0.2*Raschet_ballov['Порг.услуд'] + 0.5*Raschet_ballov['Пуд'], 2)
 Raschet_ballov['Общий балл'] = round((Raschet_ballov['К1']+Raschet_ballov['К2']+Raschet_ballov['К3']+Raschet_ballov['К4']+Raschet_ballov['К5'])/5, 2)
 
-a = int(Raschet_ballov.at[1, 'Инорм-стенд'])
-b = int(Raschet_ballov.at[1, 'Инорм-сайт']) ## количество сайт
+a = 19
+b = 19
 c = a+b
 e = c + 6
 g = e + 9
