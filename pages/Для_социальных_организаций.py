@@ -75,7 +75,7 @@ ans_res = pd.DataFrame({'v0': Answers_respond['v0'].unique()})
 for col in New_col:
     value = startswith('Да')  # Значение, которое мы считаем
     count_col_name = f'_{col}_'
-    counts = Answers_respond[Answers_respond[col] == value].groupby('v0').size().reset_index(name=count_col_name)
+    counts = Answers_respond[Answers_respond[col].str.startswith(value)].groupby('v0').size().reset_index(name=count_col_name)
     ans_res = ans_res.merge(counts, on='v0', how='left')
 
 ans_res = ans_res.dropna(axis=1) # Удаляем столбцы со значением NaN
