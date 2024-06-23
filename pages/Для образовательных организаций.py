@@ -43,6 +43,18 @@ plase = st.text_input('Введите название территории в �
 ##подгружаем массив с ответами респондентов
 ##Answers_respond=pd.read_excel(r"C:\Users\user\Анкета Гулькевичи НОК культура (Ответы).xlsx")
 
+
+if not Answers_respond.empty:
+    print("DataFrame не является пустым")
+else:
+    print("DataFrame пустой")
+
+if not chek_list.empty:
+    print("DataFrame не является пустым")
+else:
+    print("DataFrame пустой")
+
+
 tm.sleep(30)
 
 Answers_respond_list = Answers_respond.columns.tolist() ##извлекаем наименования столбцов в список
