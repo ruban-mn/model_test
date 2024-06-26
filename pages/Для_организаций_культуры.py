@@ -25,9 +25,9 @@ st.subheader('Независимая оценка качества услуг о
 uploaded_file = st.file_uploader("**Загрузите файл сводную по чек-листам**", type=["xls", "xlsx"])
 
 
-if uploaded_file is not None:
+#if uploaded_file is not None:
     # Чтение данных из загруженного файла Excel
-    chek_list = pd.read_excel(uploaded_file)
+chek_list = pd.read_excel(uploaded_file)
 
 
 # In[7]:
@@ -35,9 +35,10 @@ if uploaded_file is not None:
 
 uploaded_file = st.file_uploader("**Загрузите файл с массивом анкет**", type=["xls", "xlsx"])
 
-if uploaded_file is not None:
+#if uploaded_file is not None:
     # Чтение данных из загруженного файла Excel
-    Answers_respond = pd.read_excel(uploaded_file)
+
+Answers_respond = pd.read_excel(uploaded_file)
 
 
 # In[8]:
