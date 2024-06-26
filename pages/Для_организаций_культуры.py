@@ -66,7 +66,7 @@ Answers_respond_list = Answers_respond.columns.tolist() ##извлекаем н�
 
 
 New_col = []  # Создаем пустой список
-for i in range(18):  # Цикл от 0 до 18
+for i in range(15):  # Цикл от 0 до 18
     sim = i   # присваиваем номер
     New_col.append('v' + str(sim))  # добавляем новый номер вопрса в список
 
@@ -193,12 +193,12 @@ dict_chek = dict(zip(row_chek_list, New_col_for_chek_list))
 chek_list = chek_list.rename(columns=dict_chek) # переименовываем столбцы в начальном датафрейме
 
 name_org1 = pd.DataFrame({'us0': chek_list['us0']}) 
-chek_list_stend = chek_list.iloc[:, 1:18]  # Датафрейм с 1-5 столбцами
-chek_list_sait = chek_list.iloc[:, 18:37]  # Датафрейм с 6-10 столбцами = df.iloc[:, 0:5]  # Датафрейм с 1-5 столбцами
+chek_list_stend = chek_list.iloc[:, 1:17]  # Датафрейм с 1-5 столбцами
+chek_list_sait = chek_list.iloc[:, 18:36]  # Датафрейм с 6-10 столбцами = df.iloc[:, 0:5]  # Датафрейм с 1-5 столбцами
 chek_list_dist = chek_list.iloc[:, 37:42]  # Датафрейм с 6-10 столбцами
-chek_list_komf = chek_list.iloc[:, 42:48]
-chek_list_obor_inv = chek_list.iloc[:, 48:53]
-chek_list_sreda_inv = chek_list.iloc[:, 53:58]
+chek_list_komf = chek_list.iloc[:, 43:49]
+chek_list_obor_inv = chek_list.iloc[:, 50:54]
+chek_list_sreda_inv = chek_list.iloc[:, 55:60]
 
 chek_list_stend = pd.concat([name_org1, chek_list_stend], axis=1)
 chek_list_sait = pd.concat([name_org1, chek_list_sait], axis=1)
