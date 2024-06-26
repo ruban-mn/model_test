@@ -526,7 +526,7 @@ default_font = otchet.styles['Normal'].font
 default_font.name = 'Times New Roman'
 default_font.size = Pt(14)
 
-table15 = Raschet_ballov.loc[:, ['Наименование организации или П/Н по списку', 'К5', 'К5', 'К5', 'К5', 'К5', 'Общий балл']]
+table15 = Raschet_ballov.loc[:, ['Наименование организации или П/Н по списку', 'К1', 'К2', 'К3', 'К4', 'К5', 'Общий балл']]
 min_value = table15['Общий балл'].min()
 max_value = table15['Общий балл'].max()
 mean_value = table15['Общий балл'].mean()
@@ -609,7 +609,7 @@ for index, row in output_df.iterrows():
     row_cells[1].text = str(Raschet_ballov.loc[Raschet_ballov['Наименование организации или П/Н по списку'] == row['Name_org'], 'Общий балл'].values[0])
     row_cells[2].text = str(sorted_table.loc[sorted_table['Наименование организации или П/Н по списку'] == row['Name_org'], 'рейтинг'].values[0])
     
-    K3_list = int(Raschet_ballov.loc[Raschet_ballov['Наименование организации или П/Н по списку'] == row['Name_org'], 'Пдостуд'].values[0])
+    K3_list = int(table15.loc[table15['Наименование организации или П/Н по списку'] == row['Name_org'], 'К3'].values[0])
         # Добавляем результат проверки условия в столбец "Недостатки"
     if K3_list < 90:
         result_k3 = ''.join(("Удовлетворенность доступностью услуг для инвалидов менее 90%. Рекомендовано:",
@@ -623,7 +623,7 @@ for index, row in output_df.iterrows():
         
     # Добавляем результат проверки условия в столбец "Недостатки"
 
-    K4_list = int(sorted_table.loc[sorted_table['Наименование организации или П/Н по списку'] == row['Name_org'], 'К4'].values[0])
+    K4_list = int(table15.loc[table15['Наименование организации или П/Н по списку'] == row['Name_org'], 'К4'].values[0])
     
     if K4_list < 90:
         result_k4 = ''.join(("Провести обучение персонала организации по вопросам этики и деонтологии",
@@ -636,7 +636,7 @@ for index, row in output_df.iterrows():
                              "для установления стимулирующих выплат и использования в рамках программ нематериальной мотивации"))
         
     # Добавляем результат проверки условия в столбец "Недостатки"
-    K5_list = int(sorted_table.loc[sorted_table['Наименование организации или П/Н по списку'] == row['Name_org'], 'К5'].values[0])
+    K5_list = int(table15.loc[table15['Наименование организации или П/Н по списку'] == row['Name_org'], 'К5'].values[0])
     
     if K5_list < 90:
         result_k5 = ''.join(("Провести внутренний аудит системы менеджмента качества в структурных подразделениях организации ",
