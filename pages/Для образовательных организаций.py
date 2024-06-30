@@ -586,7 +586,7 @@ else:
     print("DataFrame пустой")
 
 # Создаем таблицу с нужным количеством строк и столбцов
-table20 = otchet.add_table(rows=1, cols=4)
+table20 = otchet.add_table(rows=2, cols=4)
 table20.style = 'Table Grid'  # Применяем стиль таблицы
 
 # Заголовки столбцов
