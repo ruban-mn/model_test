@@ -315,7 +315,7 @@ Raschet_ballov2 = Raschet_ballov.copy()
 
 # Соединение датафреймов и выполнение операции
 for col in Raschet_ballov2.columns[1:]:
-    if col in Raschet_ballov1.columns:
+    if Raschet_ballov2['name_org'] in Raschet_ballov1['name_org']:
         Raschet_ballov2[col] = (Raschet_ballov[col].astype(float) + Raschet_ballov1[col].astype(float)) / 2
     else:
         Raschet_ballov2[col] = Raschet_ballov[col]
