@@ -198,7 +198,7 @@ for i in range(25):  # Цикл от 0 до 18
 
 dictionary = dict(zip(Answers_respond_list_st, New_col)) # создаем  словарь для переименования стобцов
 Answers_respond_st = Answers_respond_st.rename(columns=dictionary) # переименовываем столбцы в начальном датафрейме
-Answers_respond_st['v25'] = Answers_respond['v2'].map({'менее 7 календарных дней': 6, '7 календарных дней': 7, '10 календарных дней': 10, '12 календарных дней': 12, '13 календарных дней': 13, '14 календарных дней и более': 14})
+Answers_respond_st['v25'] = Answers_respond_st['v2'].map({'менее 7 календарных дней': 6, '7 календарных дней': 7, '10 календарных дней': 10, '12 календарных дней': 12, '13 календарных дней': 13, '14 календарных дней и более': 14})
 
 # Рассчитываем значение для нового столбца
 def calculate_value1(row):
@@ -223,7 +223,7 @@ result_df1 = Answers_respond_st.groupby('v0').apply(calculate_value1).reset_inde
 result_df1.columns = ['v0', 'v25']
 
 # Создание нового DataFrame для хранения результатов подсчета, считам количество ответов да на вопросы анкеты
-ans_res_st = pd.DataFrame({'v0': Answers_respond['v0'].unique()})
+ans_res_st = pd.DataFrame({'v0': Answers_respond_st['v0'].unique()})
 
 selected_columns = ['v3', 'v5', 'v7', 'v8', 'v12', 'v13', 'v14', 'v15', 'v16', 'v17', 'v19', 'v20', 'v21', 'v22', 'v23', 'v24']
 # Используем цикл для подсчета значений и создания новых столбцов
