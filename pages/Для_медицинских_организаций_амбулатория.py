@@ -23,14 +23,9 @@ st.subheader('Независимая оценка качества услуг м
 uploaded_file = st.file_uploader("**Загрузите файл сводную по чек-листам амбулатория**", type=["xls", "xlsx"])
 chek_list = pd.read_excel(uploaded_file)
 
-uploaded_file1 = st.file_uploader("**Загрузите файл сводную по чек-листам стационар**", type=["xls", "xlsx"])
-chek_list_st = pd.read_excel(uploaded_file1)
-
 uploaded_file2 = st.file_uploader("**Загрузите файл с массивом анкет амбулатория**", type=["xls", "xlsx"])
 Answers_respond = pd.read_excel(uploaded_file2)
 
-uploaded_file3 = st.file_uploader("**Загрузите файл с массивом анкет стационар**", type=["xls", "xlsx"])
-Answers_respond_st = pd.read_excel(uploaded_file3)
 
 plase = st.text_input('Введите название территории в родительном падеже', 'н-р Московской области')
 
