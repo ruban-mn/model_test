@@ -240,11 +240,11 @@ ans_res_st['v0'] = ans_res_st['v0'].str.replace('.', '')# Удаляем точ�
 ans_res_st = ans_res_st.sort_values(by='v0') # сортируем таблицу по возрастанию по столбцу наименования
 ans_res_st = ans_res_st.reset_index(drop=True)
 
-col_ob = Answers_respond_st.groupby('v0').size().reset_index(name='Ч_общ')
-col_ob['v0'] = col_ob['v0'].str.replace('.', '')# Удаляем точку из наименований организаций
-col_ob = col_ob.sort_values(by='v0') # сортируем таблицу по возрастанию по столбцу наименования
-col_ob = col_ob.reset_index(drop=True)
-all_ans = col_ob['Ч_общ']
+col_ob1 = Answers_respond_st.groupby('v0').size().reset_index(name='Ч_общ')
+col_ob1['v0'] = col_ob1['v0'].str.replace('.', '')# Удаляем точку из наименований организаций
+col_ob1 = col_ob1.sort_values(by='v0') # сортируем таблицу по возрастанию по столбцу наименования
+col_ob1 = col_ob1.reset_index(drop=True)
+all_ans1 = col_ob1['Ч_общ']
 
 name_org = chek_list.filter(like='Наименование организации').copy()
 
@@ -270,10 +270,10 @@ Raschet_ballov1['Пкомф.усл'] = Raschet_ballov1['Ткомф']*Raschet_bal
 Raschet_ballov1['Пкомф.усл'].where(Raschet_ballov1['Пкомф.усл'] <= 100, 100, inplace=True)
 Raschet_ballov1['ожид'] = ans_res_st['v25']
 Raschet_ballov1['Усвоевр'] = (ans_res_st['_v3_']
-Raschet_ballov1['Чобщ'] = all_ans
+Raschet_ballov1['Чобщ'] = all_ans1
 Raschet_ballov1['Пожид'] = (round(Raschet_ballov1['Усвоевр']/Raschet_ballov1['Чобщ']*100, 2) + Raschet_ballov1['ожид'])/2
 Raschet_ballov1['Укомф'] = (ans_res_st['_v5_']+ans_res_st['_v17_'])/2
-Raschet_ballov1['Чобщ'] = all_ans
+Raschet_ballov1['Чобщ'] = all_ans1
 Raschet_ballov1['Пкомфуд'] = round(Raschet_ballov1['Укомф']/Raschet_ballov1['Чобщ']*100, 2)
 Raschet_ballov1['К2'] = round(0.3*Raschet_ballov1['Пкомф.усл'] + 0.4*Raschet_ballov1['Пожид'] + 0.3*Raschet_ballov1['Пкомфуд'], 2)
 Raschet_ballov1['Торгдост'] = chek_list_st.filter(like='Оборудование территории').sum(axis=1)
@@ -289,23 +289,23 @@ Raschet_ballov1['Чинв'] = ans_res_st['_v8_']
 Raschet_ballov1['Пдостуд'] = round(Raschet_ballov1['Удост']/Raschet_ballov1['Чинв']*100, 2)
 Raschet_ballov1['К3'] = round(0.3*Raschet_ballov1['Поргдост'] + 0.4*Raschet_ballov1['Пуслугдост'] + 0.3*Raschet_ballov1['Пдостуд'], 2)
 Raschet_ballov1['Уперв.конт'] = (ans_res_st['_v7_'] 
-Raschet_ballov1['Чобщ1'] = all_ans
+Raschet_ballov1['Чобщ1'] = all_ans1
 Raschet_ballov1['Пперв.контуд'] = round(Raschet_ballov1['Уперв.конт']/Raschet_ballov1['Чобщ']*100, 2)
 Raschet_ballov1['Уоказ.услуг'] = ans_res_st['_v19_']
-Raschet_ballov1['Чобщ2'] = all_ans
+Raschet_ballov1['Чобщ2'] = all_ans1
 Raschet_ballov1['Показ.услугуд'] = round(Raschet_ballov1['Уоказ.услуг']/Raschet_ballov1['Чобщ']*100, 2)
 Raschet_ballov1['Увежл.дист'] = ans_res_st['_v24_']
 Raschet_ballov1['Чобщ_ус'] = ans_res_st['_v23_']
 Raschet_ballov1['Пвежл.дистуд'] = round(Raschet_ballov1['Увежл.дист']/Raschet_ballov1['Чобщ_ус']*100, 2)
 Raschet_ballov1['К4'] = round(0.4*Raschet_ballov1['Пперв.контуд'] + 0.4*Raschet_ballov1['Показ.услугуд'] + 0.2*Raschet_ballov1['Пвежл.дистуд'], 2)
 Raschet_ballov1['Уреком'] = ans_res_st['_v20_']
-Raschet_ballov1['Чобщ3'] = all_ans
+Raschet_ballov1['Чобщ3'] = all_ans1
 Raschet_ballov1['Преком'] = round(Raschet_ballov1['Уреком']/Raschet_ballov1['Чобщ']*100, 2)
 Raschet_ballov1['Уорг.усл'] = ans_res_st['_v21_']
-Raschet_ballov1['Чобщ4'] = all_ans
+Raschet_ballov1['Чобщ4'] = all_ans1
 Raschet_ballov1['Порг.услуд'] = round(Raschet_ballov1['Уорг.усл']/Raschet_ballov1['Чобщ']*100, 2)
 Raschet_ballov1['Ууд'] = ans_res_st['_v22_']
-Raschet_ballov1['Чобщ5'] = all_ans
+Raschet_ballov1['Чобщ5'] = all_ans1
 Raschet_ballov1['Пуд'] = round(Raschet_ballov1['Ууд']/Raschet_ballov1['Чобщ']*100, 2)
 Raschet_ballov1['К5'] = round(0.3*Raschet_ballov1['Преком'] + 0.2*Raschet_ballov1['Порг.услуд'] + 0.5*Raschet_ballov1['Пуд'], 2)
 Raschet_ballov1['Общий балл'] = round((Raschet_ballov1['К1']+Raschet_ballov1['К2']+Raschet_ballov1['К3']+Raschet_ballov1['К4']+Raschet_ballov1['К5'])/5, 2)
