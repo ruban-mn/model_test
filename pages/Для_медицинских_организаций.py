@@ -73,15 +73,68 @@ dictionary = dict(zip(Answers_respond_list, New_col)) # создаем  слов
 
 Answers_respond = Answers_respond.rename(columns=dictionary) # переименовываем столбцы в начальном датафрейме
 
+Answers_respond['v32'] = Answers_respond['v2'].map({'менее 1 часа': 1, '3 часа': 3})
+
+Answers_respond['v33'] = Answers_respond['v7'].map({'менее 7 календарных дней': 6, '7 календарных дней': 7, '10 календарных дней': 10, '12 календарных дней': 12, '13 календарных дней': 13, '14 календарных дней и более': 14})
+
+# Рассчитываем значение для нового столбца
+def calculate_value(row):
+    total_answers = sum([val for val in row['v32'] if not math.isnan(val)])
+
+    result_sum = sum([(i+1)*val for i, val in enumerate(row['v32']) if not math.isnan(val)])
+    result = round(result_sum / total_answers)
+    
+    if result == 24:
+        return 10
+    elif result == 23:
+        return 20
+    elif result == 22:
+        return 40
+    elif 21 <= result <= 13:
+        return 60
+    else:
+        return 100
+
+
+result_df = Answers_respond.groupby('v0').apply(calculate_value).reset_index()
+result_df.columns = ['v0', 'v32']
+
+# Рассчитываем значение для нового столбца
+def calculate_value1(row):
+    total_answers = sum([val for val in row['v33'] if not math.isnan(val)])
+
+    result_sum = sum([(i+1)*val for i, val in enumerate(row['v33']) if not math.isnan(val)])
+    result = round(result_sum / total_answers)
+    
+    if result == 14:
+        return 10
+    elif result == 13:
+        return 20
+    elif result == 12:
+        return 40
+    elif 11 <= result <= 8:
+        return 60
+    else:
+        return 100
+
+
+result_df1 = Answers_respond.groupby('v0').apply(calculate_value1).reset_index()
+result_df1.columns = ['v0', 'v33']
+
 # Создание нового DataFrame для хранения результатов подсчета, считам количество ответов да на вопросы анкеты
 ans_res = pd.DataFrame({'v0': Answers_respond['v0'].unique()})
 
+selected_columns = ['v5', 'v10', 'v11', 'v12', 'v13', 'v14', 'v15', 'v16', 'v17', 'v19', 'v23', 'v26', 'v27', 'v28', 'v29', 'v30', 'v31']
 # Используем цикл для подсчета значений и создания новых столбцов
-for col in New_col:
-    value = 'Да'  # Значение, которое мы считаем
+for col in selected_columns:
+    value = 'да'  # Значение, которое мы считаем
     count_col_name = f'_{col}_'
     counts = Answers_respond[Answers_respond[col] == value].groupby('v0').size().reset_index(name=count_col_name)
     ans_res = ans_res.merge(counts, on='v0', how='left')
+
+ans_res = ans_res.merge(result_df, on='v0', how='left')
+
+ans_res = ans_res.merge(result_df1, on='v0', how='left')
 
 ans_res = ans_res.dropna(axis=1) # Удаляем столбцы со значением NaN
 ans_res['v0'] = ans_res['v0'].str.replace('.', '')# Удаляем точку из наименований организаций
@@ -106,20 +159,21 @@ Raschet_ballov['Тдист'] = 30
 Raschet_ballov['Сдист'] = chek_list.filter(like='Наличие и функционирование на официальном сайте').sum(axis=1)
 Raschet_ballov['Пдист'] = Raschet_ballov['Тдист']*Raschet_ballov['Сдист']
 Raschet_ballov['Пдист'].where(Raschet_ballov['Пдист'] <= 100, 100, inplace=True)
-Raschet_ballov['Устенд'] = ans_res['_v2_']
-Raschet_ballov['Усайт'] = ans_res['_v4_']
-Raschet_ballov['Уобщ-стенд'] = ans_res['_v1_']
-Raschet_ballov['Уобщ-сайт'] = ans_res['_v3_']
+Raschet_ballov['Устенд'] = ans_res['_v14_']
+Raschet_ballov['Усайт'] = ans_res['_v16_']
+Raschet_ballov['Уобщ-стенд'] = ans_res['_v13_']
+Raschet_ballov['Уобщ-сайт'] = ans_res['_v15_']
 Raschet_ballov['Поткруд'] = round(0.5*((Raschet_ballov['Устенд']/Raschet_ballov['Уобщ-стенд'])+(Raschet_ballov['Усайт']/Raschet_ballov['Уобщ-сайт']))*100, 2)
 Raschet_ballov['К1'] = round(0.3*Raschet_ballov['Пинф'] + 0.3*Raschet_ballov['Пдист'] + 0.4*Raschet_ballov['Поткруд'], 2)
 Raschet_ballov['Ткомф'] = chek_list.filter(like='Обеспечение в организации комфортных условий').sum(axis=1)
 Raschet_ballov['Скомф'] = 20
 Raschet_ballov['Пкомф.усл'] = Raschet_ballov['Ткомф']*Raschet_ballov['Скомф']
 Raschet_ballov['Пкомф.усл'].where(Raschet_ballov['Пкомф.усл'] <= 100, 100, inplace=True)
-Raschet_ballov['Усвоевр'] = ans_res['_v5_']
+Raschet_ballov['ожид'] = (ans_res['v32']+ans_res['v33'])/2
+Raschet_ballov['Усвоевр'] = (ans_res['_v11_']+ans_res['_v26_'])/2
 Raschet_ballov['Чобщ'] = all_ans
-Raschet_ballov['Пожид'] = round(Raschet_ballov['Усвоевр']/Raschet_ballov['Чобщ']*100, 2)
-Raschet_ballov['Укомф'] = ans_res['_v6_']
+Raschet_ballov['Пожид'] = (round(Raschet_ballov['Усвоевр']/Raschet_ballov['Чобщ']*100, 2) + Raschet_ballov['ожид'])/2
+Raschet_ballov['Укомф'] = ans_res['_v17_']
 Raschet_ballov['Чобщ'] = all_ans
 Raschet_ballov['Пкомфуд'] = round(Raschet_ballov['Укомф']/Raschet_ballov['Чобщ']*100, 2)
 Raschet_ballov['К2'] = round(0.3*Raschet_ballov['Пкомф.усл'] + 0.4*Raschet_ballov['Пожид'] + 0.3*Raschet_ballov['Пкомфуд'], 2)
@@ -131,27 +185,27 @@ Raschet_ballov['Туслугдост'] = chek_list.filter(like='Обеспече
 Raschet_ballov['Суслугдост'] = 20
 Raschet_ballov['Пуслугдост'] = Raschet_ballov['Туслугдост']*Raschet_ballov['Суслугдост']
 Raschet_ballov['Пуслугдост'].where(Raschet_ballov['Пуслугдост'] <= 100, 100, inplace=True)
-Raschet_ballov['Удост'] = ans_res['_v8_']
-Raschet_ballov['Чинв'] = ans_res['_v7_']
+Raschet_ballov['Удост'] = ans_res['_v19_']
+Raschet_ballov['Чинв'] = ans_res['_v23_']
 Raschet_ballov['Пдостуд'] = round(Raschet_ballov['Удост']/Raschet_ballov['Чинв']*100, 2)
 Raschet_ballov['К3'] = round(0.3*Raschet_ballov['Поргдост'] + 0.4*Raschet_ballov['Пуслугдост'] + 0.3*Raschet_ballov['Пдостуд'], 2)
-Raschet_ballov['Уперв.конт'] = ans_res['_v9_']
+Raschet_ballov['Уперв.конт'] = (ans_res['_v5_'] + ans_res['_v10_'])/2
 Raschet_ballov['Чобщ1'] = all_ans
 Raschet_ballov['Пперв.контуд'] = round(Raschet_ballov['Уперв.конт']/Raschet_ballov['Чобщ']*100, 2)
-Raschet_ballov['Уоказ.услуг'] = ans_res['_v10_']
+Raschet_ballov['Уоказ.услуг'] = ans_res['_v12_']
 Raschet_ballov['Чобщ2'] = all_ans
 Raschet_ballov['Показ.услугуд'] = round(Raschet_ballov['Уоказ.услуг']/Raschet_ballov['Чобщ']*100, 2)
-Raschet_ballov['Увежл.дист'] = ans_res['_v12_']
-Raschet_ballov['Чобщ_ус'] = ans_res['_v11_']
+Raschet_ballov['Увежл.дист'] = ans_res['_v31_']
+Raschet_ballov['Чобщ_ус'] = ans_res['_v30_']
 Raschet_ballov['Пвежл.дистуд'] = round(Raschet_ballov['Увежл.дист']/Raschet_ballov['Чобщ_ус']*100, 2)
 Raschet_ballov['К4'] = round(0.4*Raschet_ballov['Пперв.контуд'] + 0.4*Raschet_ballov['Показ.услугуд'] + 0.2*Raschet_ballov['Пвежл.дистуд'], 2)
-Raschet_ballov['Уреком'] = ans_res['_v13_']
+Raschet_ballov['Уреком'] = ans_res['_v27_']
 Raschet_ballov['Чобщ3'] = all_ans
 Raschet_ballov['Преком'] = round(Raschet_ballov['Уреком']/Raschet_ballov['Чобщ']*100, 2)
-Raschet_ballov['Уорг.усл'] = ans_res['_v14_']
+Raschet_ballov['Уорг.усл'] = ans_res['_v28_']
 Raschet_ballov['Чобщ4'] = all_ans
 Raschet_ballov['Порг.услуд'] = round(Raschet_ballov['Уорг.усл']/Raschet_ballov['Чобщ']*100, 2)
-Raschet_ballov['Ууд'] = ans_res['_v15_']
+Raschet_ballov['Ууд'] = ans_res['_v29_']
 Raschet_ballov['Чобщ5'] = all_ans
 Raschet_ballov['Пуд'] = round(Raschet_ballov['Ууд']/Raschet_ballov['Чобщ']*100, 2)
 Raschet_ballov['К5'] = round(0.3*Raschet_ballov['Преком'] + 0.2*Raschet_ballov['Порг.услуд'] + 0.5*Raschet_ballov['Пуд'], 2)
