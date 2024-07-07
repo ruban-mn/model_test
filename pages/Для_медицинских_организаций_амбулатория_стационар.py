@@ -230,7 +230,7 @@ selected_columns = ['v3', 'v5', 'v7', 'v8', 'v12', 'v13', 'v14', 'v15', 'v16', '
 for col in selected_columns:
     value = 'да'  # Значение, которое мы считаем
     count_col_name = f'_{col}_'
-    counts = Answers_respond[Answers_respond[col] == value].groupby('v0').size().reset_index(name=count_col_name)
+    counts = Answers_respond_st[Answers_respond_st[col] == value].groupby('v0').size().reset_index(name=count_col_name)
     ans_res_st = ans_res_st.merge(counts, on='v0', how='left')
 
 ans_res_st = ans_res_st.merge(result_df1, on='v0', how='left')
