@@ -225,7 +225,7 @@ result_df1.columns = ['v0', 'v25']
 # Создание нового DataFrame для хранения результатов подсчета, считам количество ответов да на вопросы анкеты
 ans_res_st = pd.DataFrame({'v0': Answers_respond_st['v0'].unique()})
 
-selected_columns = ['v3', 'v5', 'v7', 'v8', 'v12', 'v13', 'v14', 'v15', 'v16', 'v17', 'v19', 'v20', 'v21', 'v22', 'v23', 'v24']
+selected_columns = ['v1', 'v3', 'v5', 'v7', 'v8', 'v12', 'v13', 'v14', 'v15', 'v16', 'v17', 'v19', 'v20', 'v21', 'v22', 'v23', 'v24']
 # Используем цикл для подсчета значений и создания новых столбцов
 for col in selected_columns:
     value = 'да'  # Значение, которое мы считаем
@@ -246,7 +246,7 @@ col_ob1 = col_ob1.sort_values(by='v0') # сортируем таблицу по 
 col_ob1 = col_ob1.reset_index(drop=True)
 all_ans1 = col_ob1['Ч_общ']
 
-name_org = chek_list.filter(like='Наименование организации').copy()
+name_org = chek_list_st.filter(like='Наименование организации').copy()
 
 Raschet_ballov1 = name_org
 Raschet_ballov1['Истенд'] = chek_list_st.filter(like='На СТЕНДЕ').sum(axis=1)
@@ -269,12 +269,12 @@ Raschet_ballov1['Скомф'] = 20
 Raschet_ballov1['Пкомф.усл'] = Raschet_ballov1['Ткомф']*Raschet_ballov1['Скомф']
 Raschet_ballov1['Пкомф.усл'].where(Raschet_ballov1['Пкомф.усл'] <= 100, 100, inplace=True)
 Raschet_ballov1['ожид'] = ans_res_st['v25']
-Raschet_ballov1['Усвоевр'] = (ans_res_st['_v3_']
-Raschet_ballov1['Чобщ1'] = all_ans1
-Raschet_ballov1['Пожид'] = (round(Raschet_ballov1['Усвоевр']/Raschet_ballov1['Чобщ']*100, 2) + Raschet_ballov1['ожид'])/2
+Raschet_ballov1['Усвоевр'] = ans_res_st['_v3_']
+Raschet_ballov1['Чобщ1'] = ans_res_st['_v1_']
+Raschet_ballov1['Пожид'] = (round(Raschet_ballov1['Усвоевр']/Raschet_ballov1['Чобщ1']*100, 2) + Raschet_ballov1['ожид'])/2
 Raschet_ballov1['Укомф'] = (ans_res_st['_v5_']+ans_res_st['_v17_'])/2
 Raschet_ballov1['Чобщ2'] = all_ans1
-Raschet_ballov1['Пкомфуд'] = round(Raschet_ballov1['Укомф']/Raschet_ballov1['Чобщ']*100, 2)
+Raschet_ballov1['Пкомфуд'] = round(Raschet_ballov1['Укомф']/Raschet_ballov1['Чобщ2']*100, 2)
 Raschet_ballov1['К2'] = round(0.3*Raschet_ballov1['Пкомф.усл'] + 0.4*Raschet_ballov1['Пожид'] + 0.3*Raschet_ballov1['Пкомфуд'], 2)
 Raschet_ballov1['Торгдост'] = chek_list_st.filter(like='Оборудование территории').sum(axis=1)
 Raschet_ballov1['Соргдост'] = 20
@@ -288,36 +288,39 @@ Raschet_ballov1['Удост'] = ans_res_st['_v12_']
 Raschet_ballov1['Чинв'] = ans_res_st['_v8_']
 Raschet_ballov1['Пдостуд'] = round(Raschet_ballov1['Удост']/Raschet_ballov1['Чинв']*100, 2)
 Raschet_ballov1['К3'] = round(0.3*Raschet_ballov1['Поргдост'] + 0.4*Raschet_ballov1['Пуслугдост'] + 0.3*Raschet_ballov1['Пдостуд'], 2)
-Raschet_ballov1['Уперв.конт'] = (ans_res_st['_v7_'] 
+Raschet_ballov1['Уперв.конт'] = ans_res_st['_v7_'] 
 Raschet_ballov1['Чобщ3'] = all_ans1
-Raschet_ballov1['Пперв.контуд'] = round(Raschet_ballov1['Уперв.конт']/Raschet_ballov1['Чобщ']*100, 2)
+Raschet_ballov1['Пперв.контуд'] = round(Raschet_ballov1['Уперв.конт']/Raschet_ballov1['Чобщ3']*100, 2)
 Raschet_ballov1['Уоказ.услуг'] = ans_res_st['_v19_']
 Raschet_ballov1['Чобщ4'] = all_ans1
-Raschet_ballov1['Показ.услугуд'] = round(Raschet_ballov1['Уоказ.услуг']/Raschet_ballov1['Чобщ']*100, 2)
+Raschet_ballov1['Показ.услугуд'] = round(Raschet_ballov1['Уоказ.услуг']/Raschet_ballov1['Чобщ4']*100, 2)
 Raschet_ballov1['Увежл.дист'] = ans_res_st['_v24_']
 Raschet_ballov1['Чобщ_ус'] = ans_res_st['_v23_']
 Raschet_ballov1['Пвежл.дистуд'] = round(Raschet_ballov1['Увежл.дист']/Raschet_ballov1['Чобщ_ус']*100, 2)
 Raschet_ballov1['К4'] = round(0.4*Raschet_ballov1['Пперв.контуд'] + 0.4*Raschet_ballov1['Показ.услугуд'] + 0.2*Raschet_ballov1['Пвежл.дистуд'], 2)
 Raschet_ballov1['Уреком'] = ans_res_st['_v20_']
 Raschet_ballov1['Чобщ5'] = all_ans1
-Raschet_ballov1['Преком'] = round(Raschet_ballov1['Уреком']/Raschet_ballov1['Чобщ']*100, 2)
+Raschet_ballov1['Преком'] = round(Raschet_ballov1['Уреком']/Raschet_ballov1['Чобщ5']*100, 2)
 Raschet_ballov1['Уорг.усл'] = ans_res_st['_v21_']
-Raschet_ballov1['Чобщ4'] = all_ans1
-Raschet_ballov1['Порг.услуд'] = round(Raschet_ballov1['Уорг.усл']/Raschet_ballov1['Чобщ']*100, 2)
-Raschet_ballov1['Ууд'] = ans_res_st['_v22_']
 Raschet_ballov1['Чобщ6'] = all_ans1
-Raschet_ballov1['Пуд'] = round(Raschet_ballov1['Ууд']/Raschet_ballov1['Чобщ']*100, 2)
+Raschet_ballov1['Порг.услуд'] = round(Raschet_ballov1['Уорг.усл']/Raschet_ballov1['Чобщ6']*100, 2)
+Raschet_ballov1['Ууд'] = ans_res_st['_v22_']
+Raschet_ballov1['Чобщ7'] = all_ans1
+Raschet_ballov1['Пуд'] = round(Raschet_ballov1['Ууд']/Raschet_ballov1['Чобщ7']*100, 2)
 Raschet_ballov1['К5'] = round(0.3*Raschet_ballov1['Преком'] + 0.2*Raschet_ballov1['Порг.услуд'] + 0.5*Raschet_ballov1['Пуд'], 2)
 Raschet_ballov1['Общий балл'] = round((Raschet_ballov1['К1']+Raschet_ballov1['К2']+Raschet_ballov1['К3']+Raschet_ballov1['К4']+Raschet_ballov1['К5'])/5, 2)
 
+# Создание копии Raschet_ballov
 Raschet_ballov2 = Raschet_ballov.copy()
 
-for col in Raschet_ballov1.columns:
+# Соединение датафреймов и выполнение операции
+for col in Raschet_ballov1.columns[1:]:
     if col in Raschet_ballov2.columns:
-        Raschet_ballov2[col] = (Raschet_ballov[col] + Raschet_ballov1[col]) / 2
+        Raschet_ballov2[col] = (Raschet_ballov[col].astype(float) + Raschet_ballov1[col].astype(float)) / 2
     else:
         Raschet_ballov2[col] = Raschet_ballov1[col]
 Raschet_ballov = Raschet_ballov2
+
 row_chek_list = chek_list.columns.tolist()
 
 New_col_for_chek_list = []  # Создаем пустой список
