@@ -19,7 +19,7 @@ from docx.oxml.ns import qn
 
 st.subheader('Независимая оценка качества услуг медицинских организаций')
 
-uploaded_file = st.file_uploader("**Загрузите файл сводную по чек-листам**", type=["xls", "xlsx"])
+uploaded_file = st.file_uploader("**Загрузите файл сводную по чек-листам амбулатория**", type=["xls", "xlsx"])
 
 
 ##if uploaded_file is not None:
@@ -27,19 +27,19 @@ uploaded_file = st.file_uploader("**Загрузите файл сводную �
 
 chek_list = pd.read_excel(uploaded_file)
 
-uploaded_file2 = st.file_uploader("**Загрузите файл с массивом анкет стационар**", type=["xls", "xlsx"])
+uploaded_file2 = st.file_uploader("**Загрузите файл с массивом анкет амбулатория**", type=["xls", "xlsx"])
 
 ##if uploaded_file1 is not None:
     # Чтение данных из загруженного файла Excel
 
-Answers_respond_stats = pd.read_excel(uploaded_file2)
+Answers_respond = pd.read_excel(uploaded_file2)
 
-uploaded_file3 = st.file_uploader("**Загрузите файл с массивом анкет амбулатория**", type=["xls", "xlsx"])
+#uploaded_file3 = st.file_uploader("**Загрузите файл с массивом анкет амбулатория**", type=["xls", "xlsx"])
 
 ##if uploaded_file1 is not None:
     # Чтение данных из загруженного файла Excel
 
-Answers_respond_ambul = pd.read_excel(uploaded_file3)
+#Answers_respond_ambul = pd.read_excel(uploaded_file3)
 # In[8]:
 plase = st.text_input('Введите название территории в родительном падеже', 'н-р Московской области')
 
