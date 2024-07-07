@@ -21,45 +21,23 @@ import math
 st.subheader('Независимая оценка качества услуг медицинских организаций')
 
 uploaded_file = st.file_uploader("**Загрузите файл сводную по чек-листам амбулатория**", type=["xls", "xlsx"])
-
-
-##if uploaded_file is not None:
-    # Чтение данных из загруженного файла Excel
-
 chek_list = pd.read_excel(uploaded_file)
 
+uploaded_file1 = st.file_uploader("**Загрузите файл сводную по чек-листам стационар**", type=["xls", "xlsx"])
+chek_list_st = pd.read_excel(uploaded_file1)
+
 uploaded_file2 = st.file_uploader("**Загрузите файл с массивом анкет амбулатория**", type=["xls", "xlsx"])
-
-##if uploaded_file1 is not None:
-    # Чтение данных из загруженного файла Excel
-
 Answers_respond = pd.read_excel(uploaded_file2)
 
-#uploaded_file3 = st.file_uploader("**Загрузите файл с массивом анкет амбулатория**", type=["xls", "xlsx"])
+uploaded_file3 = st.file_uploader("**Загрузите файл с массивом анкет стационар**", type=["xls", "xlsx"])
+Answers_respond_st = pd.read_excel(uploaded_file3)
 
-##if uploaded_file1 is not None:
-    # Чтение данных из загруженного файла Excel
-
-#Answers_respond_ambul = pd.read_excel(uploaded_file3)
-# In[8]:
 plase = st.text_input('Введите название территории в родительном падеже', 'н-р Московской области')
 
 ## подгружаем сводную по чек листам
 ##chek_list=pd.read_excel(r"C:\Users\user\чек лист гулькевичи.xlsx")
 ##подгружаем массив с ответами респондентов
 ##Answers_respond=pd.read_excel(r"C:\Users\user\Анкета Гулькевичи НОК культура (Ответы).xlsx")
-
-
-if not Answers_respond.empty:
-    print("DataFrame не является пустым")
-else:
-    print("DataFrame пустой")
-
-if not chek_list.empty:
-    print("DataFrame не является пустым")
-else:
-    print("DataFrame пустой")
-
 
 tm.sleep(30)
 
@@ -71,11 +49,8 @@ for i in range(32):  # Цикл от 0 до 18
     New_col.append('v' + str(sim))  # добавляем новый номер вопрса в список
 
 dictionary = dict(zip(Answers_respond_list, New_col)) # создаем  словарь для переименования стобцов
-
 Answers_respond = Answers_respond.rename(columns=dictionary) # переименовываем столбцы в начальном датафрейме
-
 Answers_respond['v32'] = Answers_respond['v2'].map({'менее 1 часа': 1, '3 часа': 3})
-
 Answers_respond['v33'] = Answers_respond['v7'].map({'менее 7 календарных дней': 6, '7 календарных дней': 7, '10 календарных дней': 10, '12 календарных дней': 12, '13 календарных дней': 13, '14 календарных дней и более': 14})
 
 # Рассчитываем значение для нового столбца
@@ -186,8 +161,8 @@ Raschet_ballov['Туслугдост'] = chek_list.filter(like='Обеспече
 Raschet_ballov['Суслугдост'] = 20
 Raschet_ballov['Пуслугдост'] = Raschet_ballov['Туслугдост']*Raschet_ballov['Суслугдост']
 Raschet_ballov['Пуслугдост'].where(Raschet_ballov['Пуслугдост'] <= 100, 100, inplace=True)
-Raschet_ballov['Удост'] = ans_res['_v19_']
-Raschet_ballov['Чинв'] = ans_res['_v23_']
+Raschet_ballov['Удост'] = ans_res['_v23_']
+Raschet_ballov['Чинв'] = ans_res['_v19_']
 Raschet_ballov['Пдостуд'] = round(Raschet_ballov['Удост']/Raschet_ballov['Чинв']*100, 2)
 Raschet_ballov['К3'] = round(0.3*Raschet_ballov['Поргдост'] + 0.4*Raschet_ballov['Пуслугдост'] + 0.3*Raschet_ballov['Пдостуд'], 2)
 Raschet_ballov['Уперв.конт'] = (ans_res['_v5_'] + ans_res['_v10_'])/2
@@ -212,6 +187,137 @@ Raschet_ballov['Пуд'] = round(Raschet_ballov['Ууд']/Raschet_ballov['Чоб
 Raschet_ballov['К5'] = round(0.3*Raschet_ballov['Преком'] + 0.2*Raschet_ballov['Порг.услуд'] + 0.5*Raschet_ballov['Пуд'], 2)
 Raschet_ballov['Общий балл'] = round((Raschet_ballov['К1']+Raschet_ballov['К2']+Raschet_ballov['К3']+Raschet_ballov['К4']+Raschet_ballov['К5'])/5, 2)
 
+
+
+Answers_respond_list_st = Answers_respond_st.columns.tolist() ##извлекаем наименования столбцов в список
+
+New_col = []  # Создаем пустой список
+for i in range(25):  # Цикл от 0 до 18
+    sim = i   # присваиваем номер
+    New_col.append('v' + str(sim))  # добавляем новый номер вопрса в список
+
+dictionary = dict(zip(Answers_respond_list_st, New_col)) # создаем  словарь для переименования стобцов
+Answers_respond_st = Answers_respond_st.rename(columns=dictionary) # переименовываем столбцы в начальном датафрейме
+Answers_respond_st['v25'] = Answers_respond['v2'].map({'менее 7 календарных дней': 6, '7 календарных дней': 7, '10 календарных дней': 10, '12 календарных дней': 12, '13 календарных дней': 13, '14 календарных дней и более': 14})
+
+# Рассчитываем значение для нового столбца
+def calculate_value1(row):
+    total_answers = sum([val for val in row['v25'] if not math.isnan(val)])
+
+    result_sum = sum([(i+1)*val for i, val in enumerate(row['v25']) if not math.isnan(val)])
+    result = round(result_sum / total_answers)
+    
+    if result == 14:
+        return 10
+    elif result == 13:
+        return 20
+    elif result == 12:
+        return 40
+    elif 11 <= result <= 8:
+        return 60
+    else:
+        return 100
+
+
+result_df1 = Answers_respond_st.groupby('v0').apply(calculate_value1).reset_index()
+result_df1.columns = ['v0', 'v25']
+
+# Создание нового DataFrame для хранения результатов подсчета, считам количество ответов да на вопросы анкеты
+ans_res_st = pd.DataFrame({'v0': Answers_respond['v0'].unique()})
+
+selected_columns = ['v3', 'v5', 'v7', 'v8', 'v12', 'v13', 'v14', 'v15', 'v16', 'v17', 'v19', 'v20', 'v21', 'v22', 'v23', 'v24']
+# Используем цикл для подсчета значений и создания новых столбцов
+for col in selected_columns:
+    value = 'да'  # Значение, которое мы считаем
+    count_col_name = f'_{col}_'
+    counts = Answers_respond[Answers_respond[col] == value].groupby('v0').size().reset_index(name=count_col_name)
+    ans_res_st = ans_res_st.merge(counts, on='v0', how='left')
+
+ans_res_st = ans_res_st.merge(result_df1, on='v0', how='left')
+
+ans_res_st = ans_res_st.dropna(axis=1) # Удаляем столбцы со значением NaN
+ans_res_st['v0'] = ans_res_st['v0'].str.replace('.', '')# Удаляем точку из наименований организаций
+ans_res_st = ans_res_st.sort_values(by='v0') # сортируем таблицу по возрастанию по столбцу наименования
+ans_res_st = ans_res_st.reset_index(drop=True)
+
+col_ob = Answers_respond_st.groupby('v0').size().reset_index(name='Ч_общ')
+col_ob['v0'] = col_ob['v0'].str.replace('.', '')# Удаляем точку из наименований организаций
+col_ob = col_ob.sort_values(by='v0') # сортируем таблицу по возрастанию по столбцу наименования
+col_ob = col_ob.reset_index(drop=True)
+all_ans = col_ob['Ч_общ']
+
+name_org = chek_list.filter(like='Наименование организации').copy()
+
+Raschet_ballov1 = name_org
+Raschet_ballov1['Истенд'] = chek_list_st.filter(like='На СТЕНДЕ').sum(axis=1)
+Raschet_ballov1['Исайт'] = chek_list_st.filter(like='На САЙТЕ').sum(axis=1)
+Raschet_ballov1['Инорм-стенд'] = chek_list_st.filter(like='На СТЕНДЕ').count(axis=1)
+Raschet_ballov1['Инорм-сайт'] = chek_list_st.filter(like='На САЙТЕ').count(axis=1)
+Raschet_ballov1['Пинф'] = round(0.5*((Raschet_ballov1['Истенд']/Raschet_ballov1['Инорм-стенд'])+(Raschet_ballov1['Исайт']/Raschet_ballov1['Инорм-сайт']))*100, 2)
+Raschet_ballov1['Тдист'] = 30
+Raschet_ballov1['Сдист'] = chek_list_st.filter(like='Наличие и функционирование на официальном сайте').sum(axis=1)
+Raschet_ballov1['Пдист'] = Raschet_ballov1['Тдист']*Raschet_ballov1['Сдист']
+Raschet_ballov1['Пдист'].where(Raschet_ballov1['Пдист'] <= 100, 100, inplace=True)
+Raschet_ballov1['Устенд'] = ans_res_st['_v14_']
+Raschet_ballov1['Усайт'] = ans_res_st['_v16_']
+Raschet_ballov1['Уобщ-стенд'] = ans_res_st['_v13_']
+Raschet_ballov1['Уобщ-сайт'] = ans_res_st['_v15_']
+Raschet_ballov1['Поткруд'] = round(0.5*((Raschet_ballov1['Устенд']/Raschet_ballov1['Уобщ-стенд'])+(Raschet_ballov1['Усайт']/Raschet_ballov1['Уобщ-сайт']))*100, 2)
+Raschet_ballov1['К1'] = round(0.3*Raschet_ballov1['Пинф'] + 0.3*Raschet_ballov1['Пдист'] + 0.4*Raschet_ballov1['Поткруд'], 2)
+Raschet_ballov1['Ткомф'] = chek_list_st.filter(like='Обеспечение в организации комфортных условий').sum(axis=1)
+Raschet_ballov1['Скомф'] = 20
+Raschet_ballov1['Пкомф.усл'] = Raschet_ballov1['Ткомф']*Raschet_ballov1['Скомф']
+Raschet_ballov1['Пкомф.усл'].where(Raschet_ballov1['Пкомф.усл'] <= 100, 100, inplace=True)
+Raschet_ballov1['ожид'] = ans_res_st['v25']
+Raschet_ballov1['Усвоевр'] = (ans_res_st['_v3_']
+Raschet_ballov1['Чобщ'] = all_ans
+Raschet_ballov1['Пожид'] = (round(Raschet_ballov1['Усвоевр']/Raschet_ballov1['Чобщ']*100, 2) + Raschet_ballov1['ожид'])/2
+Raschet_ballov1['Укомф'] = (ans_res_st['_v5_']+ans_res_st['_v17_'])/2
+Raschet_ballov1['Чобщ'] = all_ans
+Raschet_ballov1['Пкомфуд'] = round(Raschet_ballov1['Укомф']/Raschet_ballov1['Чобщ']*100, 2)
+Raschet_ballov1['К2'] = round(0.3*Raschet_ballov1['Пкомф.усл'] + 0.4*Raschet_ballov1['Пожид'] + 0.3*Raschet_ballov1['Пкомфуд'], 2)
+Raschet_ballov1['Торгдост'] = chek_list_st.filter(like='Оборудование территории').sum(axis=1)
+Raschet_ballov1['Соргдост'] = 20
+Raschet_ballov1['Поргдост'] = Raschet_ballov1['Торгдост']*Raschet_ballov1['Соргдост']
+Raschet_ballov1['Поргдост'].where(Raschet_ballov1['Поргдост'] <= 100, 100, inplace=True)
+Raschet_ballov1['Туслугдост'] = chek_list_st.filter(like='Обеспечение в организации условий доступности').sum(axis=1)
+Raschet_ballov1['Суслугдост'] = 20
+Raschet_ballov1['Пуслугдост'] = Raschet_ballov1['Туслугдост']*Raschet_ballov1['Суслугдост']
+Raschet_ballov1['Пуслугдост'].where(Raschet_ballov1['Пуслугдост'] <= 100, 100, inplace=True)
+Raschet_ballov1['Удост'] = ans_res_st['_v12_']
+Raschet_ballov1['Чинв'] = ans_res_st['_v8_']
+Raschet_ballov1['Пдостуд'] = round(Raschet_ballov1['Удост']/Raschet_ballov1['Чинв']*100, 2)
+Raschet_ballov1['К3'] = round(0.3*Raschet_ballov1['Поргдост'] + 0.4*Raschet_ballov1['Пуслугдост'] + 0.3*Raschet_ballov1['Пдостуд'], 2)
+Raschet_ballov1['Уперв.конт'] = (ans_res_st['_v7_'] 
+Raschet_ballov1['Чобщ1'] = all_ans
+Raschet_ballov1['Пперв.контуд'] = round(Raschet_ballov1['Уперв.конт']/Raschet_ballov1['Чобщ']*100, 2)
+Raschet_ballov1['Уоказ.услуг'] = ans_res_st['_v19_']
+Raschet_ballov1['Чобщ2'] = all_ans
+Raschet_ballov1['Показ.услугуд'] = round(Raschet_ballov1['Уоказ.услуг']/Raschet_ballov1['Чобщ']*100, 2)
+Raschet_ballov1['Увежл.дист'] = ans_res_st['_v24_']
+Raschet_ballov1['Чобщ_ус'] = ans_res_st['_v23_']
+Raschet_ballov1['Пвежл.дистуд'] = round(Raschet_ballov1['Увежл.дист']/Raschet_ballov1['Чобщ_ус']*100, 2)
+Raschet_ballov1['К4'] = round(0.4*Raschet_ballov1['Пперв.контуд'] + 0.4*Raschet_ballov1['Показ.услугуд'] + 0.2*Raschet_ballov1['Пвежл.дистуд'], 2)
+Raschet_ballov1['Уреком'] = ans_res_st['_v20_']
+Raschet_ballov1['Чобщ3'] = all_ans
+Raschet_ballov1['Преком'] = round(Raschet_ballov1['Уреком']/Raschet_ballov1['Чобщ']*100, 2)
+Raschet_ballov1['Уорг.усл'] = ans_res_st['_v21_']
+Raschet_ballov1['Чобщ4'] = all_ans
+Raschet_ballov1['Порг.услуд'] = round(Raschet_ballov1['Уорг.усл']/Raschet_ballov1['Чобщ']*100, 2)
+Raschet_ballov1['Ууд'] = ans_res_st['_v22_']
+Raschet_ballov1['Чобщ5'] = all_ans
+Raschet_ballov1['Пуд'] = round(Raschet_ballov1['Ууд']/Raschet_ballov1['Чобщ']*100, 2)
+Raschet_ballov1['К5'] = round(0.3*Raschet_ballov1['Преком'] + 0.2*Raschet_ballov1['Порг.услуд'] + 0.5*Raschet_ballov1['Пуд'], 2)
+Raschet_ballov1['Общий балл'] = round((Raschet_ballov1['К1']+Raschet_ballov1['К2']+Raschet_ballov1['К3']+Raschet_ballov1['К4']+Raschet_ballov1['К5'])/5, 2)
+
+Raschet_ballov2 = Raschet_ballov.copy()
+
+for col in Raschet_ballov1.columns:
+    if col in Raschet_ballov2.columns:
+        Raschet_ballov2[col] = (Raschet_ballov[col] + Raschet_ballov1[col]) / 2
+    else:
+        Raschet_ballov2[col] = Raschet_ballov1[col]
+Raschet_ballov = Raschet_ballov2
 row_chek_list = chek_list.columns.tolist()
 
 New_col_for_chek_list = []  # Создаем пустой список
