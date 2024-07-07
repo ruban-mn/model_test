@@ -314,11 +314,11 @@ Raschet_ballov1['Общий балл'] = round((Raschet_ballov1['К1']+Raschet_b
 Raschet_ballov2 = Raschet_ballov.copy()
 
 # Соединение датафреймов и выполнение операции
-for col in Raschet_ballov1.columns[1:]:
-    if col in Raschet_ballov2.columns:
+for col in Raschet_ballov2.columns[1:]:
+    if col in Raschet_ballov1.columns:
         Raschet_ballov2[col] = (Raschet_ballov[col].astype(float) + Raschet_ballov1[col].astype(float)) / 2
     else:
-        Raschet_ballov2[col] = Raschet_ballov1[col]
+        Raschet_ballov2[col] = Raschet_ballov[col]
 Raschet_ballov = Raschet_ballov2
 
 row_chek_list = chek_list.columns.tolist()
