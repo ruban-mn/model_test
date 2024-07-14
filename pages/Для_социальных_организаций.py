@@ -558,8 +558,11 @@ default_font = otchet.styles['Normal'].font
 default_font.name = 'Times New Roman'
 default_font.size = Pt(14)
 
-abz50 = otchet.add_paragraph(f"Согласно результатам проведённого исследования, основным недостатком у данных учреждений является {sorted_list_krit.at[0, 'Наименование критерия']}. ")
+abz50 = otchet.add_paragraph(f"Согласно результатам проведённого исследования, большинство недостатком у данных учреждений наблюдается по критерию {sorted_list_krit.at[0, 'Наименование критерия']}. ")
 abz51 = otchet.add_paragraph(f"Также есть проблемы с {sorted_list_krit.at[1, 'Наименование критерия']} и {sorted_list_krit.at[2, 'Наименование критерия']}. ")# Вставка графика в документ Word
+
+table7 = otchet.add_table(sorted_list_krit)
+table7.style = 'Table Grid'  # Применяем стиль таблицы
 
 if not Raschet_ballov.empty:
     print("DataFrame не является пустым")
