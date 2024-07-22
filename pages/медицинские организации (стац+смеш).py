@@ -275,7 +275,7 @@ count_series12.columns = ['v0', '_v8_']
 count_series13 = Answers_respond1.groupby('v0')['v21'].count().reset_index()
 count_series13.columns = ['v0', '_v9_']
 answer_amb_stat['_v59_'] = (count_series12['_v8_'] + count_series13['_v9_'])/2
-answer_amb_stat['_v60_'] = answer_amb_stat['_v59_']
+answer_amb_stat['_v60_'] = count_series8['_v4_']
 
 ans_all = pd.concat([answer_amb, answer_amb_stat], ignore_index=True)
 
