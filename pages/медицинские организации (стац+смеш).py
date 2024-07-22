@@ -26,33 +26,35 @@ chek_list = pd.read_excel(uploaded_file)
 uploaded_file2 = st.file_uploader("**Загрузите файл с массивом анкет амбулатория**", type=["xls", "xlsx"])
 Answers_respond = pd.read_excel(uploaded_file2)
 
+uploaded_file3 = st.file_uploader("**Загрузите файл с массивом анкет амбулатория+стационар**", type=["xls", "xlsx"])
+Answers_respond1 = pd.read_excel(uploaded_file3)
 
 plase = st.text_input('Введите название территории в родительном падеже', 'н-р Московской области')
 
 ## подгружаем сводную по чек листам
-##chek_list=pd.read_excel(r"C:\Users\user\чек лист гулькевичи.xlsx")
+#chek_list=pd.read_excel(r"C:\отчеты 2024\2024 14 Ставрополь нок мед\НОКМ Ставрополь ЧекЛист 2024.xlsx")
 ##подгружаем массив с ответами респондентов
-##Answers_respond=pd.read_excel(r"C:\Users\user\Анкета Гулькевичи НОК культура (Ответы).xlsx")
-
+#Answers_respond=pd.read_excel(r"C:\отчеты 2024\2024 14 Ставрополь нок мед\Анкета АМБ Ставрополь 2024.xlsx")
+#Answers_respond1=pd.read_excel(r"C:\отчеты 2024\2024 14 Ставрополь нок мед\Анкета СТАЦ АМБ Ставрополь 2024.xlsx")
 tm.sleep(30)
 
 Answers_respond_list = Answers_respond.columns.tolist() ##извлекаем наименования столбцов в список
 
 New_col = []  # Создаем пустой список
-for i in range(32):  # Цикл от 0 до 18
+for i in range(30):  # Цикл от 0 до 18
     sim = i   # присваиваем номер
     New_col.append('v' + str(sim))  # добавляем новый номер вопрса в список
 
 dictionary = dict(zip(Answers_respond_list, New_col)) # создаем  словарь для переименования стобцов
 Answers_respond = Answers_respond.rename(columns=dictionary) # переименовываем столбцы в начальном датафрейме
-Answers_respond['v32'] = Answers_respond['v2'].map({'менее 1 часа': 1, '3 часа': 3})
-Answers_respond['v33'] = Answers_respond['v7'].map({'менее 7 календарных дней': 6, '7 календарных дней': 7, '10 календарных дней': 10, '12 календарных дней': 12, '13 календарных дней': 13, '14 календарных дней и более': 14})
+Answers_respond['v30'] = Answers_respond['v8'].map({'менее 1 часа': 1, '3 часа': 3})
+Answers_respond['v31'] = Answers_respond['v22'].map({'менее 7 календарных дней': 6, '14 календарных дней и более': 14})
 
 # Рассчитываем значение для нового столбца
 def calculate_value(row):
-    total_answers = sum([val for val in row['v32'] if not math.isnan(val)])
+    total_answers = sum([val for val in row['v30'] if not math.isnan(val)])
 
-    result_sum = sum([(i+1)*val for i, val in enumerate(row['v32']) if not math.isnan(val)])
+    result_sum = sum([(i+1)*val for i, val in enumerate(row['v30']) if not math.isnan(val)])
     result = round(result_sum / total_answers)
     
     if result == 24:
@@ -68,13 +70,13 @@ def calculate_value(row):
 
 
 result_df = Answers_respond.groupby('v0').apply(calculate_value).reset_index()
-result_df.columns = ['v0', 'v32']
+result_df.columns = ['v0', 'v30']
 
 # Рассчитываем значение для нового столбца
 def calculate_value1(row):
-    total_answers = sum([val for val in row['v33'] if not math.isnan(val)])
+    total_answers = sum([val for val in row['v31'] if not math.isnan(val)])
 
-    result_sum = sum([(i+1)*val for i, val in enumerate(row['v33']) if not math.isnan(val)])
+    result_sum = sum([(i+1)*val for i, val in enumerate(row['v31']) if not math.isnan(val)])
     result = round(result_sum / total_answers)
     
     if result == 14:
@@ -90,12 +92,14 @@ def calculate_value1(row):
 
 
 result_df1 = Answers_respond.groupby('v0').apply(calculate_value1).reset_index()
-result_df1.columns = ['v0', 'v33']
+result_df1.columns = ['v0', 'v31']
 
 # Создание нового DataFrame для хранения результатов подсчета, считам количество ответов да на вопросы анкеты
 ans_res = pd.DataFrame({'v0': Answers_respond['v0'].unique()})
 
-selected_columns = ['v5', 'v10', 'v11', 'v12', 'v13', 'v14', 'v15', 'v16', 'v17', 'v19', 'v23', 'v26', 'v27', 'v28', 'v29', 'v30', 'v31']
+
+
+selected_columns = ['v1', 'v2', 'v3', 'v4', 'v5', 'v11', 'v13', 'v14', 'v15', 'v19', 'v23', 'v24', 'v25', 'v26', 'v27', 'v28']
 # Используем цикл для подсчета значений и создания новых столбцов
 for col in selected_columns:
     value = 'да'  # Значение, которое мы считаем
@@ -105,18 +109,179 @@ for col in selected_columns:
 
 ans_res = ans_res.merge(result_df, on='v0', how='left')
 
-ans_res = ans_res.merge(result_df1, on='v0', how='left')
+ans_res = ans_res.merge(result_df1, on='v0', how='left')                                                                      
 
-ans_res = ans_res.dropna(axis=1) # Удаляем столбцы со значением NaN
-ans_res['v0'] = ans_res['v0'].str.replace('.', '')# Удаляем точку из наименований организаций
+ans_res['_v44_'] = (ans_res['v30'] + ans_res['v31'])/2
+
+ans_res['_v45_'] = (ans_res['_v13_'] + ans_res['_v23_'])/2
+
+ans_res.rename(columns={'_v5_': '_v46_', '_v15_': '_v47_', '_v19_': '_v48_', '_v11_': '_v49_', '_v14_': '_v50_', '_v24_': '_v51_', '_v25_': '_v52_', '_v26_': '_v53_', '_v27_': '_v54_', '_v28_': '_v55_'}, inplace=True)
+    
 ans_res = ans_res.sort_values(by='v0') # сортируем таблицу по возрастанию по столбцу наименования
 ans_res = ans_res.reset_index(drop=True)
 
-col_ob = Answers_respond.groupby('v0').size().reset_index(name='Ч_общ')
-col_ob['v0'] = col_ob['v0'].str.replace('.', '')# Удаляем точку из наименований организаций
-col_ob = col_ob.sort_values(by='v0') # сортируем таблицу по возрастанию по столбцу наименования
-col_ob = col_ob.reset_index(drop=True)
-all_ans = col_ob['Ч_общ']
+answer_amb = ans_res.filter(items=['v0','_v1_', '_v2_', '_v3_', '_v4_', '_v44_', '_v45_', '_v46_', '_v47_', '_v48_', '_v49_', '_v50_', '_v51_', '_v52_', '_v53_', '_v54_', '_v55_'])
+
+count_series = Answers_respond.groupby('v0')['v13'].count().reset_index()
+count_series.columns = ['v0', '_v1_']
+count_series1 = Answers_respond.groupby('v0')['v23'].count().reset_index()
+count_series1.columns = ['v0', '_v2_']
+answer_amb['_v56_'] = (count_series['_v1_'] + count_series1['_v2_'])/2
+count_series2 = Answers_respond.groupby('v0')['v5'].count().reset_index()
+count_series2.columns = ['v0', '_v3_']
+answer_amb['_v57_'] = count_series2['_v3_']
+count_series3 = Answers_respond.groupby('v0')['v11'].count().reset_index()
+count_series3.columns = ['v0', '_v4_']
+answer_amb['_v58_'] = count_series3['_v4_']
+count_series4 = Answers_respond.groupby('v0')['v14'].count().reset_index()
+count_series4.columns = ['v0', '_v5_']
+answer_amb['_v59_'] = count_series4['_v5_']
+answer_amb['_v60_'] = answer_amb['_v59_']
+# то же самое для смешанной анкеты
+Answers_respond_list1 = Answers_respond1.columns.tolist() ##извлекаем наименования столбцов в список
+
+New_col1 = []  # Создаем пустой список
+for i in range(36):  # Цикл от 0 до 18
+    sim = i   # присваиваем номер
+    New_col1.append('v' + str(sim))  # добавляем новый номер вопрса в список
+
+dictionary1 = dict(zip(Answers_respond_list1, New_col1)) # создаем  словарь для переименования стобцов
+Answers_respond1 = Answers_respond1.rename(columns=dictionary1) # переименовываем столбцы в начальном датафрейме
+Answers_respond1['v36'] = Answers_respond1['v8'].map({'менее 15 календарных дней': 14, '15 календарных дней': 15})
+Answers_respond1['v37'] = Answers_respond1['v15'].map({'менее 1 часа': 1, '3 часа': 3, '6 часов': 6, '24 часа и более': 24})
+Answers_respond1['v38'] = Answers_respond1['v29'].map({'менее 7 календарных дней': 6, '7 календарных дней': 7, '10 календарных дней': 10, '12 календарных дней': 12 ,'14 календарных дней и более': 14})
+
+# Рассчитываем значение для нового столбца
+def calculate_value(row):
+    total_answers = sum([val for val in row['v36'] if not math.isnan(val)])
+
+    result_sum = sum([(i+1)*val for i, val in enumerate(row['v36']) if not math.isnan(val)])
+    result = round(result_sum / total_answers)
+    
+    if result == 14:
+        return 10
+    elif result == 13:
+        return 20
+    elif result == 12:
+        return 40
+    elif 11 <= result <= 8:
+        return 60
+    else:
+        return 100
+
+
+result_df = Answers_respond1.groupby('v0').apply(calculate_value).reset_index()
+result_df.columns = ['v0', 'v36']
+
+# Рассчитываем значение для нового столбца
+def calculate_value1(row):
+    total_answers = sum([val for val in row['v37'] if not math.isnan(val)])
+
+    result_sum = sum([(i+1)*val for i, val in enumerate(row['v37']) if not math.isnan(val)])
+    result = round(result_sum / total_answers)
+    
+    if result == 14:
+        return 10
+    elif result == 13:
+        return 20
+    elif result == 12:
+        return 40
+    elif 11 <= result <= 8:
+        return 60
+    else:
+        return 100
+
+
+result_df1 = Answers_respond1.groupby('v0').apply(calculate_value1).reset_index()
+result_df1.columns = ['v0', 'v37']
+
+# Рассчитываем значение для нового столбца
+def calculate_value2(row):
+    total_answers = sum([val for val in row['v38'] if not math.isnan(val)])
+
+    result_sum = sum([(i+1)*val for i, val in enumerate(row['v38']) if not math.isnan(val)])
+    result = round(result_sum / total_answers)
+    
+    if result == 14:
+        return 10
+    elif result == 13:
+        return 20
+    elif result == 12:
+        return 40
+    elif 11 <= result <= 8:
+        return 60
+    else:
+        return 100
+
+
+result_df2 = Answers_respond1.groupby('v0').apply(calculate_value2).reset_index()
+result_df2.columns = ['v0', 'v38']
+
+# Создание нового DataFrame для хранения результатов подсчета, считам количество ответов да на вопросы анкеты
+ans_res1 = pd.DataFrame({'v0': Answers_respond1['v0'].unique()})
+
+selected_columns = ['v1', 'v2', 'v3', 'v4', 'v5', 'v9', 'v11', 'v13', 'v14', 'v18', 'v20', 'v21', 'v22', 'v26', 'v30', 'v31', 'v32', 'v33', 'v34', 'v35']
+# Используем цикл для подсчета значений и создания новых столбцов
+for col in selected_columns:
+    value = 'да'  # Значение, которое мы считаем
+    count_col_name = f'_{col}_'
+    counts = Answers_respond1[Answers_respond1[col] == value].groupby('v0').size().reset_index(name=count_col_name)
+    ans_res1 = ans_res1.merge(counts, on='v0', how='left')
+
+ans_res1 = ans_res1.merge(result_df, on='v0', how='left')
+
+ans_res1 = ans_res1.merge(result_df1, on='v0', how='left')
+
+ans_res1 = ans_res1.merge(result_df2, on='v0', how='left')
+
+ans_res1['_v44_'] = (ans_res1['v36'] + ans_res1['v37'] + ans_res1['v38'])/3
+
+ans_res1['_v45_'] = round((ans_res1['_v9_'] + ans_res1['_v20_'] + ans_res1['_v30_'])/3, 2)
+
+ans_res1['_v46_'] = (ans_res1['_v5_'] + ans_res1['_v11_'])/2
+
+ans_res1.rename(columns={'_v22_': '_v47_', '_v26_': '_v48_'}, inplace=True)
+
+ans_res1['_v49_'] = (ans_res1['_v13_'] + ans_res1['_v18_'])/2
+
+ans_res1['_v50_'] = (ans_res1['_v14_'] + ans_res1['_v21_'])/2
+
+ans_res1.rename(columns={'_v31_': '_v51_', '_v32_': '_v52_', '_v33_': '_v53_', '_v34_': '_v54_', '_v35_': '_v55_'}, inplace=True)
+
+ans_res1 = ans_res1.sort_values(by='v0') # сортируем таблицу по возрастанию по столбцу наименования
+ans_res1 = ans_res1.reset_index(drop=True)
+
+answer_amb_stat = ans_res1.filter(items=['v0', '_v1_', '_v2_', '_v3_', '_v4_', '_v44_', '_v45_', '_v46_', '_v47_', '_v48_', '_v49_', '_v50_', '_v51_', '_v52_', '_v53_', '_v54_', '_v55_'])
+
+count_series5 = Answers_respond1.groupby('v0')['v9'].count().reset_index()
+count_series5.columns = ['v0', '_v1_']
+count_series6 = Answers_respond1.groupby('v0')['v20'].count().reset_index()
+count_series6.columns = ['v0', '_v2_']
+count_series7 = Answers_respond1.groupby('v0')['v30'].count().reset_index()
+count_series7.columns = ['v0', '_v3_']
+answer_amb_stat['_v56_'] = round((count_series5['_v1_'] + count_series6['_v2_'] + + count_series7['_v3_'])/3, 2)
+count_series8 = Answers_respond1.groupby('v0')['v5'].count().reset_index()
+count_series8.columns = ['v0', '_v4_']
+count_series9 = Answers_respond1.groupby('v0')['v11'].count().reset_index()
+count_series9.columns = ['v0', '_v5_']
+answer_amb_stat['_v57_'] = (count_series8['_v4_'] + count_series9['_v5_'])/2
+count_series10 = Answers_respond1.groupby('v0')['v13'].count().reset_index()
+count_series10.columns = ['v0', '_v6_']
+count_series11 = Answers_respond1.groupby('v0')['v18'].count().reset_index()
+count_series11.columns = ['v0', '_v7_']
+answer_amb_stat['_v58_'] = (count_series10['_v6_'] + count_series11['_v7_'])/2
+count_series12 = Answers_respond1.groupby('v0')['v14'].count().reset_index()
+count_series12.columns = ['v0', '_v8_']
+count_series13 = Answers_respond1.groupby('v0')['v21'].count().reset_index()
+count_series13.columns = ['v0', '_v9_']
+answer_amb_stat['_v59_'] = (count_series12['_v8_'] + count_series13['_v9_'])/2
+answer_amb_stat['_v60_'] = answer_amb_stat['_v59_']
+
+ans_all = pd.concat([answer_amb, answer_amb_stat], ignore_index=True)
+
+ans_all = ans_all.sort_values(by='v0') # сортируем таблицу по возрастанию по столбцу наименования
+ans_all = ans_all.reset_index(drop=True)
+
 
 name_org = chek_list.filter(like='Наименование организации').copy()
 
@@ -130,22 +295,22 @@ Raschet_ballov['Тдист'] = 30
 Raschet_ballov['Сдист'] = chek_list.filter(like='Наличие и функционирование на официальном сайте').sum(axis=1)
 Raschet_ballov['Пдист'] = Raschet_ballov['Тдист']*Raschet_ballov['Сдист']
 Raschet_ballov['Пдист'].where(Raschet_ballov['Пдист'] <= 100, 100, inplace=True)
-Raschet_ballov['Устенд'] = ans_res['_v14_']
-Raschet_ballov['Усайт'] = ans_res['_v16_']
-Raschet_ballov['Уобщ-стенд'] = ans_res['_v13_']
-Raschet_ballov['Уобщ-сайт'] = ans_res['_v15_']
+Raschet_ballov['Устенд'] = ans_all['_v2_']
+Raschet_ballov['Усайт'] = ans_all['_v4_']
+Raschet_ballov['Уобщ-стенд'] = ans_all['_v1_']
+Raschet_ballov['Уобщ-сайт'] = ans_all['_v3_']
 Raschet_ballov['Поткруд'] = round(0.5*((Raschet_ballov['Устенд']/Raschet_ballov['Уобщ-стенд'])+(Raschet_ballov['Усайт']/Raschet_ballov['Уобщ-сайт']))*100, 2)
 Raschet_ballov['К1'] = round(0.3*Raschet_ballov['Пинф'] + 0.3*Raschet_ballov['Пдист'] + 0.4*Raschet_ballov['Поткруд'], 2)
 Raschet_ballov['Ткомф'] = chek_list.filter(like='Обеспечение в организации комфортных условий').sum(axis=1)
 Raschet_ballov['Скомф'] = 20
 Raschet_ballov['Пкомф.усл'] = Raschet_ballov['Ткомф']*Raschet_ballov['Скомф']
 Raschet_ballov['Пкомф.усл'].where(Raschet_ballov['Пкомф.усл'] <= 100, 100, inplace=True)
-Raschet_ballov['ожид'] = (ans_res['v32']+ans_res['v33'])/2
-Raschet_ballov['Усвоевр'] = (ans_res['_v11_']+ans_res['_v26_'])/2
-Raschet_ballov['Чобщ'] = all_ans
+Raschet_ballov['ожид'] = ans_all['_v44_']
+Raschet_ballov['Усвоевр'] = ans_all['_v45_']
+Raschet_ballov['Чобщ'] = ans_all['_v56_']
 Raschet_ballov['Пожид'] = (round(Raschet_ballov['Усвоевр']/Raschet_ballov['Чобщ']*100, 2) + Raschet_ballov['ожид'])/2
-Raschet_ballov['Укомф'] = ans_res['_v17_']
-Raschet_ballov['Чобщ'] = all_ans
+Raschet_ballov['Укомф'] = ans_all['_v46_']
+Raschet_ballov['Чобщ'] = ans_all['_v57_']
 Raschet_ballov['Пкомфуд'] = round(Raschet_ballov['Укомф']/Raschet_ballov['Чобщ']*100, 2)
 Raschet_ballov['К2'] = round(0.3*Raschet_ballov['Пкомф.усл'] + 0.4*Raschet_ballov['Пожид'] + 0.3*Raschet_ballov['Пкомфуд'], 2)
 Raschet_ballov['Торгдост'] = chek_list.filter(like='Оборудование территории').sum(axis=1)
@@ -156,28 +321,28 @@ Raschet_ballov['Туслугдост'] = chek_list.filter(like='Обеспече
 Raschet_ballov['Суслугдост'] = 20
 Raschet_ballov['Пуслугдост'] = Raschet_ballov['Туслугдост']*Raschet_ballov['Суслугдост']
 Raschet_ballov['Пуслугдост'].where(Raschet_ballov['Пуслугдост'] <= 100, 100, inplace=True)
-Raschet_ballov['Удост'] = ans_res['_v23_']
-Raschet_ballov['Чинв'] = ans_res['_v19_']
+Raschet_ballov['Удост'] = ans_all['_v48_']
+Raschet_ballov['Чинв'] = ans_all['_v47_']
 Raschet_ballov['Пдостуд'] = round(Raschet_ballov['Удост']/Raschet_ballov['Чинв']*100, 2)
 Raschet_ballov['К3'] = round(0.3*Raschet_ballov['Поргдост'] + 0.4*Raschet_ballov['Пуслугдост'] + 0.3*Raschet_ballov['Пдостуд'], 2)
-Raschet_ballov['Уперв.конт'] = (ans_res['_v5_'] + ans_res['_v10_'])/2
-Raschet_ballov['Чобщ1'] = all_ans
+Raschet_ballov['Уперв.конт'] = ans_all['_v49_']
+Raschet_ballov['Чобщ1'] = ans_all['_v58_']
 Raschet_ballov['Пперв.контуд'] = round(Raschet_ballov['Уперв.конт']/Raschet_ballov['Чобщ']*100, 2)
-Raschet_ballov['Уоказ.услуг'] = ans_res['_v12_']
-Raschet_ballov['Чобщ2'] = all_ans
+Raschet_ballov['Уоказ.услуг'] = ans_all['_v50_']
+Raschet_ballov['Чобщ2'] = ans_all['_v59_']
 Raschet_ballov['Показ.услугуд'] = round(Raschet_ballov['Уоказ.услуг']/Raschet_ballov['Чобщ']*100, 2)
-Raschet_ballov['Увежл.дист'] = ans_res['_v31_']
-Raschet_ballov['Чобщ_ус'] = ans_res['_v30_']
+Raschet_ballov['Увежл.дист'] = ans_all['_v52_']
+Raschet_ballov['Чобщ_ус'] = ans_all['_v51_']
 Raschet_ballov['Пвежл.дистуд'] = round(Raschet_ballov['Увежл.дист']/Raschet_ballov['Чобщ_ус']*100, 2)
 Raschet_ballov['К4'] = round(0.4*Raschet_ballov['Пперв.контуд'] + 0.4*Raschet_ballov['Показ.услугуд'] + 0.2*Raschet_ballov['Пвежл.дистуд'], 2)
-Raschet_ballov['Уреком'] = ans_res['_v27_']
-Raschet_ballov['Чобщ3'] = all_ans
+Raschet_ballov['Уреком'] = ans_all['_v53_']
+Raschet_ballov['Чобщ3'] = ans_all['_v60_']
 Raschet_ballov['Преком'] = round(Raschet_ballov['Уреком']/Raschet_ballov['Чобщ']*100, 2)
-Raschet_ballov['Уорг.усл'] = ans_res['_v28_']
-Raschet_ballov['Чобщ4'] = all_ans
+Raschet_ballov['Уорг.усл'] = ans_all['_v54_']
+Raschet_ballov['Чобщ4'] = ans_all['_v60_']
 Raschet_ballov['Порг.услуд'] = round(Raschet_ballov['Уорг.усл']/Raschet_ballov['Чобщ']*100, 2)
-Raschet_ballov['Ууд'] = ans_res['_v29_']
-Raschet_ballov['Чобщ5'] = all_ans
+Raschet_ballov['Ууд'] = ans_all['_v55_']
+Raschet_ballov['Чобщ5'] = ans_all['_v60_']
 Raschet_ballov['Пуд'] = round(Raschet_ballov['Ууд']/Raschet_ballov['Чобщ']*100, 2)
 Raschet_ballov['К5'] = round(0.3*Raschet_ballov['Преком'] + 0.2*Raschet_ballov['Порг.услуд'] + 0.5*Raschet_ballov['Пуд'], 2)
 Raschet_ballov['Общий балл'] = round((Raschet_ballov['К1']+Raschet_ballov['К2']+Raschet_ballov['К3']+Raschet_ballov['К4']+Raschet_ballov['К5'])/5, 2)
@@ -196,12 +361,12 @@ chek_list = chek_list.rename(columns=dict_chek) # переименовываем
 
 
 name_org1 = pd.DataFrame({'us0': chek_list['us0']}) 
-chek_list_stend = chek_list.iloc[:, 1:27]  # Датафрейм с 1-5 столбцами
-chek_list_sait = chek_list.iloc[:, 28:56]  # Датафрейм с 6-10 столбцами = df.iloc[:, 0:5]  # Датафрейм с 1-5 столбцами
-chek_list_dist = chek_list.iloc[:, 57:62]  # Датафрейм с 6-10 столбцами
-chek_list_komf = chek_list.iloc[:, 63:69]
-chek_list_obor_inv = chek_list.iloc[:, 70:74]
-chek_list_sreda_inv = chek_list.iloc[:, 75:80]
+chek_list_stend = chek_list.iloc[:, 1:60]  # Датафрейм с 1-5 столбцами
+chek_list_sait = chek_list.iloc[:, 61:120]  # Датафрейм с 6-10 столбцами = df.iloc[:, 0:5]  # Датафрейм с 1-5 столбцами
+chek_list_dist = chek_list.iloc[:, 121:124]  # Датафрейм с 6-10 столбцами
+chek_list_komf = chek_list.iloc[:, 125:133]
+chek_list_obor_inv = chek_list.iloc[:, 134:138]
+chek_list_sreda_inv = chek_list.iloc[:, 139:144]
 
 chek_list_stend = pd.concat([name_org1, chek_list_stend], axis=1)
 chek_list_sait = pd.concat([name_org1, chek_list_sait], axis=1)
@@ -595,6 +760,20 @@ list_krit_dict = {'Критерий 1': '1. Открытость и доступ
 # Массово заменяем значения в столбце 'Имя'
 sorted_list_krit['Наименование критерия'] = sorted_list_krit['Наименование критерия'].replace(list_krit_dict)
 
+# Добавляем таблицу в документ
+table100 = otchet.add_table(rows=1, cols=2)  # Создаем таблицу с 1 строкой и 2 колонками
+
+# Добавляем заголовки столбцов
+hdr_cells = table100.rows[0].cells
+hdr_cells[0].text = 'Наименование критерия'
+hdr_cells[1].text = 'Среднее значение'
+
+# Заполняем таблицу данными
+for index, row in sorted_list_krit.iterrows():
+    row_cells = table100.add_row().cells
+    row_cells[0].text = row['Наименование критерия']
+    row_cells[1].text = str(row['Значение'])
+
 default_font = otchet.styles['Normal'].font
 default_font.name = 'Times New Roman'
 default_font.size = Pt(14)
@@ -638,7 +817,7 @@ for index, row in output_df.iterrows():
                         f"Недостатки доступности среды для инвалидов: {str(row['sreda_inv'])}"
 
 
-
+abz60 = otchet.add_paragraph(f"Рекомендации")
 # Создаем таблицу с нужным количеством строк и столбцов
 table30 = otchet.add_table(rows=1, cols=2)
 table30.style = 'Table Grid'  # Применяем стиль таблицы
@@ -705,6 +884,9 @@ for index, row in output_df.iterrows():
     row_cells[1].text = f"Разместить на стенде организации следующие документы: {str(row['bad_stend'])}\n"\
                         f"Разместить на сайте организации следующие документы: {str(row['bad_sait'])}\n"\
                         f"Обеспечить наличие в организации следующих видов дистанционного взаимодействия: {str(row['bad_dist'])}\n"\
+                        f"Обеспечить следующие условия комфортности предоставления услуг: {str(row['bad_komf'])}\n"\
+                        f"Обеспечить следующие оборудование для инвалидов: {str(row['obor_inv'])}\n"\
+                        f"Обеспечить доступность среды для инвалидов, а именно: {str(row['sreda_inv'])\n"\
                         f"В разрезе удовлетворенности доступностью услуг для инвалидов рекомендовано: {result_k3}\n"\
                         f"В разрезе удовлетворенности вежливостью и доброжелательностью работников учреждения рекомендовано:: {result_k4}\n"\
                         f"В разрезе удовлетворенности предоставлением услуг в целом рекомендовано: {result_k5}"
