@@ -817,7 +817,7 @@ for index, row in output_df.iterrows():
                         f"Недостатки доступности среды для инвалидов: {str(row['sreda_inv'])}"
 
 
-abz60 = otchet.add_paragraph(f"Рекомендации")
+abz60 = otchet.add_paragraph(f"Рекомендации для организаций")
 # Создаем таблицу с нужным количеством строк и столбцов
 table30 = otchet.add_table(rows=1, cols=2)
 table30.style = 'Table Grid'  # Применяем стиль таблицы
