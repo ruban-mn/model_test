@@ -530,6 +530,21 @@ list_krit_dict = {'Критерий 1': '1. Открытость и доступ
 # Массово заменяем значения в столбце 'Имя'
 sorted_list_krit['Наименование критерия'] = sorted_list_krit['Наименование критерия'].replace(list_krit_dict)
 
+# Добавляем таблицу в документ
+table100 = otchet.add_table(rows=1, cols=2)  # Создаем таблицу с 1 строкой и 2 колонками
+
+# Добавляем заголовки столбцов
+hdr_cells = table100.rows[0].cells
+hdr_cells[0].text = 'Наименование критерия'
+hdr_cells[1].text = 'Среднее значение'
+
+# Заполняем таблицу данными
+for index, row in sorted_list_krit.iterrows():
+    row_cells = table100.add_row().cells
+    row_cells[0].text = row['Наименование критерия']
+    row_cells[1].text = str(row['Значение'])
+
+
 default_font = otchet.styles['Normal'].font
 default_font.name = 'Times New Roman'
 default_font.size = Pt(14)
