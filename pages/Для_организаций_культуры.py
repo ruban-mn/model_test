@@ -593,7 +593,7 @@ for index, row in output_df.iterrows():
     row_cells = table20.add_row().cells
     row_cells[0].text = str(row['Наименование организации или П/Н по списку'])
     row_cells[1].text = str(Raschet_ballov.loc[Raschet_ballov['Наименование организации или П/Н по списку'] == row['Наименование организации или П/Н по списку'], 'Общий балл'].values[0])
-    row_cells[2].text = str(sorted_table.loc[sorted_table['Наименование организации или П/Н по списку'] == row['Name_org'], 'рейтинг'].values[0])
+    row_cells[2].text = str(sorted_table.loc[sorted_table['Наименование организации или П/Н по списку'] == row['Наименование организации или П/Н по списку'], 'рейтинг'].values[0])
     row_cells[3].text = f"Недостатки на стенде: отсутствуют документы о {str(row['bad_stend'])}\n"\
                         f"Недостатки на сайте: отсутствуют документы о {str(row['bad_sait'])}\n"\
                         f"Недостатки функционирование дистанционных способов связи: {str(row['bad_dist'])}\n"\
