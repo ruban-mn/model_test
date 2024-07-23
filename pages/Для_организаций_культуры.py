@@ -151,6 +151,8 @@ sum_Raschet_ballov_transposed['9 БУК ВО «Вологодский облас
 
 Raschet_ballov = sum_Raschet_ballov_transposed.T
 
+Raschet_ballov = Raschet_ballov.reset_index()
+
 row_chek_list = chek_list.columns.tolist()
 
 New_col_for_chek_list = []  # Создаем пустой список
