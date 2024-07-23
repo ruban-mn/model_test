@@ -14,24 +14,13 @@ from docx.shared import Cm
 from docx import Document
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
-# In[7]:
-
 
 st.subheader('Независимая оценка качества услуг организаций культуры')
-
-
-# In[6]:
-
 uploaded_file = st.file_uploader("**Загрузите файл сводную по чек-листам**", type=["xls", "xlsx"])
-
 
 #if uploaded_file is not None:
     # Чтение данных из загруженного файла Excel
 chek_list = pd.read_excel(uploaded_file)
-
-
-# In[7]:
-
 
 uploaded_file = st.file_uploader("**Загрузите файл с массивом анкет**", type=["xls", "xlsx"])
 
@@ -40,8 +29,6 @@ uploaded_file = st.file_uploader("**Загрузите файл с массив�
 
 Answers_respond = pd.read_excel(uploaded_file)
 
-
-# In[8]:
 plase = st.text_input('Введите название территории в родительном падеже', 'н-р Московской области')
 
 ## подгружаем сводную по чек листам
@@ -49,42 +36,17 @@ plase = st.text_input('Введите название территории в �
 ##подгружаем массив с ответами респондентов
 #Answers_respond=pd.read_excel(r"C:\Users\user\Анкета Гулькевичи НОК культура (Ответы).xlsx")
 
-
-# In[ ]:
-
-
 tm.sleep(30)
 
-
-# In[9]:
-
-
 Answers_respond_list = Answers_respond.columns.tolist() ##извлекаем наименования столбцов в список
-
-
-# In[ ]:
-
 
 New_col = []  # Создаем пустой список
 for i in range(15):  # Цикл от 0 до 18
     sim = i   # присваиваем номер
     New_col.append('v' + str(sim))  # добавляем новый номер вопрса в список
 
-
-# In[ ]:
-
-
 dictionary = dict(zip(Answers_respond_list, New_col)) # создаем  словарь для переименования стобцов
-
-
-# In[ ]:
-
-
 Answers_respond = Answers_respond.rename(columns=dictionary) # переименовываем столбцы в начальном датафрейме
-
-
-# In[ ]:
-
 
 # Создание нового DataFrame для хранения результатов подсчета, считам количество ответов да на вопросы анкеты
 ans_res = pd.DataFrame({'v0': Answers_respond['v0'].unique()})
@@ -96,18 +58,10 @@ for col in New_col:
     counts = Answers_respond[Answers_respond[col] == value].groupby('v0').size().reset_index(name=count_col_name)
     ans_res = ans_res.merge(counts, on='v0', how='left')
 
-
-# In[ ]:
-
-
 ans_res = ans_res.dropna(axis=1) # Удаляем столбцы со значением NaN
 ans_res['v0'] = ans_res['v0'].str.replace('.', '')# Удаляем точку из наименований организаций
 ans_res = ans_res.sort_values(by='v0') # сортируем таблицу по возрастанию по столбцу наименования
 ans_res = ans_res.reset_index(drop=True)
-
-
-# In[ ]:
-
 
 col_ob = Answers_respond.groupby('v0').size().reset_index(name='Ч_общ')
 col_ob['v0'] = col_ob['v0'].str.replace('.', '')# Удаляем точку из наименований организаций
@@ -115,15 +69,7 @@ col_ob = col_ob.sort_values(by='v0') # сортируем таблицу по в
 col_ob = col_ob.reset_index(drop=True)
 all_ans = col_ob['Ч_общ']
 
-
-# In[ ]:
-
-
 name_org = chek_list.filter(like='Наименование организации').copy()
-
-
-# In[10]:
-
 
 Raschet_ballov = name_org
 Raschet_ballov['Истенд'] = chek_list.filter(like='На СТЕНДЕ').sum(axis=1)
