@@ -128,6 +128,29 @@ Raschet_ballov['Пуд'] = round(Raschet_ballov['Ууд']/Raschet_ballov['Чоб
 Raschet_ballov['К5'] = round(0.3*Raschet_ballov['Преком'] + 0.2*Raschet_ballov['Порг.услуд'] + 0.5*Raschet_ballov['Пуд'], 2)
 Raschet_ballov['Общий балл'] = round((Raschet_ballov['К1']+Raschet_ballov['К2']+Raschet_ballov['К3']+Raschet_ballov['К4']+Raschet_ballov['К5'])/5, 2)
 
+Raschet_ballov_transposed = Raschet_ballov.T
+
+# Устанавливаем первую строку как заголовки столбцов
+Raschet_ballov_transposed.columns = Raschet_ballov_transposed.iloc[0]  # Устанавливаем названия столбцов
+Raschet_ballov_transposed = Raschet_ballov_transposed[1:]  # Удаляем первую строку, так как она теперь заголовки
+
+sum_Raschet_ballov_transposed = Raschet_ballov_transposed.filter(like='Наименование организации').copy()
+sum_Raschet_ballov_transposed['1 БУК ВО «Вологодская областная универсальная научная библиотека им. И.В. Бабушкина»'] = (Raschet_ballov_transposed['1 БУК ВО «Вологодская областная универсальная научная библиотека им. И.В. Бабушкина»'] + Raschet_ballov_transposed['1ф. Филиал БУК ВО «Вологодская областная универсальная научная библиотека им. И.В. Бабушкина»'])/2
+sum_Raschet_ballov_transposed['10 БУК ВО «Вологодский областной театр кукол «Теремок»'] = Raschet_ballov_transposed['10 БУК ВО «Вологодский областной театр кукол «Теремок»']
+sum_Raschet_ballov_transposed['11 АУК ВО «Вологодская областная государственная филармония им. В.А.Гаврилина»'] = Raschet_ballov_transposed['11 АУК ВО «Вологодская областная государственная филармония им. В.А.Гаврилина»']
+sum_Raschet_ballov_transposed['12 Автономное учреждение культуры Вологодской области «Вологдареставрация»'] = Raschet_ballov_transposed['12 Автономное учреждение культуры Вологодской области «Вологдареставрация» (в отношении Культурно-просветительского и духовного центра «Усадьбы Вологодчины»)']
+sum_Raschet_ballov_transposed['13 БУК ВО «Центр народной культуры»'] = Raschet_ballov_transposed['13 БУК ВО «Центр народной культуры»']
+sum_Raschet_ballov_transposed['2 БУК ВО «Вологодская областная детская библиотека»'] = Raschet_ballov_transposed['2 БУК ВО «Вологодская областная детская библиотека»']
+sum_Raschet_ballov_transposed['3 БУК ВО «Вологодская областная специальная библиотека для слепых»'] = Raschet_ballov_transposed['3 БУК ВО «Вологодская областная специальная библиотека для слепых»']
+sum_Raschet_ballov_transposed['4 БУК ВО «Вологодский государственный историко-архитектурный и художественный музей-заповедник»'] = (Raschet_ballov_transposed['4 БУК ВО «Вологодский государственный историко-архитектурный и художественный музей-заповедник»'] + Raschet_ballov_transposed['4ф. Архитектурно–этнографический музей Вологодской области («Семёнково»)'] + Raschet_ballov_transposed['4ф. Выставочный комплекс "Вологда на рубеже XIX - XX веков"'] + Raschet_ballov_transposed['4ф. Дом-музей А. Ф. Можайского'] + Raschet_ballov_transposed['4ф. Дом-музей Петра I'] + Raschet_ballov_transposed['4ф. Музей «Вологодская ссылка»'] + Raschet_ballov_transposed['4ф. Музей «Литература. Искусство. Век ХХ»'] + Raschet_ballov_transposed['4ф. Музей кружева'] + Raschet_ballov_transposed['4ф. ОП Мухей "мир забытых вещей'])/9
+sum_Raschet_ballov_transposed['5 БУК ВО «Вологодская областная картинная галерея»'] = (Raschet_ballov_transposed['5 БУК ВО «Вологодская областная картинная галерея»'] + Raschet_ballov_transposed['5ф. Дом Корбаковам'] + Raschet_ballov_transposed['5ф. Мастерская А.В. Пантелеева'] + Raschet_ballov_transposed['5ф. Шаламовский дом'])/4
+sum_Raschet_ballov_transposed['6 БУК ВО «Великоустюгский государственный историко-архитектурный и художественный музей-заповедник»'] = (Raschet_ballov_transposed['6 БУК ВО «Великоустюгский государственный историко-архитектурный и художественный музей-заповедник»'] + Raschet_ballov_transposed['6ф. Ансамбль Троице-Гледенского монастыря'] + Raschet_ballov_transposed['6ф. Выставочный зал'] + Raschet_ballov_transposed['6ф. Депозитарий'] + Raschet_ballov_transposed['6ф. Детский музейный центр'] + Raschet_ballov_transposed['6ф. Музей древнерусского искусства'] + Raschet_ballov_transposed['6ф. Музей истории и культуры'] + Raschet_ballov_transposed['6ф. Музей новогодней и рождественской игрушки'] + Raschet_ballov_transposed['6ф. Музей природы края'] + Raschet_ballov_transposed['6ф. Собор Архангела Михаила'])/10
+sum_Raschet_ballov_transposed['7 БУК ВО «Белозерский областной краеведческий музей»'] = (Raschet_ballov_transposed['7 БУК ВО «Белозерский областной краеведческий музей»'] + Raschet_ballov_transposed['7ф. Мемориальный дом музей поэта С.С. Орлова'] + Raschet_ballov_transposed['7ф. Музей белого озера'] + Raschet_ballov_transposed['7ф. Музей этнографии'] + Raschet_ballov_transposed['7ф. Спасо-Преображенский собор'])/5
+sum_Raschet_ballov_transposed['8 АУК ВО «Вологодский ордена «Знак Почета» государственный драматический театр»'] = Raschet_ballov_transposed['8 АУК ВО «Вологодский ордена «Знак Почета» государственный драматический театр»']
+sum_Raschet_ballov_transposed['9 БУК ВО «Вологодский областной театр юного зрителя»'] = Raschet_ballov_transposed['9 БУК ВО «Вологодский областной театр юного зрителя»']
+
+Raschet_ballov = sum_Raschet_ballov_transposed.T
+
 row_chek_list = chek_list.columns.tolist()
 
 New_col_for_chek_list = []  # Создаем пустой список
