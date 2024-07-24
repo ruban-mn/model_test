@@ -149,10 +149,10 @@ sum_Raschet_ballov_transposed['7 БУК ВО «Белозерский облас
 sum_Raschet_ballov_transposed['8 АУК ВО «Вологодский ордена «Знак Почета» государственный драматический театр»'] = Raschet_ballov_transposed['8 АУК ВО «Вологодский ордена «Знак Почета» государственный драматический театр»']
 sum_Raschet_ballov_transposed['9 БУК ВО «Вологодский областной театр юного зрителя»'] = Raschet_ballov_transposed['9 БУК ВО «Вологодский областной театр юного зрителя»']
 
-Raschet_ballov = sum_Raschet_ballov_transposed.T
+Raschet_ballov1 = sum_Raschet_ballov_transposed.T
 
-Raschet_ballov1 = Raschet_ballov.reset_index()
-
+Raschet_ballov1 = Raschet_ballov1.reset_index()
+Raschet_ballov1.columns
 row_chek_list = chek_list.columns.tolist()
 
 New_col_for_chek_list = []  # Создаем пустой список
