@@ -611,7 +611,7 @@ hdr_cells[1].text = 'Рекомендации'
 # Проходимся по каждой строке и добавляем данные в таблицу
 for index, row in output_df.iterrows():
     row_cells = table30.add_row().cells
-    row_cells[0].text = str(row['Наименование организации или П/Н по списку'])
+    row_cells[0].text = str(row['Name_org'])
     
     K3_list = int(table15.loc[table15['Наименование организации или П/Н по списку'] == row['Name_org'], 'К3'].values[0])
         # Добавляем результат проверки условия в столбец "Недостатки"
