@@ -584,15 +584,13 @@ table20.style = 'Table Grid'  # Применяем стиль таблицы
 # Заголовки столбцов
 hdr_cells = table20.rows[0].cells
 hdr_cells[0].text = 'Наименование организации'
-hdr_cells[1].text = 'Балл'
-hdr_cells[2].text = 'Недостатки'
+hdr_cells[1].text = 'Недостатки'
 
 # Проходимся по каждой строке и добавляем данные в таблицу
 for index, row in output_df.iterrows():
     row_cells = table20.add_row().cells
     row_cells[0].text = str(row['Name_org'])
-    row_cells[1].text = str(Raschet_ballov.loc[Raschet_ballov['Наименование организации или П/Н по списку'] == row['Name_org'], 'Общий балл'].values[0])
-    row_cells[2].text = f"Недостатки на стенде: отсутствуют документы о {str(row['bad_stend'])}\n"\
+    row_cells[1].text = f"Недостатки на стенде: отсутствуют документы о {str(row['bad_stend'])}\n"\
                         f"Недостатки на сайте: отсутствуют документы о {str(row['bad_sait'])}\n"\
                         f"Недостатки функционирование дистанционных способов связи: {str(row['bad_dist'])}\n"\
                         f"Недостатки комфортности условий предоставления услуг: {str(row['bad_komf'])}\n"\
