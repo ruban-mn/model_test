@@ -32,7 +32,7 @@ Answers_respond = pd.read_excel(uploaded_file)
 plase = st.text_input('Введите название территории в родительном падеже', 'н-р Московской области')
 
 ## подгружаем сводную по чек листам
-#chek_list=pd.read_excel(r"C:\Users\user\чек лист гулькевичи.xlsx")
+#№chek_list=pd.read_excel(r"C:\Users\user\чек лист гулькевичи.xlsx")
 ##подгружаем массив с ответами респондентов
 #Answers_respond=pd.read_excel(r"C:\Users\user\Анкета Гулькевичи НОК культура (Ответы).xlsx")
 
