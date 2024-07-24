@@ -509,9 +509,9 @@ table15_1 = Raschet_ballov.loc[:, ['Наименование организац�
 min_value = table15_1['Общий балл'].min()
 max_value = table15_1['Общий балл'].max()
 mean_value = table15_1['Общий балл'].mean()
-sorted_table = table15_1.sort_values(by='Общий балл', ascending=False)
-top_3_rows = sorted_table.head(3)
-bad_3_rows = sorted_table.tail(1)
+sorted_table1 = table15_1.sort_values(by='Общий балл', ascending=False)
+top_3_rows = sorted_table1.head(3)
+bad_3_rows = sorted_table1.tail(1)
 
 
 sorted_table['рейтинг'] = range(1, len(sorted_table) + 1)
