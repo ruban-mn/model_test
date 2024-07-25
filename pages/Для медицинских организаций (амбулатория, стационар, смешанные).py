@@ -300,7 +300,9 @@ def calculate_value(row):
     result_sum = sum([(i+1)*val for i, val in enumerate(row['v25']) if not math.isnan(val)])
     result = round(result_sum / total_answers)
     
-    if result == 14:
+    if result > 14:
+        return 0
+    elif result == 14:
         return 10
     elif result == 13:
         return 20
@@ -391,7 +393,7 @@ Raschet_ballov['Усвоевр'] = ans_all['_v41_']
 Raschet_ballov['Чобщ'] = ans_all['_v52_']
 Raschet_ballov['Пожид'] = (round(Raschet_ballov['Усвоевр']/Raschet_ballov['Чобщ']*100, 2) + Raschet_ballov['ожид'])/2
 Raschet_ballov['Укомф'] = ans_all['_v42_']
-Raschet_ballov['Чобщ'] = ans_all['_v53_']
+Raschet_ballov['Чобщ0'] = ans_all['_v53_']
 Raschet_ballov['Пкомфуд'] = round(Raschet_ballov['Укомф']/Raschet_ballov['Чобщ']*100, 2)
 Raschet_ballov['К2'] = round(0.3*Raschet_ballov['Пкомф.усл'] + 0.4*Raschet_ballov['Пожид'] + 0.3*Raschet_ballov['Пкомфуд'], 2)
 Raschet_ballov['Торгдост'] = chek_list.filter(like='Оборудование территории').sum(axis=1)
