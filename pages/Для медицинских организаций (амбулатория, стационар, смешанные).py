@@ -123,7 +123,7 @@ ans_res.rename(columns={'_v5_': '_v42_', '_v15_': '_v43_', '_v19_': '_v44_', '_v
 ans_res = ans_res.sort_values(by='v0') # сортируем таблицу по возрастанию по столбцу наименования
 ans_res = ans_res.reset_index(drop=True)
 
-answer_amb = ans_res.filter(items=['v0','_v1_', '_v2_', '_v3_', '_v4_', '_v44_', '_v45_', '_v46_', '_v47_', '_v48_', '_v49_', '_v50_', '_v51_', '_v52_', '_v53_', '_v54_', '_v55_'])
+answer_amb = ans_res.filter(items=['v0','_v1_', '_v2_', '_v3_', '_v4_', '_v40_', '_v41_', '_v42_', '_v43_', '_v44_', '_v45_', '_v46_', '_v47_', '_v48_', '_v49_', '_v50_', '_v51_'])
 
 count_series = Answers_respond.groupby('v0')['v13'].count().reset_index()
 count_series.columns = ['v0', '_v1_']
@@ -254,7 +254,7 @@ ans_res1.rename(columns={'_v31_': '_v47_', '_v32_': '_v48_', '_v33_': '_v49_', '
 ans_res1 = ans_res1.sort_values(by='v0') # сортируем таблицу по возрастанию по столбцу наименования
 ans_res1 = ans_res1.reset_index(drop=True)
 
-answer_amb_stat = ans_res1.filter(items=['v0', '_v1_', '_v2_', '_v3_', '_v4_', '_v44_', '_v45_', '_v46_', '_v47_', '_v48_', '_v49_', '_v50_', '_v51_', '_v52_', '_v53_', '_v54_', '_v55_'])
+answer_amb_stat = ans_res1.filter(items=['v0','_v1_', '_v2_', '_v3_', '_v4_', '_v40_', '_v41_', '_v42_', '_v43_', '_v44_', '_v45_', '_v46_', '_v47_', '_v48_', '_v49_', '_v50_', '_v51_'])
 
 count_series5 = Answers_respond1.groupby('v0')['v9'].count().reset_index()
 count_series5.columns = ['v0', '_v1_']
@@ -340,7 +340,7 @@ ans_res2.rename(columns={'_v20_': '_v47_', '_v21_': '_v48_', '_v22_': '_v49_', '
 ans_res2 = ans_res2.sort_values(by='v0') # сортируем таблицу по возрастанию по столбцу наименования
 ans_res2 = ans_res2.reset_index(drop=True)
 
-answer_stat = ans_res2.filter(items=['v0', '_v1_', '_v2_', '_v3_', '_v4_', '_v44_', '_v45_', '_v46_', '_v47_', '_v48_', '_v49_', '_v50_', '_v51_', '_v52_', '_v53_', '_v54_', '_v55_'])
+answer_stat = ans_res2.filter(items=['v0','_v1_', '_v2_', '_v3_', '_v4_', '_v40_', '_v41_', '_v42_', '_v43_', '_v44_', '_v45_', '_v46_', '_v47_', '_v48_', '_v49_', '_v50_', '_v51_'])
 
 count_series14 = Answers_respond2.groupby('v0')['v11'].count().reset_index()
 count_series14.columns = ['v0', '_v1_']
