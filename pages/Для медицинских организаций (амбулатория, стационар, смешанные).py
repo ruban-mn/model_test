@@ -298,7 +298,7 @@ def calculate_value(row):
     total_answers = sum([val for val in row['v25'] if not math.isnan(val)])
 
     result_sum = sum([(i+1)*val for i, val in enumerate(row['v25']) if not math.isnan(val)])
-    result = round(result_sum / total_answers)
+    result = round(result_sum / total_answers, 0)
     
     if result > 14:
         return 0
@@ -331,11 +331,9 @@ for col in selected_columns:
 
 ans_res2 = ans_res2.merge(result_df, on='v0', how='left')
 
-ans_res2.rename(columns={'_v25_': '_v40_', '_v11_': '_v41_'}, inplace=True)
+ans_res2.rename(columns={'v25': '_v40_', '_v11_': '_v41_'}, inplace=True)
 
-ans_res2['_v41_'] = (ans_res2['_v5_'] + ans_res2['_v7_'])/2
-
-ans_res2['_v42_'] = result_df['v25']
+ans_res2['_v42_'] = (ans_res2['_v5_'] + ans_res2['_v7_'])/2
 
 ans_res2.rename(columns={'_v13_': '_v43_', '_v17_': '_v44_', '_v18_': '_v45_', '_v19_': '_v46_'}, inplace=True)
 
@@ -367,7 +365,6 @@ ans_all = pd.concat([answer_amb, answer_amb_stat, answer_stat], ignore_index=Tru
 ans_all = ans_all.sort_values(by='v0') # сортируем таблицу по возрастанию по столбцу наименования
 ans_all = ans_all.reset_index(drop=True)
 
-
 name_org = chek_list.filter(like='Наименование организации').copy()
 
 Raschet_ballov = name_org
@@ -396,7 +393,7 @@ Raschet_ballov['Чобщ'] = ans_all['_v52_']
 Raschet_ballov['Пожид'] = (round(Raschet_ballov['Усвоевр']/Raschet_ballov['Чобщ']*100, 2) + Raschet_ballov['ожид'])/2
 Raschet_ballov['Укомф'] = ans_all['_v42_']
 Raschet_ballov['Чобщ0'] = ans_all['_v53_']
-Raschet_ballov['Пкомфуд'] = round(Raschet_ballov['Укомф']/Raschet_ballov['Чобщ']*100, 2)
+Raschet_ballov['Пкомфуд'] = round(Raschet_ballov['Укомф']/Raschet_ballov['Чобщ0']*100, 2)
 Raschet_ballov['К2'] = round(0.3*Raschet_ballov['Пкомф.усл'] + 0.4*Raschet_ballov['Пожид'] + 0.3*Raschet_ballov['Пкомфуд'], 2)
 Raschet_ballov['Торгдост'] = chek_list.filter(like='Оборудование территории').sum(axis=1)
 Raschet_ballov['Соргдост'] = 20
