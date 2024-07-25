@@ -29,6 +29,9 @@ Answers_respond = pd.read_excel(uploaded_file2)
 uploaded_file3 = st.file_uploader("**Загрузите файл с массивом анкет амбулатория+стационар**", type=["xls", "xlsx"])
 Answers_respond1 = pd.read_excel(uploaded_file3)
 
+uploaded_file4 = st.file_uploader("**Загрузите файл с массивом анкет стационар**", type=["xls", "xlsx"])
+Answers_respond2 = pd.read_excel(uploaded_file4)
+
 plase = st.text_input('Введите название территории в родительном падеже', 'н-р Московской области')
 
 ## подгружаем сводную по чек листам
@@ -48,7 +51,7 @@ for i in range(30):  # Цикл от 0 до 18
 dictionary = dict(zip(Answers_respond_list, New_col)) # создаем  словарь для переименования стобцов
 Answers_respond = Answers_respond.rename(columns=dictionary) # переименовываем столбцы в начальном датафрейме
 Answers_respond['v30'] = Answers_respond['v8'].map({'менее 1 часа': 1, '3 часа': 3})
-Answers_respond['v31'] = Answers_respond['v22'].map({'менее 7 календарных дней': 6, '14 календарных дней и более': 14})
+Answers_respond['v31'] = Answers_respond['v22'].map({'менее 7 календарных дней': 6, '7 календарных дней и более': 7, '10 календарных дней и более': 10            })
 
 # Рассчитываем значение для нового столбца
 def calculate_value(row):
@@ -102,7 +105,7 @@ ans_res = pd.DataFrame({'v0': Answers_respond['v0'].unique()})
 selected_columns = ['v1', 'v2', 'v3', 'v4', 'v5', 'v11', 'v13', 'v14', 'v15', 'v19', 'v23', 'v24', 'v25', 'v26', 'v27', 'v28']
 # Используем цикл для подсчета значений и создания новых столбцов
 for col in selected_columns:
-    value = 'да'  # Значение, которое мы считаем
+    value = 'Да'  # Значение, которое мы считаем
     count_col_name = f'_{col}_'
     counts = Answers_respond[Answers_respond[col] == value].groupby('v0').size().reset_index(name=count_col_name)
     ans_res = ans_res.merge(counts, on='v0', how='left')
@@ -111,11 +114,11 @@ ans_res = ans_res.merge(result_df, on='v0', how='left')
 
 ans_res = ans_res.merge(result_df1, on='v0', how='left')                                                                      
 
-ans_res['_v44_'] = (ans_res['v30'] + ans_res['v31'])/2
+ans_res['_v40_'] = (ans_res['v30'] + ans_res['v31'])/2
 
-ans_res['_v45_'] = (ans_res['_v13_'] + ans_res['_v23_'])/2
+ans_res['_v41_'] = (ans_res['_v13_'] + ans_res['_v23_'])/2
 
-ans_res.rename(columns={'_v5_': '_v46_', '_v15_': '_v47_', '_v19_': '_v48_', '_v11_': '_v49_', '_v14_': '_v50_', '_v24_': '_v51_', '_v25_': '_v52_', '_v26_': '_v53_', '_v27_': '_v54_', '_v28_': '_v55_'}, inplace=True)
+ans_res.rename(columns={'_v5_': '_v42_', '_v15_': '_v43_', '_v19_': '_v44_', '_v11_': '_v45_', '_v14_': '_v46_', '_v24_': '_v47_', '_v25_': '_v48_', '_v26_': '_v49_', '_v27_': '_v50_', '_v28_': '_v51_'}, inplace=True)
     
 ans_res = ans_res.sort_values(by='v0') # сортируем таблицу по возрастанию по столбцу наименования
 ans_res = ans_res.reset_index(drop=True)
@@ -126,17 +129,17 @@ count_series = Answers_respond.groupby('v0')['v13'].count().reset_index()
 count_series.columns = ['v0', '_v1_']
 count_series1 = Answers_respond.groupby('v0')['v23'].count().reset_index()
 count_series1.columns = ['v0', '_v2_']
-answer_amb['_v56_'] = (count_series['_v1_'] + count_series1['_v2_'])/2
+answer_amb['_v52_'] = (count_series['_v1_'] + count_series1['_v2_'])/2
 count_series2 = Answers_respond.groupby('v0')['v5'].count().reset_index()
 count_series2.columns = ['v0', '_v3_']
-answer_amb['_v57_'] = count_series2['_v3_']
+answer_amb['_v53_'] = count_series2['_v3_']
 count_series3 = Answers_respond.groupby('v0')['v11'].count().reset_index()
 count_series3.columns = ['v0', '_v4_']
-answer_amb['_v58_'] = count_series3['_v4_']
+answer_amb['_v54_'] = count_series3['_v4_']
 count_series4 = Answers_respond.groupby('v0')['v14'].count().reset_index()
 count_series4.columns = ['v0', '_v5_']
-answer_amb['_v59_'] = count_series4['_v5_']
-answer_amb['_v60_'] = answer_amb['_v59_']
+answer_amb['_v55_'] = count_series4['_v5_']
+answer_amb['_v56_'] = answer_amb['_v55_']
 # то же самое для смешанной анкеты
 Answers_respond_list1 = Answers_respond1.columns.tolist() ##извлекаем наименования столбцов в список
 
@@ -148,8 +151,8 @@ for i in range(36):  # Цикл от 0 до 18
 dictionary1 = dict(zip(Answers_respond_list1, New_col1)) # создаем  словарь для переименования стобцов
 Answers_respond1 = Answers_respond1.rename(columns=dictionary1) # переименовываем столбцы в начальном датафрейме
 Answers_respond1['v36'] = Answers_respond1['v8'].map({'менее 15 календарных дней': 14, '15 календарных дней': 15})
-Answers_respond1['v37'] = Answers_respond1['v15'].map({'менее 1 часа': 1, '3 часа': 3, '6 часов': 6, '24 часа и более': 24})
-Answers_respond1['v38'] = Answers_respond1['v29'].map({'менее 7 календарных дней': 6, '7 календарных дней': 7, '10 календарных дней': 10, '12 календарных дней': 12 ,'14 календарных дней и более': 14})
+Answers_respond1['v37'] = Answers_respond1['v15'].map({'менее 1 часа': 1, '3 часа': 3, '6 часов': 6, '12 часов': 12,'24 часа и более': 24})
+Answers_respond1['v38'] = Answers_respond1['v29'].map({'менее 7 календарных дней': 6, '7 календарных дней': 7, '10 календарных дней': 10, '14 календарных дней и более': 14})
 
 # Рассчитываем значение для нового столбца
 def calculate_value(row):
@@ -223,7 +226,7 @@ ans_res1 = pd.DataFrame({'v0': Answers_respond1['v0'].unique()})
 selected_columns = ['v1', 'v2', 'v3', 'v4', 'v5', 'v9', 'v11', 'v13', 'v14', 'v18', 'v20', 'v21', 'v22', 'v26', 'v30', 'v31', 'v32', 'v33', 'v34', 'v35']
 # Используем цикл для подсчета значений и создания новых столбцов
 for col in selected_columns:
-    value = 'да'  # Значение, которое мы считаем
+    value = 'Да'  # Значение, которое мы считаем
     count_col_name = f'_{col}_'
     counts = Answers_respond1[Answers_respond1[col] == value].groupby('v0').size().reset_index(name=count_col_name)
     ans_res1 = ans_res1.merge(counts, on='v0', how='left')
@@ -234,19 +237,19 @@ ans_res1 = ans_res1.merge(result_df1, on='v0', how='left')
 
 ans_res1 = ans_res1.merge(result_df2, on='v0', how='left')
 
-ans_res1['_v44_'] = (ans_res1['v36'] + ans_res1['v37'] + ans_res1['v38'])/3
+ans_res1['_v40_'] = (ans_res1['v36'] + ans_res1['v37'] + ans_res1['v38'])/3
 
-ans_res1['_v45_'] = round((ans_res1['_v9_'] + ans_res1['_v20_'] + ans_res1['_v30_'])/3, 2)
+ans_res1['_v41_'] = round((ans_res1['_v9_'] + ans_res1['_v20_'] + ans_res1['_v30_'])/3, 2)
 
-ans_res1['_v46_'] = (ans_res1['_v5_'] + ans_res1['_v11_'])/2
+ans_res1['_v42_'] = (ans_res1['_v5_'] + ans_res1['_v11_'])/2
 
-ans_res1.rename(columns={'_v22_': '_v47_', '_v26_': '_v48_'}, inplace=True)
+ans_res1.rename(columns={'_v22_': '_v43_', '_v26_': '_v44_'}, inplace=True)
 
-ans_res1['_v49_'] = (ans_res1['_v13_'] + ans_res1['_v18_'])/2
+ans_res1['_v45_'] = (ans_res1['_v13_'] + ans_res1['_v18_'])/2
 
-ans_res1['_v50_'] = (ans_res1['_v14_'] + ans_res1['_v21_'])/2
+ans_res1['_v46_'] = (ans_res1['_v14_'] + ans_res1['_v21_'])/2
 
-ans_res1.rename(columns={'_v31_': '_v51_', '_v32_': '_v52_', '_v33_': '_v53_', '_v34_': '_v54_', '_v35_': '_v55_'}, inplace=True)
+ans_res1.rename(columns={'_v31_': '_v47_', '_v32_': '_v48_', '_v33_': '_v49_', '_v34_': '_v50_', '_v35_': '_v51_'}, inplace=True)
 
 ans_res1 = ans_res1.sort_values(by='v0') # сортируем таблицу по возрастанию по столбцу наименования
 ans_res1 = ans_res1.reset_index(drop=True)
@@ -259,25 +262,103 @@ count_series6 = Answers_respond1.groupby('v0')['v20'].count().reset_index()
 count_series6.columns = ['v0', '_v2_']
 count_series7 = Answers_respond1.groupby('v0')['v30'].count().reset_index()
 count_series7.columns = ['v0', '_v3_']
-answer_amb_stat['_v56_'] = round((count_series5['_v1_'] + count_series6['_v2_'] + + count_series7['_v3_'])/3, 2)
+answer_amb_stat['_v52_'] = round((count_series5['_v1_'] + count_series6['_v2_'] + + count_series7['_v3_'])/3, 2)
 count_series8 = Answers_respond1.groupby('v0')['v5'].count().reset_index()
 count_series8.columns = ['v0', '_v4_']
 count_series9 = Answers_respond1.groupby('v0')['v11'].count().reset_index()
 count_series9.columns = ['v0', '_v5_']
-answer_amb_stat['_v57_'] = (count_series8['_v4_'] + count_series9['_v5_'])/2
+answer_amb_stat['_v53_'] = (count_series8['_v4_'] + count_series9['_v5_'])/2
 count_series10 = Answers_respond1.groupby('v0')['v13'].count().reset_index()
 count_series10.columns = ['v0', '_v6_']
 count_series11 = Answers_respond1.groupby('v0')['v18'].count().reset_index()
 count_series11.columns = ['v0', '_v7_']
-answer_amb_stat['_v58_'] = (count_series10['_v6_'] + count_series11['_v7_'])/2
+answer_amb_stat['_v54_'] = (count_series10['_v6_'] + count_series11['_v7_'])/2
 count_series12 = Answers_respond1.groupby('v0')['v14'].count().reset_index()
 count_series12.columns = ['v0', '_v8_']
 count_series13 = Answers_respond1.groupby('v0')['v21'].count().reset_index()
 count_series13.columns = ['v0', '_v9_']
-answer_amb_stat['_v59_'] = (count_series12['_v8_'] + count_series13['_v9_'])/2
-answer_amb_stat['_v60_'] = count_series8['_v4_']
+answer_amb_stat['_v55_'] = (count_series12['_v8_'] + count_series13['_v9_'])/2
+answer_amb_stat['_v56_'] = count_series8['_v4_']
 
-ans_all = pd.concat([answer_amb, answer_amb_stat], ignore_index=True)
+
+# то же самое для стационарной анкеты
+Answers_respond_list2 = Answers_respond2.columns.tolist() ##извлекаем наименования столбцов в список
+
+New_col1 = []  # Создаем пустой список
+for i in range(26):  # Цикл от 0 до 18
+    sim = i   # присваиваем номер
+    New_col1.append('v' + str(sim))  # добавляем новый номер вопрса в список
+
+dictionary2 = dict(zip(Answers_respond_list2, New_col1)) # создаем  словарь для переименования стобцов
+Answers_respond2 = Answers_respond2.rename(columns=dictionary2) # переименовываем столбцы в начальном датафрейме
+Answers_respond2['v25'] = Answers_respond2['v10'].map({'менее 15 календарных дней': 14, '15 календарных дней': 15})
+
+# Рассчитываем значение для нового столбца
+def calculate_value(row):
+    total_answers = sum([val for val in row['v25'] if not math.isnan(val)])
+
+    result_sum = sum([(i+1)*val for i, val in enumerate(row['v25']) if not math.isnan(val)])
+    result = round(result_sum / total_answers)
+    
+    if result == 14:
+        return 10
+    elif result == 13:
+        return 20
+    elif result == 12:
+        return 40
+    elif 11 <= result <= 8:
+        return 60
+    else:
+        return 100
+
+
+result_df = Answers_respond2.groupby('v0').apply(calculate_value).reset_index()
+result_df.columns = ['v0', 'v25']
+
+
+# Создание нового DataFrame для хранения результатов подсчета, считам количество ответов да на вопросы анкеты
+ans_res2 = pd.DataFrame({'v0': Answers_respond2['v0'].unique()})
+
+selected_columns = ['v1', 'v2', 'v3', 'v4', 'v5', 'v7', 'v11', 'v13', 'v17', 'v18', 'v19', 'v20', 'v21', 'v22', 'v23', 'v24']
+# Используем цикл для подсчета значений и создания новых столбцов
+for col in selected_columns:
+    value = 'Да'  # Значение, которое мы считаем
+    count_col_name = f'_{col}_'
+    counts = Answers_respond2[Answers_respond2[col] == value].groupby('v0').size().reset_index(name=count_col_name)
+    ans_res2 = ans_res2.merge(counts, on='v0', how='left')
+
+ans_res2 = ans_res2.merge(result_df, on='v0', how='left')
+
+ans_res2.rename(columns={'_v25_': '_v40_', '_v11_': '_v41_'}, inplace=True)
+
+ans_res2['_v42_'] = (ans_res2['_v5_'] + ans_res2['_v7_'])/2
+
+ans_res2.rename(columns={'_v13_': '_v43_', '_v17_': '_v44_', '_v18_': '_v45_', '_v19_': '_v46_'}, inplace=True)
+
+ans_res2.rename(columns={'_v20_': '_v47_', '_v21_': '_v48_', '_v22_': '_v49_', '_v23_': '_v50_', '_v24_': '_v51_'}, inplace=True)
+
+ans_res2 = ans_res2.sort_values(by='v0') # сортируем таблицу по возрастанию по столбцу наименования
+ans_res2 = ans_res2.reset_index(drop=True)
+
+answer_stat = ans_res2.filter(items=['v0', '_v1_', '_v2_', '_v3_', '_v4_', '_v44_', '_v45_', '_v46_', '_v47_', '_v48_', '_v49_', '_v50_', '_v51_', '_v52_', '_v53_', '_v54_', '_v55_'])
+
+count_series14 = Answers_respond2.groupby('v0')['v11'].count().reset_index()
+count_series14.columns = ['v0', '_v1_']
+answer_stat['_v52_'] = count_series14['_v1_']
+count_series15 = Answers_respond2.groupby('v0')['v5'].count().reset_index()
+count_series15.columns = ['v0', '_v2_']
+count_series16 = Answers_respond2.groupby('v0')['v7'].count().reset_index()
+count_series16.columns = ['v0', '_v3_']
+answer_stat['_v53_'] = (count_series15['_v2_'] + count_series16['_v3_'])/2
+count_series17 = Answers_respond2.groupby('v0')['v18'].count().reset_index()
+count_series17.columns = ['v0', '_v4_']
+answer_stat['_v54_'] = count_series17['_v4_']
+count_series18 = Answers_respond2.groupby('v0')['v19'].count().reset_index()
+count_series18.columns = ['v0', '_v5_']
+answer_stat['_v55_'] = count_series18['_v5_']
+answer_stat['_v56_'] = count_series15['_v2_']
+
+ans_all = pd.concat([answer_amb, answer_amb_stat, answer_stat], ignore_index=True)
 
 ans_all = ans_all.sort_values(by='v0') # сортируем таблицу по возрастанию по столбцу наименования
 ans_all = ans_all.reset_index(drop=True)
