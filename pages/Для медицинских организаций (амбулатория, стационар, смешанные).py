@@ -102,7 +102,7 @@ ans_res = pd.DataFrame({'v0': Answers_respond['v0'].unique()})
 
 
 
-selected_columns = ['v1', 'v2', 'v3', 'v4', 'v5', 'v11', 'v13', 'v14', 'v15', 'v19', 'v23', 'v24', 'v25', 'v26', 'v27', 'v28']
+selected_columns = ['v1', 'v2', 'v3', 'v4', 'v5', 'v11', 'v13', 'v14', 'v15', 'v19', 'v23', 'v24', 'v25', 'v26', 'v27', 'v28', 'v30', 'v31']
 # Используем цикл для подсчета значений и создания новых столбцов
 for col in selected_columns:
     value = 'Да'  # Значение, которое мы считаем
@@ -223,7 +223,7 @@ result_df2.columns = ['v0', 'v38']
 # Создание нового DataFrame для хранения результатов подсчета, считам количество ответов да на вопросы анкеты
 ans_res1 = pd.DataFrame({'v0': Answers_respond1['v0'].unique()})
 
-selected_columns = ['v1', 'v2', 'v3', 'v4', 'v5', 'v9', 'v11', 'v13', 'v14', 'v18', 'v20', 'v21', 'v22', 'v26', 'v30', 'v31', 'v32', 'v33', 'v34', 'v35']
+selected_columns = ['v1', 'v2', 'v3', 'v4', 'v5', 'v9', 'v11', 'v13', 'v14', 'v18', 'v20', 'v21', 'v22', 'v26', 'v30', 'v31', 'v32', 'v33', 'v34', 'v35', 'v36', 'v37', 'v38']
 # Используем цикл для подсчета значений и создания новых столбцов
 for col in selected_columns:
     value = 'Да'  # Значение, которое мы считаем
@@ -321,7 +321,7 @@ result_df.columns = ['v0', 'v25']
 # Создание нового DataFrame для хранения результатов подсчета, считам количество ответов да на вопросы анкеты
 ans_res2 = pd.DataFrame({'v0': Answers_respond2['v0'].unique()})
 
-selected_columns = ['v1', 'v2', 'v3', 'v4', 'v5', 'v7', 'v11', 'v13', 'v17', 'v18', 'v19', 'v20', 'v21', 'v22', 'v23', 'v24']
+selected_columns = ['v1', 'v2', 'v3', 'v4', 'v5', 'v7', 'v11', 'v13', 'v17', 'v18', 'v19', 'v20', 'v21', 'v22', 'v23', 'v24', 'v25']
 # Используем цикл для подсчета значений и создания новых столбцов
 for col in selected_columns:
     value = 'Да'  # Значение, которое мы считаем
@@ -333,7 +333,9 @@ ans_res2 = ans_res2.merge(result_df, on='v0', how='left')
 
 ans_res2.rename(columns={'_v25_': '_v40_', '_v11_': '_v41_'}, inplace=True)
 
-ans_res2['_v42_'] = (ans_res2['_v5_'] + ans_res2['_v7_'])/2
+ans_res2['_v41_'] = (ans_res2['_v5_'] + ans_res2['_v7_'])/2
+
+ans_res2['_v42_'] = result_df['v25']
 
 ans_res2.rename(columns={'_v13_': '_v43_', '_v17_': '_v44_', '_v18_': '_v45_', '_v19_': '_v46_'}, inplace=True)
 
