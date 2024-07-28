@@ -661,7 +661,7 @@ button = st.button("получить готовый файл расчет бал
 if button:
     output = io.BytesIO()
     writer = pd.ExcelWriter(output, engine='xlsxwriter')
-    Raschet_ballov1.to_excel(writer, index=False, sheet_name='Sheet1')
+    Raschet_ballov.to_excel(writer, index=False, sheet_name='Sheet1')
     writer.close()
     output.seek(0)
     st.download_button(
