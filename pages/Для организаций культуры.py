@@ -568,12 +568,17 @@ hdr_cells[3].text = 'Недостатки'
 for index, row in output_df.iterrows():
     row_cells = table20.add_row().cells
     row_cells[0].text = str(row['Name_org'])
-    row_cells[1].text = f"Недостатки на стенде: отсутствуют документы о {str(row['bad_stend'])}\n"\
+    row_cells[1].text = str(Raschet_ballov.loc[Raschet_ballov['Наименование организации или П/Н по списку'] == row['Name_org'], 'Общий балл'].values[0])
+    row_cells[2].text = str(sorted_table.loc[sorted_table['Наименование организации или П/Н по списку'] == row['Name_org'], 'рейтинг'].values[0])
+
+    row_cells[3].text = f"Недостатки на стенде: отсутствуют документы о {str(row['bad_stend'])}\n"\
                         f"Недостатки на сайте: отсутствуют документы о {str(row['bad_sait'])}\n"\
                         f"Недостатки функционирование дистанционных способов связи: {str(row['bad_dist'])}\n"\
                         f"Недостатки комфортности условий предоставления услуг: {str(row['bad_komf'])}\n"\
                         f"Недостатки в разрезе оборудования для инвалидов: {str(row['obor_inv'])}\n"\
                         f"Недостатки доступности среды для инвалидов: {str(row['sreda_inv'])}"
+
+
 
 
 abz60 = otchet.add_paragraph(f"Рекомендации для организаций")
@@ -591,7 +596,7 @@ for index, row in output_df.iterrows():
     row_cells = table30.add_row().cells
     row_cells[0].text = str(row['Name_org'])
     
-    K3_list = int(table15_1.loc[table15_1['Наименование организации или П/Н по списку'] == row['Name_org'], 'К3'].values[0])
+    K3_list = int(table15.loc[table15['Наименование организации или П/Н по списку'] == row['Name_org'], 'К3'].values[0])
         # Добавляем результат проверки условия в столбец "Недостатки"
     if K3_list < 90:
         result_k3 = ''.join(("Провести инструктаж и обучение сотрудников по вопросам обеспечения доступности организации для инвалидов, в т.ч. ",
@@ -605,7 +610,7 @@ for index, row in output_df.iterrows():
         result_k3 = 'нет рекомендаций'
     # Добавляем результат проверки условия в столбец "Недостатки"
 
-    K4_list = int(table15_1.loc[table15_1['Наименование организации или П/Н по списку'] == row['Name_org'], 'К4'].values[0])
+    K4_list = int(table15.loc[table15['Наименование организации или П/Н по списку'] == row['Name_org'], 'К4'].values[0])
     
     if K4_list < 90:
         result_k4 = ''.join(("Провести обучение персонала организации по вопросам этики и деонтологии",
@@ -619,7 +624,7 @@ for index, row in output_df.iterrows():
     else:
         result_k4 = 'нет рекомендаций'    
     # Добавляем результат проверки условия в столбец "Недостатки"
-    K5_list = int(table15_1.loc[table15_1['Наименование организации или П/Н по списку'] == row['Name_org'], 'К5'].values[0])
+    K5_list = int(table15.loc[table15['Наименование организации или П/Н по списку'] == row['Name_org'], 'К5'].values[0])
     
     if K5_list < 90:
         result_k5 = ''.join(("Провести внутренний аудит системы менеджмента качества в структурных подразделениях организации ",
