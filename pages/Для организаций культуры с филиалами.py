@@ -748,6 +748,22 @@ for index, row in output_df.iterrows():
                         f"В разрезе удовлетворенности предоставлением услуг в целом рекомендовано: {result_k5}"
 
 
+button = st.button("получить готовый файл расчет баллов общий")
+
+if button:
+    output = io.BytesIO()
+    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+    Raschet_ballov.to_excel(writer, index=False, sheet_name='Sheet1')
+    writer.close()
+    output.seek(0)
+    st.download_button(
+        label="Загрузить",
+        data=output,
+        file_name='результаты.xlsx',
+        mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+
+
 button = st.button("получить готовый файл расчет баллов")
 
 if button:
