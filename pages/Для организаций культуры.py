@@ -143,9 +143,9 @@ name_org1 = pd.DataFrame({'us0': chek_list['us0']})
 chek_list_stend = chek_list.iloc[:, 1:17]  # Датафрейм с 1-5 столбцами
 chek_list_sait = chek_list.iloc[:, 18:36]  # Датафрейм с 6-10 столбцами = df.iloc[:, 0:5]  # Датафрейм с 1-5 столбцами
 chek_list_dist = chek_list.iloc[:, 37:42]  # Датафрейм с 6-10 столбцами
-chek_list_komf = chek_list.iloc[:, 43:49]
-chek_list_obor_inv = chek_list.iloc[:, 50:54]
-chek_list_sreda_inv = chek_list.iloc[:, 55:60]
+chek_list_komf = chek_list.iloc[:, 43:48]
+chek_list_obor_inv = chek_list.iloc[:, 49:53]
+chek_list_sreda_inv = chek_list.iloc[:, 54:59]
 
 chek_list_stend = pd.concat([name_org1, chek_list_stend], axis=1)
 chek_list_sait = pd.concat([name_org1, chek_list_sait], axis=1)
