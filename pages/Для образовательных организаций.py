@@ -591,7 +591,7 @@ table20.style = 'Table Grid'  # Применяем стиль таблицы
 
 # Заголовки столбцов
 hdr_cells = table20.rows[0].cells
-hdr_cells[0].text = 'Name_org'
+hdr_cells[0].text = 'Наименование оргинизации'
 hdr_cells[1].text = 'Балл'
 hdr_cells[2].text = 'Рейтинг'
 hdr_cells[3].text = 'Недостатки'
