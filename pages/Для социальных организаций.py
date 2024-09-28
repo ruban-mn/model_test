@@ -157,10 +157,10 @@ chek_list = chek_list.rename(columns=dict_chek) # переименовываем
 name_org1 = pd.DataFrame({'us0': chek_list['us0']}) 
 chek_list_stend = chek_list.iloc[:, 1:19]  # Датафрейм с 1-5 столбцами
 chek_list_sait = chek_list.iloc[:, 20:38]  # Датафрейм с 6-10 столбцами = df.iloc[:, 0:5]  # Датафрейм с 1-5 столбцами
-chek_list_dist = chek_list.iloc[:, 39:44]  # Датафрейм с 6-10 столбцами
-chek_list_komf = chek_list.iloc[:, 45:53]
-chek_list_obor_inv = chek_list.iloc[:, 54:58]
-chek_list_sreda_inv = chek_list.iloc[:, 59:64]
+chek_list_dist = chek_list.iloc[:, 39:45]  # Датафрейм с 6-10 столбцами
+chek_list_komf = chek_list.iloc[:, 46:54]
+chek_list_obor_inv = chek_list.iloc[:, 55:59]
+chek_list_sreda_inv = chek_list.iloc[:, 60:65]
 
 chek_list_stend = pd.concat([name_org1, chek_list_stend], axis=1)
 chek_list_sait = pd.concat([name_org1, chek_list_sait], axis=1)
