@@ -554,6 +554,21 @@ list_krit_dict = {'Критерий 1': '1. Открытость и доступ
 # Массово заменяем значения в столбце 'Имя'
 sorted_list_krit['Наименование критерия'] = sorted_list_krit['Наименование критерия'].replace(list_krit_dict)
 
+# Добавляем таблицу в документ
+table100 = otchet.add_table(rows=1, cols=2)  # Создаем таблицу с 1 строкой и 2 колонками
+
+# Добавляем заголовки столбцов
+hdr_cells = table100.rows[0].cells
+hdr_cells[0].text = 'Наименование критерия'
+hdr_cells[1].text = 'Среднее значение'
+
+# Заполняем таблицу данными
+for index, row in sorted_list_krit.iterrows():
+    row_cells = table100.add_row().cells
+    row_cells[0].text = row['Наименование критерия']
+    row_cells[1].text = str(row['Значение'])
+
+
 default_font = otchet.styles['Normal'].font
 default_font.name = 'Times New Roman'
 default_font.size = Pt(14)
@@ -561,8 +576,6 @@ default_font.size = Pt(14)
 abz50 = otchet.add_paragraph(f"Согласно результатам проведённого исследования, большинство недостатком у данных учреждений наблюдается по критерию {sorted_list_krit.at[0, 'Наименование критерия']}. ")
 abz51 = otchet.add_paragraph(f"Также есть проблемы с {sorted_list_krit.at[1, 'Наименование критерия']} и {sorted_list_krit.at[2, 'Наименование критерия']}. ")# Вставка графика в документ Word
 
-table7 = otchet.add_table(sorted_list_krit)
-table7.style = 'Table Grid'  # Применяем стиль таблицы
 
 if not Raschet_ballov.empty:
     print("DataFrame не является пустым")
