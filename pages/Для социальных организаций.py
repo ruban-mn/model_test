@@ -69,6 +69,8 @@ for col in New_col:
     counts = Answers_respond[Answers_respond[col] == value].groupby('v0').size().reset_index(name=count_col_name)
     ans_res = ans_res.merge(counts, on='v0', how='left')
 
+ans_res[count_col_name] = ans_res[count_col_name].fillna(0)
+
 ans_res = ans_res.dropna(axis=1) # Удаляем столбцы со значением NaN
 ans_res['v0'] = ans_res['v0'].str.replace('.', '')# Удаляем точку из наименований организаций
 ans_res = ans_res.sort_values(by='v0') # сортируем таблицу по возрастанию по столбцу наименования
