@@ -117,6 +117,7 @@ Raschet_ballov['Укомф'] = ans_res['_v6_']
 Raschet_ballov['Укомф'] = Raschet_ballov['Укомф'].fillna(0)
 Raschet_ballov['Чобщ'] = all_ans
 Raschet_ballov['Пкомфуд'] = round(Raschet_ballov['Укомф']/Raschet_ballov['Чобщ']*100, 2)
+Raschet_ballov['Пкомфуд'] = Raschet_ballov['Пкомфуд'].fillna(0)
 Raschet_ballov['К2'] = round(0.3*Raschet_ballov['Пкомф.усл'] + 0.4*Raschet_ballov['Пожид'] + 0.3*Raschet_ballov['Пкомфуд'], 2)
 Raschet_ballov['К2'] = Raschet_ballov['К2'].fillna(0)
 Raschet_ballov['Торгдост'] = chek_list.filter(like='Оборудование территории').sum(axis=1)
@@ -132,6 +133,7 @@ Raschet_ballov['Удост'] = Raschet_ballov['Удост'].fillna(0)
 Raschet_ballov['Чинв'] = ans_res['_v7_']
 Raschet_ballov['Чинв'] = Raschet_ballov['Чинв'].fillna(0)
 Raschet_ballov['Пдостуд'] = round(Raschet_ballov['Удост']/Raschet_ballov['Чинв']*100, 2)
+Raschet_ballov['Пдостуд'] = Raschet_ballov['Пдостуд'].fillna(0)
 Raschet_ballov['К3'] = round(0.3*Raschet_ballov['Поргдост'] + 0.4*Raschet_ballov['Пуслугдост'] + 0.3*Raschet_ballov['Пдостуд'], 2)
 Raschet_ballov['К3'] = Raschet_ballov['К3'].fillna(0)
 Raschet_ballov['Уперв.конт'] = ans_res['_v9_']
