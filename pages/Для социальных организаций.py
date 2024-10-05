@@ -103,6 +103,7 @@ Raschet_ballov['Уобщ-стенд'] = Raschet_ballov['Уобщ-стенд'].fi
 Raschet_ballov['Уобщ-сайт'] = ans_res['_v3_']
 Raschet_ballov['Уобщ-сайт'] = Raschet_ballov['Уобщ-сайт'].fillna(0)
 Raschet_ballov['Поткруд'] = round(0.5*((Raschet_ballov['Устенд']/Raschet_ballov['Уобщ-стенд'])+(Raschet_ballov['Усайт']/Raschet_ballov['Уобщ-сайт']))*100, 2)
+Raschet_ballov['Поткруд'] = Raschet_ballov['Поткруд'].fillna(0)
 Raschet_ballov['К1'] = round(0.3*Raschet_ballov['Пинф'] + 0.3*Raschet_ballov['Пдист'] + 0.4*Raschet_ballov['Поткруд'], 2)
 Raschet_ballov['К1'] = Raschet_ballov['К1'].fillna(0)
 Raschet_ballov['Ткомф'] = chek_list.filter(like='Обеспечение в организации комфортных условий').sum(axis=1)
@@ -148,6 +149,7 @@ Raschet_ballov['Увежл.дист'] = ans_res['_v12_']
 Raschet_ballov['Увежл.дист'] = Raschet_ballov['Увежл.дист'].fillna(0)
 Raschet_ballov['Чобщ_ус'] = ans_res['_v11_']
 Raschet_ballov['Пвежл.дистуд'] = round(Raschet_ballov['Увежл.дист']/Raschet_ballov['Чобщ_ус']*100, 2)
+Raschet_ballov['Пвежл.дистуд'] = Raschet_ballov['Пвежл.дистуд'].fillna(0)
 Raschet_ballov['К4'] = round(0.4*Raschet_ballov['Пперв.контуд'] + 0.4*Raschet_ballov['Показ.услугуд'] + 0.2*Raschet_ballov['Пвежл.дистуд'], 2)
 Raschet_ballov['К4'] = Raschet_ballov['К4'].fillna(0)
 Raschet_ballov['Уреком'] = ans_res['_v13_']
