@@ -95,9 +95,13 @@ Raschet_ballov['Сдист'] = chek_list.filter(like='Наличие и функ
 Raschet_ballov['Пдист'] = Raschet_ballov['Тдист']*Raschet_ballov['Сдист']
 Raschet_ballov['Пдист'].where(Raschet_ballov['Пдист'] <= 100, 100, inplace=True)
 Raschet_ballov['Устенд'] = ans_res['_v2_']
+Raschet_ballov['Устенд'] = Raschet_ballov['Устенд'].fillna(0)
 Raschet_ballov['Усайт'] = ans_res['_v4_']
+Raschet_ballov['Усайт'] = Raschet_ballov['Усайт'].fillna(0)
 Raschet_ballov['Уобщ-стенд'] = ans_res['_v1_']
+Raschet_ballov['Уобщ-стенд'] = Raschet_ballov['Уобщ-стенд'].fillna(0)
 Raschet_ballov['Уобщ-сайт'] = ans_res['_v3_']
+Raschet_ballov['Уобщ-сайт'] = Raschet_ballov['Уобщ-сайт'].fillna(0)
 Raschet_ballov['Поткруд'] = round(0.5*((Raschet_ballov['Устенд']/Raschet_ballov['Уобщ-стенд'])+(Raschet_ballov['Усайт']/Raschet_ballov['Уобщ-сайт']))*100, 2)
 Raschet_ballov['К1'] = round(0.3*Raschet_ballov['Пинф'] + 0.3*Raschet_ballov['Пдист'] + 0.4*Raschet_ballov['Поткруд'], 2)
 Raschet_ballov['Ткомф'] = chek_list.filter(like='Обеспечение в организации комфортных условий').sum(axis=1)
@@ -105,9 +109,11 @@ Raschet_ballov['Скомф'] = 20
 Raschet_ballov['Пкомф.усл'] = Raschet_ballov['Ткомф']*Raschet_ballov['Скомф']
 Raschet_ballov['Пкомф.усл'].where(Raschet_ballov['Пкомф.усл'] <= 100, 100, inplace=True)
 Raschet_ballov['Усвоевр'] = ans_res['_v5_']
+Raschet_ballov['Усвоевр'] = Raschet_ballov['Усвоевр'].fillna(0)
 Raschet_ballov['Чобщ'] = all_ans
 Raschet_ballov['Пожид'] = round(Raschet_ballov['Усвоевр']/Raschet_ballov['Чобщ']*100, 2)
 Raschet_ballov['Укомф'] = ans_res['_v6_']
+Raschet_ballov['Укомф'] = Raschet_ballov['Укомф'].fillna(0)
 Raschet_ballov['Чобщ'] = all_ans
 Raschet_ballov['Пкомфуд'] = round(Raschet_ballov['Укомф']/Raschet_ballov['Чобщ']*100, 2)
 Raschet_ballov['К2'] = round(0.3*Raschet_ballov['Пкомф.усл'] + 0.4*Raschet_ballov['Пожид'] + 0.3*Raschet_ballov['Пкомфуд'], 2)
@@ -120,16 +126,21 @@ Raschet_ballov['Суслугдост'] = 20
 Raschet_ballov['Пуслугдост'] = Raschet_ballov['Туслугдост']*Raschet_ballov['Суслугдост']
 Raschet_ballov['Пуслугдост'].where(Raschet_ballov['Пуслугдост'] <= 100, 100, inplace=True)
 Raschet_ballov['Удост'] = ans_res['_v8_']
+Raschet_ballov['Удост'] = Raschet_ballov['Удост'].fillna(0)
 Raschet_ballov['Чинв'] = ans_res['_v7_']
+Raschet_ballov['Чинв'] = Raschet_ballov['Чинв'].fillna(0)
 Raschet_ballov['Пдостуд'] = round(Raschet_ballov['Удост']/Raschet_ballov['Чинв']*100, 2)
 Raschet_ballov['К3'] = round(0.3*Raschet_ballov['Поргдост'] + 0.4*Raschet_ballov['Пуслугдост'] + 0.3*Raschet_ballov['Пдостуд'], 2)
 Raschet_ballov['Уперв.конт'] = ans_res['_v9_']
+Raschet_ballov['Уперв.конт'] = Raschet_ballov['Уперв.конт'].fillna(0)
 Raschet_ballov['Чобщ1'] = all_ans
 Raschet_ballov['Пперв.контуд'] = round(Raschet_ballov['Уперв.конт']/Raschet_ballov['Чобщ']*100, 2)
 Raschet_ballov['Уоказ.услуг'] = ans_res['_v10_']
+Raschet_ballov['Уоказ.услуг'] = Raschet_ballov['Уоказ.услуг'].fillna(0)
 Raschet_ballov['Чобщ2'] = all_ans
 Raschet_ballov['Показ.услугуд'] = round(Raschet_ballov['Уоказ.услуг']/Raschet_ballov['Чобщ']*100, 2)
 Raschet_ballov['Увежл.дист'] = ans_res['_v12_']
+Raschet_ballov['Увежл.дист'] = Raschet_ballov['Увежл.дист'].fillna(0)
 Raschet_ballov['Чобщ_ус'] = ans_res['_v11_']
 Raschet_ballov['Пвежл.дистуд'] = round(Raschet_ballov['Увежл.дист']/Raschet_ballov['Чобщ_ус']*100, 2)
 Raschet_ballov['К4'] = round(0.4*Raschet_ballov['Пперв.контуд'] + 0.4*Raschet_ballov['Показ.услугуд'] + 0.2*Raschet_ballov['Пвежл.дистуд'], 2)
