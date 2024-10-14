@@ -102,7 +102,11 @@ Raschet_ballov['Уобщ-стенд'] = ans_res['_v1_']
 Raschet_ballov['Уобщ-стенд'] = Raschet_ballov['Уобщ-стенд'].fillna(0)
 Raschet_ballov['Уобщ-сайт'] = ans_res['_v3_']
 Raschet_ballov['Уобщ-сайт'] = Raschet_ballov['Уобщ-сайт'].fillna(0)
-Raschet_ballov['Поткруд'] = round(((Raschet_ballov['Устенд']/Raschet_ballov['Уобщ-стенд'])+(Raschet_ballov['Усайт']/Raschet_ballov['Уобщ-сайт']))*0.5*100, 2)
+ustend_ratio = Raschet_ballov['Устенд'] / Raschet_ballov['Уобщ-стенд']
+usait_ratio = Raschet_ballov['Усайт'] / Raschet_ballov['Уобщ-сайт']
+
+Raschet_ballov['Поткруд'] = round(((ustend_ratio.where(Raschet_ballov['Уобщ-стенд'] != 0, 0) + usait_ratio.where(Raschet_ballov['Уобщ-сайт'] != 0, 0)) * 0.5 * 100), 2)
+#Raschet_ballov['Поткруд'] = round(((Raschet_ballov['Устенд']/Raschet_ballov['Уобщ-стенд'])+(Raschet_ballov['Усайт']/Raschet_ballov['Уобщ-сайт']))*0.5*100, 2)
 Raschet_ballov['Поткруд'] = Raschet_ballov['Поткруд'].fillna(0)
 Raschet_ballov['К1'] = round(0.3*Raschet_ballov['Пинф'] + 0.3*Raschet_ballov['Пдист'] + 0.4*Raschet_ballov['Поткруд'], 2)
 Raschet_ballov['К1'] = Raschet_ballov['К1'].fillna(0)
