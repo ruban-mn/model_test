@@ -72,12 +72,12 @@ for col in New_col:
 ans_res[count_col_name] = ans_res[count_col_name].fillna(0)
 
 #ans_res = ans_res.dropna(axis=1) # Удаляем столбцы со значением NaN
-ans_res['v0'] = ans_res['v0'].str.replace('.', '')# Удаляем точку из наименований организаций
+#ans_res['v0'] = ans_res['v0'].str.replace('.', '')# Удаляем точку из наименований организаций
 ans_res = ans_res.sort_values(by='v0') # сортируем таблицу по возрастанию по столбцу наименования
 ans_res = ans_res.reset_index(drop=True)
 
 col_ob = Answers_respond.groupby('v0').size().reset_index(name='Ч_общ')
-col_ob['v0'] = col_ob['v0'].str.replace('.', '')# Удаляем точку из наименований организаций
+#col_ob['v0'] = col_ob['v0'].str.replace('.', '')# Удаляем точку из наименований организаций
 col_ob = col_ob.sort_values(by='v0') # сортируем таблицу по возрастанию по столбцу наименования
 col_ob = col_ob.reset_index(drop=True)
 all_ans = col_ob['Ч_общ']
