@@ -64,7 +64,7 @@ ans_res = pd.DataFrame({'v0': Answers_respond['v0'].unique()})
 
 # Используем цикл для подсчета значений и создания новых столбцов
 for col in New_col:
-    value = 'Да'  # Значение, которое мы считаем
+    value = 'да'  # Значение, которое мы считаем
     count_col_name = f'_{col}_'
     counts = Answers_respond[Answers_respond[col] == value].groupby('v0').size().reset_index(name=count_col_name)
     ans_res = ans_res.merge(counts, on='v0', how='left')
@@ -85,13 +85,13 @@ all_ans = col_ob['Ч_общ']
 name_org = chek_list.filter(like='Наименование организации').copy()
 
 Raschet_ballov = name_org
-Raschet_ballov['Истенд'] = chek_list.filter(like='На СТЕНДЕ').sum(axis=1)
+Raschet_ballov['Истенд'] = chek_list.filter(like='На СТЕНДАХ').sum(axis=1)
 Raschet_ballov['Исайт'] = chek_list.filter(like='На САЙТЕ').sum(axis=1)
-Raschet_ballov['Инорм-стенд'] = chek_list.filter(like='На СТЕНДЕ').count(axis=1)
+Raschet_ballov['Инорм-стенд'] = chek_list.filter(like='На СТЕНДАХ').count(axis=1)
 Raschet_ballov['Инорм-сайт'] = chek_list.filter(like='На САЙТЕ').count(axis=1)
 Raschet_ballov['Пинф'] = round(0.5*((Raschet_ballov['Истенд']/Raschet_ballov['Инорм-стенд'])+(Raschet_ballov['Исайт']/Raschet_ballov['Инорм-сайт']))*100, 2)
 Raschet_ballov['Тдист'] = 30
-Raschet_ballov['Сдист'] = chek_list.filter(like='Наличие и функционирование на официальном сайте').sum(axis=1)
+Raschet_ballov['Сдист'] = chek_list.filter(like='функционирующие дистанционные способы').sum(axis=1)
 Raschet_ballov['Пдист'] = Raschet_ballov['Тдист']*Raschet_ballov['Сдист']
 Raschet_ballov['Пдист'].where(Raschet_ballov['Пдист'] <= 100, 100, inplace=True)
 Raschet_ballov['Устенд'] = ans_res['_v2_']
@@ -110,7 +110,7 @@ Raschet_ballov['Поткруд'] = round(((ustend_ratio.where(Raschet_ballov['У
 Raschet_ballov['Поткруд'] = Raschet_ballov['Поткруд'].fillna(0)
 Raschet_ballov['К1'] = round(0.3*Raschet_ballov['Пинф'] + 0.3*Raschet_ballov['Пдист'] + 0.4*Raschet_ballov['Поткруд'], 2)
 Raschet_ballov['К1'] = Raschet_ballov['К1'].fillna(0)
-Raschet_ballov['Ткомф'] = chek_list.filter(like='Обеспечение в организации комфортных условий').sum(axis=1)
+Raschet_ballov['Ткомф'] = chek_list.filter(like='наличие комфортных условий').sum(axis=1)
 Raschet_ballov['Скомф'] = 20
 Raschet_ballov['Пкомф.усл'] = Raschet_ballov['Ткомф']*Raschet_ballov['Скомф']
 Raschet_ballov['Пкомф.усл'].where(Raschet_ballov['Пкомф.усл'] <= 100, 100, inplace=True)
@@ -183,10 +183,10 @@ chek_list = chek_list.rename(columns=dict_chek) # переименовываем
 name_org1 = pd.DataFrame({'us0': chek_list['us0']}) 
 chek_list_stend = chek_list.iloc[:, 1:19]  # Датафрейм с 1-5 столбцами
 chek_list_sait = chek_list.iloc[:, 20:38]  # Датафрейм с 6-10 столбцами = df.iloc[:, 0:5]  # Датафрейм с 1-5 столбцами
-chek_list_dist = chek_list.iloc[:, 39:45]  # Датафрейм с 6-10 столбцами
-chek_list_komf = chek_list.iloc[:, 46:54]
-chek_list_obor_inv = chek_list.iloc[:, 55:59]
-chek_list_sreda_inv = chek_list.iloc[:, 60:65]
+chek_list_dist = chek_list.iloc[:, 39:44]  # Датафрейм с 6-10 столбцами
+chek_list_komf = chek_list.iloc[:, 45:51]
+chek_list_obor_inv = chek_list.iloc[:, 52:56]
+chek_list_sreda_inv = chek_list.iloc[:, 57:62]
 
 chek_list_stend = pd.concat([name_org1, chek_list_stend], axis=1)
 chek_list_sait = pd.concat([name_org1, chek_list_sait], axis=1)
