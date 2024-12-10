@@ -69,7 +69,7 @@ def calculate_value(row):
     elif 21 <= result <= 13:
         return 60
     elif result > 24:
-        return 0
+        return 1
     else:
         return 100
 
@@ -93,7 +93,7 @@ def calculate_value1(row):
     elif 11 <= result <= 8:
         return 60
     elif result > 14:
-        return 0
+        return 1
     else:
         return 100
 
