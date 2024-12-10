@@ -44,7 +44,7 @@ tm.sleep(30)
 Answers_respond_list = Answers_respond.columns.tolist() ##извлекаем наименования столбцов в список
 
 New_col = []  # Создаем пустой список
-for i in range(30):  # Цикл от 0 до 18
+for i in range(29):  # Цикл от 0 до 18
     sim = i   # присваиваем номер
     New_col.append('v' + str(sim))  # добавляем новый номер вопрса в список
 
@@ -109,7 +109,7 @@ ans_res = pd.DataFrame({'v0': Answers_respond['v0'].unique()})
 selected_columns = ['v1', 'v2', 'v3', 'v4', 'v5', 'v11', 'v13', 'v14', 'v15', 'v19', 'v23', 'v24', 'v25', 'v26', 'v27', 'v28', 'v30', 'v31']
 # Используем цикл для подсчета значений и создания новых столбцов
 for col in selected_columns:
-    value = 'Да'  # Значение, которое мы считаем
+    value = 'да'  # Значение, которое мы считаем
     count_col_name = f'_{col}_'
     counts = Answers_respond[Answers_respond[col] == value].groupby('v0').size().reset_index(name=count_col_name)
     ans_res = ans_res.merge(counts, on='v0', how='left')
@@ -232,7 +232,7 @@ ans_res1 = pd.DataFrame({'v0': Answers_respond1['v0'].unique()})
 selected_columns = ['v1', 'v2', 'v3', 'v4', 'v5', 'v9', 'v11', 'v13', 'v14', 'v18', 'v20', 'v21', 'v22', 'v26', 'v30', 'v31', 'v32', 'v33', 'v34', 'v35', 'v36', 'v37', 'v38']
 # Используем цикл для подсчета значений и создания новых столбцов
 for col in selected_columns:
-    value = 'Да'  # Значение, которое мы считаем
+    value = 'да'  # Значение, которое мы считаем
     count_col_name = f'_{col}_'
     counts = Answers_respond1[Answers_respond1[col] == value].groupby('v0').size().reset_index(name=count_col_name)
     ans_res1 = ans_res1.merge(counts, on='v0', how='left')
