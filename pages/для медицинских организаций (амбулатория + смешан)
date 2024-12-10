@@ -918,6 +918,7 @@ if button:
     )
 
 
+
 button = st.button("Получить готовый отчет")
 if button:
     bio = io.BytesIO()
