@@ -85,7 +85,7 @@ all_ans = col_ob['Ч_общ']
 name_org = chek_list.filter(like='Наименование организации').copy()
 
 Raschet_ballov = name_org
-Raschet_ballov['Истенд'] = chek_list.filter(like='на СТЕНДАХ').sum(axis=1)
+Raschet_ballov['Истенд'] = chek_list.filter(like='на СТЕНДЕ').sum(axis=1)
 Raschet_ballov['Исайт'] = chek_list.filter(like='на САЙТЕ').sum(axis=1)
 Raschet_ballov['Инорм-стенд'] = chek_list.filter(like='на СТЕНДАХ').count(axis=1)
 Raschet_ballov['Инорм-сайт'] = chek_list.filter(like='на САЙТЕ').count(axis=1)
