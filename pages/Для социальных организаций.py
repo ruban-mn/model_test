@@ -64,7 +64,7 @@ ans_res = pd.DataFrame({'v0': Answers_respond['v0'].unique()})
 
 # Используем цикл для подсчета значений и создания новых столбцов
 for col in New_col:
-    value = 'да'  # Значение, которое мы считаем
+    value = 'Да'  # Значение, которое мы считаем
     count_col_name = f'_{col}_'
     counts = Answers_respond[Answers_respond[col] == value].groupby('v0').size().reset_index(name=count_col_name)
     ans_res = ans_res.merge(counts, on='v0', how='left')
