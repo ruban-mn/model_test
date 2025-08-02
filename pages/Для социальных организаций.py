@@ -85,10 +85,10 @@ all_ans = col_ob['Ч_общ']
 name_org = chek_list.filter(like='Наименование организации').copy()
 
 Raschet_ballov = name_org
-Raschet_ballov['Истенд'] = chek_list.filter(like='на СТЕНДЕ').sum(axis=1)
-Raschet_ballov['Исайт'] = chek_list.filter(like='на САЙТЕ').sum(axis=1)
-Raschet_ballov['Инорм-стенд'] = chek_list.filter(like='на СТЕНДЕ').count(axis=1)
-Raschet_ballov['Инорм-сайт'] = chek_list.filter(like='на САЙТЕ').count(axis=1)
+Raschet_ballov['Истенд'] = chek_list.filter(like='Основные сведения на СТЕНДЕ').sum(axis=1)
+Raschet_ballov['Исайт'] = chek_list.filter(like='Основные сведения на САЙТЕ').sum(axis=1)
+Raschet_ballov['Инорм-стенд'] = chek_list.filter(like='Основные сведения на СТЕНДЕ').count(axis=1)
+Raschet_ballov['Инорм-сайт'] = chek_list.filter(like='Основные сведения на САЙТЕ').count(axis=1)
 Raschet_ballov['Пинф'] = round(0.5*((Raschet_ballov['Истенд']/Raschet_ballov['Инорм-стенд'])+(Raschet_ballov['Исайт']/Raschet_ballov['Инорм-сайт']))*100, 2)
 Raschet_ballov['Тдист'] = 30
 Raschet_ballov['Сдист'] = chek_list.filter(like='функционирующие дистанционные способы').sum(axis=1)
