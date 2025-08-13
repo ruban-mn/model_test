@@ -73,8 +73,8 @@ def calculate_value(row):
         return 100
 
 
-result_df = Answers_respond.groupby('v0').apply(calculate_value).reset_index()
-result_df.columns = ['v0', 'v30']
+result_df1 = Answers_respond.groupby('v0').apply(calculate_value).reset_index()
+result_df1.columns = ['v0', 'v30']
 # Рассчитываем значение для нового столбца
 def calculate_value(row):
     total_answers = sum([val for val in row['v29'] if not math.isnan(val)])
@@ -116,15 +116,15 @@ def calculate_value1(row):
         return 100
 
 
-result_df1 = Answers_respond.groupby('v0').apply(calculate_value1).reset_index()
-result_df1.columns = ['v0', 'v31']
+result_df2 = Answers_respond.groupby('v0').apply(calculate_value1).reset_index()
+result_df2.columns = ['v0', 'v31']
 
 # Создание нового DataFrame для хранения результатов подсчета, считам количество ответов да на вопросы анкеты
 ans_res = pd.DataFrame({'v0': Answers_respond['v0'].unique()})
 
 
 
-selected_columns = ['v1', 'v2', 'v3', 'v4', 'v5', 'v7', 'v11', 'v13', 'v14', 'v15', 'v19', 'v23', 'v24', 'v25', 'v26', 'v27', 'v28', 'v30', 'v31']
+selected_columns = ['v1', 'v2', 'v3', 'v4', 'v5', 'v7', 'v11', 'v13', 'v14', 'v15', 'v19', 'v23', 'v24', 'v25', 'v26', 'v27', 'v28', 'v29', 'v30', 'v31']
 # Используем цикл для подсчета значений и создания новых столбцов
 for col in selected_columns:
     value = 'да'  # Значение, которое мы считаем
@@ -134,7 +134,9 @@ for col in selected_columns:
 
 ans_res = ans_res.merge(result_df, on='v0', how='left')
 
-ans_res = ans_res.merge(result_df1, on='v0', how='left')                                                                      
+ans_res = ans_res.merge(result_df1, on='v0', how='left')
+
+ans_res = ans_res.merge(result_df2, on='v0', how='left')
 
 ans_res['_v40_'] = (ans_res['v29'] + ans_res['v30'] + ans_res['v31'])/3
 
