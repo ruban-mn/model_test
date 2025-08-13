@@ -20,7 +20,7 @@ import math
 
 st.subheader('Независимая оценка качества услуг медицинских организаций')
 
-uploaded_file = st.file_uploader("**Загрузите файл сводную по чек-листам амбулатория**", type=["xls", "xlsx"])
+uploaded_file = st.file_uploader("**Загрузите файл сводную по чек-листам**", type=["xls", "xlsx"])
 chek_list = pd.read_excel(uploaded_file)
 
 uploaded_file2 = st.file_uploader("**Загрузите файл с массивом анкет амбулатория**", type=["xls", "xlsx"])
