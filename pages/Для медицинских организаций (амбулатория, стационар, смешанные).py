@@ -44,20 +44,21 @@ tm.sleep(30)
 Answers_respond_list = Answers_respond.columns.tolist() ##извлекаем наименования столбцов в список
 
 New_col = []  # Создаем пустой список
-for i in range(30):  # Цикл от 0 до 18
+for i in range(28):  # Цикл от 0 до 18
     sim = i   # присваиваем номер
     New_col.append('v' + str(sim))  # добавляем новый номер вопрса в список
 
 dictionary = dict(zip(Answers_respond_list, New_col)) # создаем  словарь для переименования стобцов
 Answers_respond = Answers_respond.rename(columns=dictionary) # переименовываем столбцы в начальном датафрейме
+Answers_respond['v29'] = Answers_respond['v6'].map({'менее 7 калндарных дней': 6, '7 календарных дней': 7, '10 календарных дней': 10, '14 календарных дней и более': 14})
 Answers_respond['v30'] = Answers_respond['v8'].map({'менее 1 часа': 1, '3 часа': 3})
 Answers_respond['v31'] = Answers_respond['v22'].map({'менее 7 календарных дней': 6, '7 календарных дней и более': 7, '10 календарных дней и более': 10            })
 
 # Рассчитываем значение для нового столбца
 def calculate_value(row):
-    total_answers = sum([val for val in row['v30'] if not math.isnan(val)])
+    total_answers = sum([val for val in row['v29'] if not math.isnan(val)])
 
-    result_sum = sum([(i+1)*val for i, val in enumerate(row['v30']) if not math.isnan(val)])
+    result_sum = sum([(i+1)*val for i, val in enumerate(row['v29']) if not math.isnan(val)])
     result = round(result_sum / total_answers)
     
     if result == 24:
@@ -74,6 +75,27 @@ def calculate_value(row):
 
 result_df = Answers_respond.groupby('v0').apply(calculate_value).reset_index()
 result_df.columns = ['v0', 'v30']
+# Рассчитываем значение для нового столбца
+def calculate_value(row):
+    total_answers = sum([val for val in row['v30'] if not math.isnan(val)])
+
+    result_sum = sum([(i+1)*val for i, val in enumerate(row['v30']) if not math.isnan(val)])
+    result = round(result_sum / total_answers)
+    
+    if result == 14:
+        return 10
+    elif result == 13:
+        return 20
+    elif result == 12:
+        return 40
+    elif 11 <= result <= 8:
+        return 60
+    else:
+        return 100
+
+
+result_df = Answers_respond.groupby('v0').apply(calculate_value).reset_index()
+result_df.columns = ['v0', 'v29']
 
 # Рассчитываем значение для нового столбца
 def calculate_value1(row):
@@ -102,10 +124,10 @@ ans_res = pd.DataFrame({'v0': Answers_respond['v0'].unique()})
 
 
 
-selected_columns = ['v1', 'v2', 'v3', 'v4', 'v5', 'v11', 'v13', 'v14', 'v15', 'v19', 'v23', 'v24', 'v25', 'v26', 'v27', 'v28', 'v30', 'v31']
+selected_columns = ['v1', 'v2', 'v3', 'v4', 'v5', 'v7', 'v11', 'v13', 'v14', 'v15', 'v19', 'v23', 'v24', 'v25', 'v26', 'v27', 'v28', 'v30', 'v31']
 # Используем цикл для подсчета значений и создания новых столбцов
 for col in selected_columns:
-    value = 'Да'  # Значение, которое мы считаем
+    value = 'да'  # Значение, которое мы считаем
     count_col_name = f'_{col}_'
     counts = Answers_respond[Answers_respond[col] == value].groupby('v0').size().reset_index(name=count_col_name)
     ans_res = ans_res.merge(counts, on='v0', how='left')
@@ -114,11 +136,13 @@ ans_res = ans_res.merge(result_df, on='v0', how='left')
 
 ans_res = ans_res.merge(result_df1, on='v0', how='left')                                                                      
 
-ans_res['_v40_'] = (ans_res['v30'] + ans_res['v31'])/2
+ans_res['_v40_'] = (ans_res['v29'] + ans_res['v30'] + ans_res['v31'])/3
 
 ans_res['_v41_'] = (ans_res['_v13_'] + ans_res['_v23_'])/2
 
-ans_res.rename(columns={'_v5_': '_v42_', '_v15_': '_v43_', '_v19_': '_v44_', '_v11_': '_v45_', '_v14_': '_v46_', '_v24_': '_v47_', '_v25_': '_v48_', '_v26_': '_v49_', '_v27_': '_v50_', '_v28_': '_v51_'}, inplace=True)
+ans_res['_v45_'] = (ans_res['_v7_'] + ans_res['_v11_'])/2
+
+ans_res.rename(columns={'_v5_': '_v42_', '_v15_': '_v43_', '_v19_': '_v44_', '_v14_': '_v46_', '_v24_': '_v47_', '_v25_': '_v48_', '_v26_': '_v49_', '_v27_': '_v50_', '_v28_': '_v51_'}, inplace=True)
     
 ans_res = ans_res.sort_values(by='v0') # сортируем таблицу по возрастанию по столбцу наименования
 ans_res = ans_res.reset_index(drop=True)
@@ -226,7 +250,7 @@ ans_res1 = pd.DataFrame({'v0': Answers_respond1['v0'].unique()})
 selected_columns = ['v1', 'v2', 'v3', 'v4', 'v5', 'v9', 'v11', 'v13', 'v14', 'v18', 'v20', 'v21', 'v22', 'v26', 'v30', 'v31', 'v32', 'v33', 'v34', 'v35', 'v36', 'v37', 'v38']
 # Используем цикл для подсчета значений и создания новых столбцов
 for col in selected_columns:
-    value = 'Да'  # Значение, которое мы считаем
+    value = 'да'  # Значение, которое мы считаем
     count_col_name = f'_{col}_'
     counts = Answers_respond1[Answers_respond1[col] == value].groupby('v0').size().reset_index(name=count_col_name)
     ans_res1 = ans_res1.merge(counts, on='v0', how='left')
@@ -324,7 +348,7 @@ ans_res2 = pd.DataFrame({'v0': Answers_respond2['v0'].unique()})
 selected_columns = ['v1', 'v2', 'v3', 'v4', 'v5', 'v7', 'v11', 'v13', 'v17', 'v18', 'v19', 'v20', 'v21', 'v22', 'v23', 'v24', 'v25']
 # Используем цикл для подсчета значений и создания новых столбцов
 for col in selected_columns:
-    value = 'Да'  # Значение, которое мы считаем
+    value = 'да'  # Значение, которое мы считаем
     count_col_name = f'_{col}_'
     counts = Answers_respond2[Answers_respond2[col] == value].groupby('v0').size().reset_index(name=count_col_name)
     ans_res2 = ans_res2.merge(counts, on='v0', how='left')
@@ -443,12 +467,12 @@ chek_list = chek_list.rename(columns=dict_chek) # переименовываем
 
 
 name_org1 = pd.DataFrame({'us0': chek_list['us0']}) 
-chek_list_stend = chek_list.iloc[:, 1:60]  # Датафрейм с 1-5 столбцами
-chek_list_sait = chek_list.iloc[:, 61:120]  # Датафрейм с 6-10 столбцами = df.iloc[:, 0:5]  # Датафрейм с 1-5 столбцами
-chek_list_dist = chek_list.iloc[:, 121:124]  # Датафрейм с 6-10 столбцами
-chek_list_komf = chek_list.iloc[:, 125:133]
-chek_list_obor_inv = chek_list.iloc[:, 134:138]
-chek_list_sreda_inv = chek_list.iloc[:, 139:144]
+chek_list_stend = chek_list.iloc[:, 1:27]  # Датафрейм с 1-5 столбцами
+chek_list_sait = chek_list.iloc[:, 28:56]  # Датафрейм с 6-10 столбцами = df.iloc[:, 0:5]  # Датафрейм с 1-5 столбцами
+chek_list_dist = chek_list.iloc[:, 57:61]  # Датафрейм с 6-10 столбцами
+chek_list_komf = chek_list.iloc[:, 62:68]
+chek_list_obor_inv = chek_list.iloc[:, 69:73]
+chek_list_sreda_inv = chek_list.iloc[:, 74:79]
 
 chek_list_stend = pd.concat([name_org1, chek_list_stend], axis=1)
 chek_list_sait = pd.concat([name_org1, chek_list_sait], axis=1)
@@ -604,6 +628,7 @@ default_font.size = Pt(14)
 
 abz10 = otchet.add_paragraph("Критерий представлен двумя показателями:")
 abz11 = otchet.add_paragraph("Показатель 2.1. Обеспечение в медицинском учреждении комфортных условий пребывания (транспортная/ пешая доступность медицинского учреждения, санитарное состояние помещений и территории учреждения, наличие и доступность питьевой воды, санитарно-гигиенических помещений, достаточность гардеробов)")
+abz11_1 = otchet.add_paragraph("Показатель 2.2. Время ожидания предоставления медицинских услуг (среднее время ожидания и своевременность предоставления медицинской услуги: врача/диагностического исследования/плановой госпитализации)")
 abz12 = otchet.add_paragraph("Показатель 2.3. Доля получателей услуг, удовлетворенных комфортностью предоставления услуг медицинским учреждением (в % от общего числа опрошенных получателей услуг).")
 abz13 = otchet.add_paragraph("Максимальное количество баллов по данному критерию – 100,00.")
 
@@ -860,8 +885,8 @@ default_font = otchet.styles['Normal'].font
 default_font.name = 'Times New Roman'
 default_font.size = Pt(14)
 
-abz50 = otchet.add_paragraph(f"Согласно результатам проведённого исследования, основным недостатком у данных учреждений является {sorted_list_krit.at[0, 'Наименование критерия']}. ")
-abz51 = otchet.add_paragraph(f"Также есть проблемы с {sorted_list_krit.at[1, 'Наименование критерия']} и {sorted_list_krit.at[2, 'Наименование критерия']}. ")# Вставка графика в документ Word
+abz50 = otchet.add_paragraph(f"Согласно результатам проведённого исследования, основным количество недостатков у данных учреждений наблюдается в области {sorted_list_krit.at[0, 'Наименование критерия']}. ")
+abz51 = otchet.add_paragraph(f"Также есть проблемы в области {sorted_list_krit.at[1, 'Наименование критерия']} и {sorted_list_krit.at[2, 'Наименование критерия']}. ")# Вставка графика в документ Word
 
 if not Raschet_ballov.empty:
     print("DataFrame не является пустым")
