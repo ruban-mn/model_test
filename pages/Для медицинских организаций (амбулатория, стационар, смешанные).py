@@ -104,7 +104,7 @@ def calculate_value1(row):
     result_sum = sum([(i+1)*val for i, val in enumerate(row['v31']) if not math.isnan(val)])
     result = round(result_sum / total_answers)
     
-    if result == 14:
+    if result >= 14:
         return 10
     elif result == 13:
         return 20
