@@ -50,15 +50,15 @@ for i in range(28):  # Цикл от 0 до 18
 
 dictionary = dict(zip(Answers_respond_list, New_col)) # создаем  словарь для переименования стобцов
 Answers_respond = Answers_respond.rename(columns=dictionary) # переименовываем столбцы в начальном датафрейме
-Answers_respond['v29'] = Answers_respond['v6'].map({'менее 7 калндарных дней': 6, '7 календарных дней': 7, '10 календарных дней': 10, '14 календарных дней и более': 14})
-Answers_respond['v30'] = Answers_respond['v8'].map({'менее 1 часа': 1, '3 часа': 3})
-Answers_respond['v31'] = Answers_respond['v22'].map({'менее 7 календарных дней': 6, '7 календарных дней и более': 7, '10 календарных дней и более': 10            })
+Answers_respond['v29'] = Answers_respond['v6'].map({'менее 7 календарных дней': 6, '7 календарных дней': 7, '10 календарных дней': 10, '14 календарных дней и более': 14})
+Answers_respond['v30'] = Answers_respond['v8'].map({'менее 1 часа': 1, '3 часа': 3, '6 часа': 6, '12 часов': 12, '24 часа и более': 24})
+Answers_respond['v31'] = Answers_respond['v22'].map({'менее 7 календарных дней': 6, '7 календарных дней': 7, '10 календарных дней': 10, '12 календарных дней': 12, '14 календарных дней и более': 14})
 
 # Рассчитываем значение для нового столбца
 def calculate_value(row):
-    total_answers = sum([val for val in row['v29'] if not math.isnan(val)])
+    total_answers = sum([val for val in row['v30'] if not math.isnan(val)])
 
-    result_sum = sum([(i+1)*val for i, val in enumerate(row['v29']) if not math.isnan(val)])
+    result_sum = sum([(i+1)*val for i, val in enumerate(row['v30']) if not math.isnan(val)])
     result = round(result_sum / total_answers)
     
     if result == 24:
@@ -77,9 +77,9 @@ result_df = Answers_respond.groupby('v0').apply(calculate_value).reset_index()
 result_df.columns = ['v0', 'v30']
 # Рассчитываем значение для нового столбца
 def calculate_value(row):
-    total_answers = sum([val for val in row['v30'] if not math.isnan(val)])
+    total_answers = sum([val for val in row['v29'] if not math.isnan(val)])
 
-    result_sum = sum([(i+1)*val for i, val in enumerate(row['v30']) if not math.isnan(val)])
+    result_sum = sum([(i+1)*val for i, val in enumerate(row['v29']) if not math.isnan(val)])
     result = round(result_sum / total_answers)
     
     if result == 14:
