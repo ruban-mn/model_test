@@ -92,10 +92,10 @@ all_ans = col_ob['Ч_общ']
 name_org = chek_list.filter(like='Наименование организации').copy()
 
 Raschet_ballov = name_org
-Raschet_ballov['Истенд'] = chek_list.filter(like='Основные сведения на СТЕНДЕ').sum(axis=1)
-Raschet_ballov['Исайт'] = chek_list.filter(like='Основные сведения на САЙТЕ').sum(axis=1)
-Raschet_ballov['Инорм-стенд'] = chek_list.filter(like='Основные сведения на СТЕНДЕ').count(axis=1)
-Raschet_ballov['Инорм-сайт'] = chek_list.filter(like='Основные сведения на САЙТЕ').count(axis=1)
+Raschet_ballov['Истенд'] = chek_list.filter(like='на СТЕНДЕ').sum(axis=1)
+Raschet_ballov['Исайт'] = chek_list.filter(like='на САЙТЕ').sum(axis=1)
+Raschet_ballov['Инорм-стенд'] = chek_list.filter(like='на СТЕНДЕ').count(axis=1)
+Raschet_ballov['Инорм-сайт'] = chek_list.filter(like='на САЙТЕ').count(axis=1)
 Raschet_ballov['Пинф'] = round(0.5*((Raschet_ballov['Истенд']/Raschet_ballov['Инорм-стенд'])+(Raschet_ballov['Исайт']/Raschet_ballov['Инорм-сайт']))*100, 2)
 Raschet_ballov['Тдист'] = 30
 Raschet_ballov['Сдист'] = chek_list.filter(like='Отметьте функционирующие дистанционные способы взаимодействия').sum(axis=1)
@@ -119,7 +119,7 @@ Raschet_ballov['Торгдост'] = chek_list.filter(like='Укажите ко�
 Raschet_ballov['Соргдост'] = 20
 Raschet_ballov['Поргдост'] = Raschet_ballov['Торгдост']*Raschet_ballov['Соргдост']
 Raschet_ballov['Поргдост'].where(Raschet_ballov['Поргдост'] <= 100, 100, inplace=True)
-Raschet_ballov['Туслугдост'] = chek_list.filter(like='Укажите количество условий , позволяющих инвалидам получать услуги наравне с другими').sum(axis=1)
+Raschet_ballov['Туслугдост'] = chek_list.filter(like='Укажите количество условий доступности организации для инвалидов, позволяющих инвалидам получать услуги наравне с другими').sum(axis=1)
 Raschet_ballov['Суслугдост'] = 20
 Raschet_ballov['Пуслугдост'] = Raschet_ballov['Туслугдост']*Raschet_ballov['Суслугдост']
 Raschet_ballov['Пуслугдост'].where(Raschet_ballov['Пуслугдост'] <= 100, 100, inplace=True)
