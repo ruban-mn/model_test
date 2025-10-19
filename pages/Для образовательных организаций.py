@@ -115,11 +115,11 @@ Raschet_ballov['Укомф'] = ans_res['_v5_']
 Raschet_ballov['Чобщ'] = col_ob['Ч_общ']
 Raschet_ballov['Пкомфуд'] = round(Raschet_ballov['Укомф']/Raschet_ballov['Чобщ']*100, 2)
 Raschet_ballov['К2'] = round(0.5*Raschet_ballov['Пкомф.усл'] + 0.5*Raschet_ballov['Пкомфуд'], 2)
-Raschet_ballov['Торгдост'] = chek_list.filter(like='Укажите количество условий доступности организации для инвалидов').sum(axis=1)
+Raschet_ballov['Торгдост'] = chek_list.filter(like='Укажите количество условий оборудования среды').sum(axis=1)
 Raschet_ballov['Соргдост'] = 20
 Raschet_ballov['Поргдост'] = Raschet_ballov['Торгдост']*Raschet_ballov['Соргдост']
 Raschet_ballov['Поргдост'].where(Raschet_ballov['Поргдост'] <= 100, 100, inplace=True)
-Raschet_ballov['Туслугдост'] = chek_list.filter(like='Укажите количество условий доступности организации для инвалидов, позволяющих инвалидам получать услуги наравне с другими').sum(axis=1)
+Raschet_ballov['Туслугдост'] = chek_list.filter(like='Укажите количество условий доступности организации').sum(axis=1)
 Raschet_ballov['Суслугдост'] = 20
 Raschet_ballov['Пуслугдост'] = Raschet_ballov['Туслугдост']*Raschet_ballov['Суслугдост']
 Raschet_ballov['Пуслугдост'].where(Raschet_ballov['Пуслугдост'] <= 100, 100, inplace=True)
