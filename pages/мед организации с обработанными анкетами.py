@@ -53,7 +53,7 @@ Raschet_ballov['Уобщ-стенд'] = Answers_respond['Уобщ-стенд']
 Raschet_ballov['Уобщ-сайт'] = Answers_respond['Уобщ-сайт']
 Raschet_ballov['Поткруд'] = round(0.5*((Raschet_ballov['Устенд']/Raschet_ballov['Уобщ-стенд'])+(Raschet_ballov['Усайт']/Raschet_ballov['Уобщ-сайт']))*100, 2)
 Raschet_ballov['К1'] = round(0.3*Raschet_ballov['Пинф'] + 0.3*Raschet_ballov['Пдист'] + 0.4*Raschet_ballov['Поткруд'], 2)
-Raschet_ballov['Ткомф'] = chek_list.filter(like='Обеспечение в организации комфортных условий').sum(axis=1)
+Raschet_ballov['Ткомф'] = chek_list.filter(like='Укажите количество комфортных условий').sum(axis=1)
 Raschet_ballov['Скомф'] = 20
 Raschet_ballov['Пкомф.усл'] = Raschet_ballov['Ткомф']*Raschet_ballov['Скомф']
 Raschet_ballov['Пкомф.усл'].where(Raschet_ballov['Пкомф.усл'] <= 100, 100, inplace=True)
@@ -65,11 +65,11 @@ Raschet_ballov['Укомф'] = Answers_respond['Укомф']
 Raschet_ballov['Чобщ0'] = Answers_respond['Чобщ0']
 Raschet_ballov['Пкомфуд'] = round(Raschet_ballov['Укомф']/Raschet_ballov['Чобщ0']*100, 2)
 Raschet_ballov['К2'] = round(0.3*Raschet_ballov['Пкомф.усл'] + 0.4*Raschet_ballov['Пожид'] + 0.3*Raschet_ballov['Пкомфуд'], 2)
-Raschet_ballov['Торгдост'] = chek_list.filter(like='Оборудование территории').sum(axis=1)
+Raschet_ballov['Торгдост'] = chek_list.filter(like='Укажите количество условий оборудования среды организации для инвалидов').sum(axis=1)
 Raschet_ballov['Соргдост'] = 20
 Raschet_ballov['Поргдост'] = Raschet_ballov['Торгдост']*Raschet_ballov['Соргдост']
 Raschet_ballov['Поргдост'].where(Raschet_ballov['Поргдост'] <= 100, 100, inplace=True)
-Raschet_ballov['Туслугдост'] = chek_list.filter(like='Обеспечение в организации условий доступности').sum(axis=1)
+Raschet_ballov['Туслугдост'] = chek_list.filter(like='Укажите количество условий доступности организации').sum(axis=1)
 Raschet_ballov['Суслугдост'] = 20
 Raschet_ballov['Пуслугдост'] = Raschet_ballov['Туслугдост']*Raschet_ballov['Суслугдост']
 Raschet_ballov['Пуслугдост'].where(Raschet_ballov['Пуслугдост'] <= 100, 100, inplace=True)
