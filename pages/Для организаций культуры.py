@@ -140,12 +140,12 @@ dict_chek = dict(zip(row_chek_list, New_col_for_chek_list))
 chek_list = chek_list.rename(columns=dict_chek) # переименовываем столбцы в начальном датафрейме
 
 name_org1 = pd.DataFrame({'us0': chek_list['us0']}) 
-chek_list_stend = chek_list.iloc[:, 1:17]  # Датафрейм с 1-5 столбцами
-chek_list_sait = chek_list.iloc[:, 18:36]  # Датафрейм с 6-10 столбцами = df.iloc[:, 0:5]  # Датафрейм с 1-5 столбцами
-chek_list_dist = chek_list.iloc[:, 37:42]  # Датафрейм с 6-10 столбцами
-chek_list_komf = chek_list.iloc[:, 43:48]
-chek_list_obor_inv = chek_list.iloc[:, 49:53]
-chek_list_sreda_inv = chek_list.iloc[:, 54:59]
+chek_list_stend = chek_list.iloc[:, 1:10]  # Датафрейм с 1-5 столбцами
+chek_list_sait = chek_list.iloc[:, 11:23]  # Датафрейм с 6-10 столбцами = df.iloc[:, 0:5]  # Датафрейм с 1-5 столбцами
+chek_list_dist = chek_list.iloc[:, 24:29]  # Датафрейм с 6-10 столбцами
+chek_list_komf = chek_list.iloc[:, 30:35]
+chek_list_obor_inv = chek_list.iloc[:, 36:40]
+chek_list_sreda_inv = chek_list.iloc[:, 41:46]
 
 chek_list_stend = pd.concat([name_org1, chek_list_stend], axis=1)
 chek_list_sait = pd.concat([name_org1, chek_list_sait], axis=1)
