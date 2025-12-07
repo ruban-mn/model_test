@@ -50,9 +50,8 @@ for i in range(29):  # Цикл от 0 до 18
 
 dictionary = dict(zip(Answers_respond_list, New_col)) # создаем  словарь для переименования стобцов
 Answers_respond = Answers_respond.rename(columns=dictionary) # переименовываем столбцы в начальном датафрейме
-Answers_respond['v29'] = Answers_respond['v6'].map({'менее 7 календарных дней': 6, '7 календарных дней': 7, '10 календарных дней': 10, '14 календарных дней и более': 14})
-Answers_respond['v30'] = Answers_respond['v8'].map({'менее 1 часа': 1, '3 часа': 3, '6 часа': 6, '12 часов': 12, '24 часа и более': 24})
-Answers_respond['v31'] = Answers_respond['v22'].map({'менее 7 календарных дней': 6, '7 календарных дней': 7, '10 календарных дней': 10, '12 календарных дней': 12, '14 календарных дней и более': 14})
+Answers_respond['v30'] = Answers_respond['v8'].map({'менее 1 часа': 1, '3 часа': 3})
+Answers_respond['v31'] = Answers_respond['v22'].map({'менее 7 календарных дней': 6, '13 календарных дней': 13})
 
 # Рассчитываем значение для нового столбца
 def calculate_value(row):
@@ -75,28 +74,6 @@ def calculate_value(row):
 
 result_df1 = Answers_respond.groupby('v0').apply(calculate_value).reset_index()
 result_df1.columns = ['v0', 'v30']
-# Рассчитываем значение для нового столбца
-def calculate_value(row):
-    total_answers = sum([val for val in row['v29'] if not math.isnan(val)])
-
-    result_sum = sum([(i+1)*val for i, val in enumerate(row['v29']) if not math.isnan(val)])
-    result = round(result_sum / total_answers)
-    
-    if result == 14:
-        return 10
-    elif result == 13:
-        return 20
-    elif result == 12:
-        return 40
-    elif 11 <= result <= 8:
-        return 60
-    else:
-        return 100
-
-
-result_df = Answers_respond.groupby('v0').apply(calculate_value).reset_index()
-result_df.columns = ['v0', 'v29']
-
 # Рассчитываем значение для нового столбца
 def calculate_value1(row):
     total_answers = sum([val for val in row['v31'] if not math.isnan(val)])
@@ -124,7 +101,7 @@ ans_res = pd.DataFrame({'v0': Answers_respond['v0'].unique()})
 
 
 
-selected_columns = ['v1', 'v2', 'v3', 'v4', 'v5', 'v7', 'v11', 'v13', 'v14', 'v15', 'v19', 'v23', 'v24', 'v25', 'v26', 'v27', 'v28', 'v29', 'v30', 'v31']
+selected_columns = ['v1', 'v2', 'v3', 'v4', 'v5', 'v7', 'v11', 'v13', 'v14', 'v15', 'v19', 'v23', 'v24', 'v25', 'v26', 'v27', 'v28', 'v30', 'v31']
 # Используем цикл для подсчета значений и создания новых столбцов
 for col in selected_columns:
     value = 'да'  # Значение, которое мы считаем
@@ -138,7 +115,7 @@ ans_res = ans_res.merge(result_df1, on='v0', how='left')
 
 ans_res = ans_res.merge(result_df2, on='v0', how='left')
 
-ans_res['_v40_'] = (ans_res['v29'] + ans_res['v30'] + ans_res['v31'])/3
+ans_res['_v40_'] = (ans_res['v30'] + ans_res['v31'])/3
 
 ans_res['_v41_'] = (ans_res['_v13_'] + ans_res['_v23_'])/2
 
@@ -177,8 +154,8 @@ for i in range(36):  # Цикл от 0 до 18
 dictionary1 = dict(zip(Answers_respond_list1, New_col1)) # создаем  словарь для переименования стобцов
 Answers_respond1 = Answers_respond1.rename(columns=dictionary1) # переименовываем столбцы в начальном датафрейме
 Answers_respond1['v36'] = Answers_respond1['v8'].map({'менее 15 календарных дней': 14, '15 календарных дней': 15})
-Answers_respond1['v37'] = Answers_respond1['v15'].map({'менее 1 часа': 1, '3 часа': 3, '6 часа': 6, '12 часов': 12, '24 часа и более': 24})
-Answers_respond1['v38'] = Answers_respond1['v29'].map({'менее 7 календарных дней': 6, '7 календарных дней': 7, '10 календарных дней': 10, '14 календарных дней и более': 14})
+Answers_respond1['v37'] = Answers_respond1['v15'].map({'менее 1 часа': 1, '3 часа': 3})
+Answers_respond1['v38'] = Answers_respond1['v29'].map({'менее 7 календарных дней': 6})
 
 # Рассчитываем значение для нового столбца
 def calculate_value(row):
@@ -319,7 +296,7 @@ for i in range(26):  # Цикл от 0 до 18
 
 dictionary2 = dict(zip(Answers_respond_list2, New_col1)) # создаем  словарь для переименования стобцов
 Answers_respond2 = Answers_respond2.rename(columns=dictionary2) # переименовываем столбцы в начальном датафрейме
-Answers_respond2['v25'] = Answers_respond2['v10'].map({'менее 7 календарных дней': 7, '10 календарных дней': 10, '14 календарных дней и более': 14})
+Answers_respond2['v25'] = Answers_respond2['v10'].map({'менее 15 календарных дней': 7})
 
 # Рассчитываем значение для нового столбца
 def calculate_value(row):
