@@ -176,8 +176,8 @@ for i in range(36):  # Цикл от 0 до 18
 
 dictionary1 = dict(zip(Answers_respond_list1, New_col1)) # создаем  словарь для переименования стобцов
 Answers_respond1 = Answers_respond1.rename(columns=dictionary1) # переименовываем столбцы в начальном датафрейме
-Answers_respond1['v36'] = Answers_respond1['v8'].map({'менее 15 календарных дней': 14, '15 календарных дней': 15, '30 календарных дней и более': 30})
-Answers_respond1['v37'] = Answers_respond1['v15'].map({'менее 1 часа': 1, '3 часа': 3})
+Answers_respond1['v36'] = Answers_respond1['v8'].map({'менее 15 календарных дней': 14, '15 календарных дней': 15})
+Answers_respond1['v37'] = Answers_respond1['v15'].map({'менее 1 часа': 1, '3 часа': 3, '6 часа': 6, '12 часов': 12, '24 часа и более': 24})
 Answers_respond1['v38'] = Answers_respond1['v29'].map({'менее 7 календарных дней': 6, '7 календарных дней': 7, '10 календарных дней': 10, '14 календарных дней и более': 14})
 
 # Рассчитываем значение для нового столбца
