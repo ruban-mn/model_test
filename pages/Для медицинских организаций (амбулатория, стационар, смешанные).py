@@ -109,8 +109,6 @@ for col in selected_columns:
     counts = Answers_respond[Answers_respond[col] == value].groupby('v0').size().reset_index(name=count_col_name)
     ans_res = ans_res.merge(counts, on='v0', how='left')
 
-ans_res = ans_res.merge(result_df, on='v0', how='left')
-
 ans_res = ans_res.merge(result_df1, on='v0', how='left')
 
 ans_res = ans_res.merge(result_df2, on='v0', how='left')
