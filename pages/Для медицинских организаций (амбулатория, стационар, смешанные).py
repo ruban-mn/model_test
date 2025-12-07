@@ -117,7 +117,7 @@ ans_res['_v40_'] = (ans_res['v30'] + ans_res['v31'])/3
 
 ans_res['_v41_'] = (ans_res['_v13_'] + ans_res['_v23_'])/2
 
-ans_res['_v45_'] = (ans_res['_v7_'] + ans_res['_v11_'])/2
+ans_res['_v45_'] = (ans_res['_v11_'])
 
 ans_res.rename(columns={'_v5_': '_v42_', '_v15_': '_v43_', '_v19_': '_v44_', '_v14_': '_v46_', '_v24_': '_v47_', '_v25_': '_v48_', '_v26_': '_v49_', '_v27_': '_v50_', '_v28_': '_v51_'}, inplace=True)
     
