@@ -471,12 +471,12 @@ chek_list = chek_list.rename(columns=dict_chek) # переименовываем
 
 
 name_org1 = pd.DataFrame({'us0': chek_list['us0']}) 
-chek_list_stend = chek_list.iloc[:, 1:27]  # Датафрейм с 1-5 столбцами
-chek_list_sait = chek_list.iloc[:, 28:56]  # Датафрейм с 6-10 столбцами = df.iloc[:, 0:5]  # Датафрейм с 1-5 столбцами
-chek_list_dist = chek_list.iloc[:, 57:61]  # Датафрейм с 6-10 столбцами
-chek_list_komf = chek_list.iloc[:, 62:68]
-chek_list_obor_inv = chek_list.iloc[:, 69:73]
-chek_list_sreda_inv = chek_list.iloc[:, 74:79]
+chek_list_stend = chek_list.iloc[:, 1:60]  # Датафрейм с 1-5 столбцами
+chek_list_sait = chek_list.iloc[:, 61:120]  # Датафрейм с 6-10 столбцами = df.iloc[:, 0:5]  # Датафрейм с 1-5 столбцами
+chek_list_dist = chek_list.iloc[:, 121:125]  # Датафрейм с 6-10 столбцами
+chek_list_komf = chek_list.iloc[:, 126:132]
+chek_list_obor_inv = chek_list.iloc[:, 133:138]
+chek_list_sreda_inv = chek_list.iloc[:, 139:143]
 
 chek_list_stend = pd.concat([name_org1, chek_list_stend], axis=1)
 chek_list_sait = pd.concat([name_org1, chek_list_sait], axis=1)
@@ -889,7 +889,7 @@ default_font = otchet.styles['Normal'].font
 default_font.name = 'Times New Roman'
 default_font.size = Pt(14)
 
-abz50 = otchet.add_paragraph(f"Согласно результатам проведённого исследования, основным количество недостатков у данных учреждений наблюдается в области {sorted_list_krit.at[0, 'Наименование критерия']}. ")
+abz50 = otchet.add_paragraph(f"Согласно результатам проведённого исследования, основное количество недостатков у данных учреждений наблюдается в области {sorted_list_krit.at[0, 'Наименование критерия']}. ")
 abz51 = otchet.add_paragraph(f"Также есть проблемы в области {sorted_list_krit.at[1, 'Наименование критерия']} и {sorted_list_krit.at[2, 'Наименование критерия']}. ")# Вставка графика в документ Word
 
 if not Raschet_ballov.empty:
@@ -922,8 +922,8 @@ for index, row in output_df.iterrows():
 
     row_cells[3].text = f"Недостатки на стенде: отсутствуют документы о {str(row['bad_stend'])}\n"\
                         f"Недостатки на сайте: отсутствуют документы о {str(row['bad_sait'])}\n"\
-                        f"Недостатки функционирование дистанционных способов связи: {str(row['bad_dist'])}\n"\
-                        f"Недостатки комфортности условий предоставления услуг: {str(row['bad_komf'])}\n"\
+                        f"Недостатки функционирование дистанционных способов связи: отсутствует {str(row['bad_dist'])}\n"\
+                        f"Недостатки комфортности условий предоставления услуг: отсутствует {str(row['bad_komf'])}\n"\
                         f"Недостатки в разрезе оборудования для инвалидов: {str(row['obor_inv'])}\n"\
                         f"Недостатки доступности среды для инвалидов: {str(row['sreda_inv'])}"
 
