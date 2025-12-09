@@ -448,8 +448,8 @@ chek_list = chek_list.rename(columns=dict_chek) # переименовываем
 name_org1 = pd.DataFrame({'us0': chek_list['us0']}) 
 chek_list_stend = chek_list.iloc[:, 1:60]  # Датафрейм с 1-5 столбцами
 chek_list_sait = chek_list.iloc[:, 61:120]  # Датафрейм с 6-10 столбцами = df.iloc[:, 0:5]  # Датафрейм с 1-5 столбцами
-chek_list_dist = chek_list.iloc[:, 121:124]  # Датафрейм с 6-10 столбцами
-chek_list_komf = chek_list.iloc[:, 125:132]
+chek_list_dist = chek_list.iloc[:, 121:125]  # Датафрейм с 6-10 столбцами
+chek_list_komf = chek_list.iloc[:, 126:132]
 chek_list_obor_inv = chek_list.iloc[:, 133:137]
 chek_list_sreda_inv = chek_list.iloc[:, 138:143]
 
